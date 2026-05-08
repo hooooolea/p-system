@@ -1,0 +1,90 @@
+<svg width="100%" viewBox="0 0 680 580" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>警擎系统三层两翼技术架构图</title>
+<desc>三层：应用服务层、智能分析层、数据资源层；两翼：智能语义分析引擎、地理态势感知平台</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- 标题 -->
+<text x="340" y="28" text-anchor="middle" font-size="15" fill="rgb(20, 20, 19)" font-weight="500">三层两翼技术架构</text>
+
+<!-- 应用服务层 -->
+<rect x="40" y="50" width="600" height="120" rx="12" fill="rgb(238, 237, 254)" stroke="rgb(83, 74, 183)" stroke-width="0.5"/>
+<text x="70" y="75" font-size="13" fill="rgb(60, 52, 137)" font-weight="500">应用服务层</text>
+
+<!-- 应用服务层模块 -->
+<rect x="60" y="90" width="130" height="66" rx="8" fill="rgb(225, 245, 238)" stroke="rgb(15, 110, 86)" stroke-width="0.5"/>
+<text x="125" y="115" text-anchor="middle" font-size="12" fill="rgb(8, 80, 65)" font-weight="500">接警研判工作台</text>
+<text x="125" y="133" text-anchor="middle" font-size="10" fill="rgb(15, 110, 86)">警情录入·风险评级</text>
+
+<rect x="206" y="90" width="130" height="66" rx="8" fill="rgb(225, 245, 238)" stroke="rgb(15, 110, 86)" stroke-width="0.5"/>
+<text x="271" y="115" text-anchor="middle" font-size="12" fill="rgb(8, 80, 65)" font-weight="500">地图态势中心</text>
+<text x="271" y="133" text-anchor="middle" font-size="10" fill="rgb(15, 110, 86)">空间落点·热力分析</text>
+
+<rect x="352" y="90" width="130" height="66" rx="8" fill="rgb(225, 245, 238)" stroke="rgb(15, 110, 86)" stroke-width="0.5"/>
+<text x="417" y="115" text-anchor="middle" font-size="12" fill="rgb(8, 80, 65)" font-weight="500">研判记录总览</text>
+<text x="417" y="133" text-anchor="middle" font-size="10" fill="rgb(15, 110, 86)">全流程可追溯</text>
+
+<rect x="498" y="90" width="130" height="66" rx="8" fill="rgb(225, 245, 238)" stroke="rgb(15, 110, 86)" stroke-width="0.5"/>
+<text x="563" y="115" text-anchor="middle" font-size="12" fill="rgb(8, 80, 65)" font-weight="500">案件管理系统</text>
+<text x="563" y="133" text-anchor="middle" font-size="10" fill="rgb(15, 110, 86)">立案·处置·归档</text>
+
+<!-- 层间连接箭头 -->
+<line x1="340" y1="170" x2="340" y2="196" stroke="rgb(115, 114, 108)" stroke-width="1.5" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+
+<!-- 智能分析层 -->
+<rect x="40" y="200" width="600" height="140" rx="12" fill="rgb(250, 236, 231)" stroke="rgb(153, 60, 29)" stroke-width="0.5"/>
+<text x="70" y="225" font-size="13" fill="rgb(113, 43, 19)" font-weight="500">智能分析层</text>
+
+<!-- 左翼模块 -->
+<rect x="78" y="236" width="145" height="68" rx="8" fill="rgb(250, 238, 218)" stroke="rgb(133, 79, 11)" stroke-width="0.5"/>
+<text x="151" y="261" text-anchor="middle" font-size="12" fill="rgb(99, 56, 6)" font-weight="500">大语言模型推理</text>
+<text x="151" y="279" text-anchor="middle" font-size="10" fill="rgb(133, 79, 11)">警情结构化·研判推理</text>
+
+<rect x="230" y="236" width="145" height="68" rx="8" fill="rgb(250, 238, 218)" stroke="rgb(133, 79, 11)" stroke-width="0.5"/>
+<text x="303" y="261" text-anchor="middle" font-size="12" fill="rgb(99, 56, 6)" font-weight="500">RAG检索增强</text>
+<text x="303" y="279" text-anchor="middle" font-size="10" fill="rgb(133, 79, 11)">Chroma向量库·知识注入</text>
+
+<!-- 右翼模块 -->
+<rect x="385" y="236" width="110" height="68" rx="8" fill="rgb(230, 241, 251)" stroke="rgb(24, 95, 165)" stroke-width="0.5"/>
+<text x="440" y="261" text-anchor="middle" font-size="12" fill="rgb(12, 68, 124)" font-weight="500">跨模态分析</text>
+<text x="440" y="279" text-anchor="middle" font-size="10" fill="rgb(24, 95, 165)">CLIP·目标溯源</text>
+
+<rect x="503" y="236" width="117" height="68" rx="8" fill="rgb(230, 241, 251)" stroke="rgb(24, 95, 165)" stroke-width="0.5"/>
+<text x="562" y="261" text-anchor="middle" font-size="12" fill="rgb(12, 68, 124)" font-weight="500">地理空间分析</text>
+<text x="562" y="279" text-anchor="middle" font-size="10" fill="rgb(24, 95, 165)">OpenLayers·GIS</text>
+
+<!-- 中台说明 -->
+<text x="340" y="322" text-anchor="middle" font-size="11" fill="rgb(61, 61, 58)">统一数据中台 · 标准化REST接口 · 双向业务协同</text>
+
+<!-- 层间连接箭头 -->
+<line x1="340" y1="340" x2="340" y2="366" stroke="rgb(115, 114, 108)" stroke-width="1.5" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+
+<!-- 数据资源层 -->
+<rect x="40" y="370" width="600" height="130" rx="12" fill="rgb(241, 239, 232)" stroke="rgb(95, 94, 90)" stroke-width="0.5"/>
+<text x="70" y="395" font-size="13" fill="rgb(68, 68, 65)" font-weight="500">数据资源层</text>
+
+<!-- 数据层模块 -->
+<rect x="58" y="408" width="130" height="68" rx="8" fill="rgb(230, 241, 251)" stroke="rgb(24, 95, 165)" stroke-width="0.5"/>
+<text x="123" y="433" text-anchor="middle" font-size="12" fill="rgb(12, 68, 124)" font-weight="500">警情文本数据</text>
+<text x="123" y="451" text-anchor="middle" font-size="10" fill="rgb(24, 95, 165)">110报警·处置记录</text>
+
+<rect x="202" y="408" width="130" height="68" rx="8" fill="rgb(234, 243, 222)" stroke="rgb(59, 109, 17)" stroke-width="0.5"/>
+<text x="267" y="433" text-anchor="middle" font-size="12" fill="rgb(39, 80, 10)" font-weight="500">地理空间数据</text>
+<text x="267" y="451" text-anchor="middle" font-size="10" fill="rgb(59, 109, 17)">电子地图·POI·区划</text>
+
+<rect x="346" y="408" width="130" height="68" rx="8" fill="rgb(238, 237, 254)" stroke="rgb(83, 74, 183)" stroke-width="0.5"/>
+<text x="411" y="433" text-anchor="middle" font-size="12" fill="rgb(60, 52, 137)" font-weight="500">视频图像数据</text>
+<text x="411" y="451" text-anchor="middle" font-size="10" fill="rgb(83, 74, 183)">结构化特征·人体·车辆</text>
+
+<rect x="490" y="408" width="138" height="68" rx="8" fill="rgb(250, 238, 218)" stroke="rgb(133, 79, 11)" stroke-width="0.5"/>
+<text x="559" y="433" text-anchor="middle" font-size="12" fill="rgb(99, 56, 6)" font-weight="500">警务知识数据</text>
+<text x="559" y="451" text-anchor="middle" font-size="10" fill="rgb(133, 79, 11)">法规·规范·案例库</text>
+
+<!-- 底部说明 -->
+<text x="340" y="523" text-anchor="middle" fill="rgb(61, 61, 58)">感知</text>
+<text x="340" y="545" text-anchor="middle" fill="rgb(61, 61, 58)">→  认知  →  决策  →  优化</text>
+<text x="340" y="563" text-anchor="middle" font-size="11" fill="rgb(61, 61, 58)">数据驱动 · 智能赋能 · 闭环优化</text>
+</svg>

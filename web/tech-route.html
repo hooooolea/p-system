@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智警引擎 · 技术路线</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="docs-shell docs-shell--command-workbench command-page--standalone" data-theme="light" data-page="tech-route">
+    <div class="site">
+      <header class="site-header command-shell-header page-wide">
+        <div class="command-shell-header__inner">
+          <div class="command-shell-header__brand" aria-label="智警引擎">
+            <span class="command-shell-header__brand-mark"></span>
+            <span class="command-shell-header__brand-text">智警引擎</span>
+            <span class="command-shell-header__brand-ver">智慧警务</span>
+          </div>
+          <div class="command-shell-header__search" role="search">
+            <span class="command-shell-header__search-icon" aria-hidden="true">⌕</span>
+            <input type="search" class="command-shell-header__search-input" placeholder="搜索警情、目标…" aria-label="全局搜索" />
+          </div>
+          <div class="command-shell-header__right">
+            <span id="commandShellClock" class="command-shell-header__clock" aria-live="polite"></span>
+          </div>
+        </div>
+      </header>
+
+      <main class="site-main command-shell-main">
+        <div class="command-app page-wide">
+          <aside id="app-sidebar" class="command-app-sidebar" aria-label="主导航"></aside>
+
+          <div class="doc-main command-app-body">
+            <section class="panel panel--stream">
+              <div class="doc-article-head" id="tr-overview">
+                <h1 class="doc-title">技术路线</h1>
+                <p class="hint muted">按工作台 <code>index.html</code> 自上而下各区块，对应前端事件、HTTP 接口与服务层实现。</p>
+              </div>
+
+              <section class="app-shell" id="tr-status-matrix" style="margin-bottom: var(--space-4)">
+                <div class="panel-head panel-head--plain">
+                  <h2 class="stream-heading" style="margin: 0; font-size: 1.15rem">实现状态矩阵（实时）</h2>
+                  <div class="actions-inline" style="gap: 8px">
+                    <button id="techStatusRefreshBtn" type="button" class="btn-ghost">刷新状态</button>
+                    <button id="techEvidenceGenBtn" type="button" class="btn-primary">生成答辩证据</button>
+                    <button id="techEvidenceCopyBtn" type="button" class="btn-ghost">复制 Markdown</button>
+                  </div>
+                </div>
+                <p class="hint muted">状态由接口实时判断：<code>/api/performance</code>、<code>/api/evaluation/alerts</code>、<code>/api/nonface/search</code>。</p>
+                <table class="simple-table grid-table" id="techStatusTable">
+                  <thead>
+                    <tr><th>能力项</th><th>当前状态</th><th>证据</th><th>说明</th></tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+                <p id="techStatusHint" class="hint muted"></p>
+                <details class="command-ingest-card__history" style="margin-top: var(--space-3)">
+                  <summary>答辩证据摘要（Markdown）</summary>
+                  <pre id="techEvidenceOutput" class="app-shell" style="white-space: pre-wrap; margin: 0">尚未生成</pre>
+                </details>
+              </section>
+
+              <h2 class="stream-heading" id="tr-shell">1. 页面骨架与静态资源</h2>
+              <table class="simple-table grid-table">
+                <tr>
+                  <th>工作台对应</th>
+                  <td>整页 <code>docs-shell</code>；三栏 <code>doc-layout</code>（左站点、中主栏、右本页目录）</td>
+                </tr>
+                <tr>
+                  <th>实现</th>
+                  <td><code>web/index.html</code> 结构；样式 <code>web/styles.css</code>；逻辑 <code>web/app.js</code>；环境注入 <code>web/plice-env.js</code>；主题 <code>web/docs-theme.js</code></td>
+                </tr>
+                <tr>
+                  <th>Flask 下发</th>
+                  <td><code>api_server.py</code>：<code>GET /</code> 返回 <code>index.html</code>；<code>GET /styles.css</code>、<code>GET /app.js</code>、<code>GET /plice-env.js</code> 与根路径相对引用对齐</td>
+                </tr>
+              </table>
+
+              <div class="shell-divider shell-divider--inner" aria-hidden="true"></div>
+
+              <h2 class="stream-heading" id="tr-toolbar">2. 顶下工具带（检索增强 · 会话指标）</h2>
+              <table class="simple-table grid-table">
+                <tr>
+                  <th>DOM</th>
+                  <td><code>#useRag</code> 复选框；<code>#metricTotal</code>、<code>#metricHigh</code> 数值</td>
+                </tr>
+                <tr>
+                  <th>实现</th>
+                  <td><code>app.js</code> 中 <code>refreshToolbarMetrics()</code>：<code>GET /api/performance</code>，取 <code>performance.total</code> 与风险计数中高/紧急之和写入工具带</td>
+                </tr>
+                <tr>
+                  <th>服务端</th>
+                  <td><code>api_server.py</code> → <code>build_performance_overview(session_store)</code>（<code>src/services/workbench_service.py</code>）</td>
+                </tr>
+              </table>
+
+              <div class="shell-divider shell-divider--inner" aria-hidden="true"></div>
+
+              <h2 class="stream-heading" id="tr-voice">3. 语音接警（内部流水线）</h2>
+              <table class="simple-table grid-table">
+                <tr>
+                  <th>DOM</th>
+                  <td>警情编号/补充字、<code>#ingestAudioFile</code>、<code>#ingestVoiceWorkbenchHint</code></td>
+                </tr>
+                <tr>
+                  <th>鉴权</th>
+                  <td>若需 Bearer：可将令牌写入 <code>localStorage.plice_internal_token</code>（本页已不提供输入框），或由网关注入；请求头由 <code>internalAuthOnlyHeaders()</code> / <code>internalRequestHeaders()</code> 附带 <code>Authorization</code>、<code>X-Caller-Service</code>、<code>X-Request-Id</code></td>
+                </tr>
+                <tr>
+                  <th>主流程</th>
+                  <td><code>initWorkbenchVoice()</code> → 选文件后 <code>runVoiceWorkbenchPipeline()</code>：<code>POST /internal/v1/uploads</code>（<code>multipart/form-data</code>，含 <code>auto_process</code>、<code>auto_analyze</code>、<code>use_rag</code> 及接警字段）→ 轮询 <code>GET /internal/v1/media-jobs/{id}</code> → 若有 <code>analyze_job_id</code> 则轮询 <code>GET /internal/v1/jobs/{id}</code> → <code>applyLatestInternalAnalysis()</code> 调 <code>GET …/incidents/{id}/analyze/latest</code> 取结构化结果并复用 <code>renderAnalyzeResultFromApi()</code></td>
+                </tr>
+                <tr>
+                  <th>说明</th>
+                  <td>工作台不展示 Canonical JSON；流程末仍会 <code>GET /internal/v1/incidents/{id}</code> 取 ASR 等字段回填报警原文。对接排错可直接调该 API。</td>
+                </tr>
+                <tr>
+                  <th>后端入口</th>
+                  <td><code>api_server.py</code> 注册 <code>build_internal_blueprint(_ingest_service)</code>，前缀 <code>/internal/v1</code>（<code>src/adapters/http/blueprint.py</code> + <code>IngestService</code>）</td>
+                </tr>
+              </table>
+
+              <div class="shell-divider shell-divider--inner" aria-hidden="true"></div>
+
+              <h2 class="stream-heading" id="tr-alarm">4. 警情输入与研判记录</h2>
+              <table class="simple-table grid-table">
+                <tr>
+                  <th>DOM</th>
+                  <td><code>#exampleSelect</code>、<code>#alarmText</code>、<code>#analyzeBtn</code>、<code>#analyzeHint</code>、<code>#historyList</code></td>
+                </tr>
+                <tr>
+                  <th>文字研判</th>
+                  <td>点击「开始研判」→ <code>POST /api/analyze</code>，JSON 体 <code>{ alarm_text, use_rag }</code>；成功则 <code>renderAnalyzeResultFromApi()</code> 更新摘要/风险/法律依据等，并 <code>renderHistory()</code></td>
+                </tr>
+                <tr>
+                  <th>服务端</th>
+                  <td><code>analyze_alarm_with_bukong()</code> → <code>record_analysis()</code>；可选内联布控写入会话；<code>snapshot_bukong_to_session()</code>；返回 <code>markdown</code>、<code>bukong</code>、<code>officer_brief</code>、<code>history</code>（接口仍可能含 <code>disposal_nav</code>，工作台页不展示）</td>
+                </tr>
+                <tr>
+                  <th>历史列表</th>
+                  <td><code>GET /api/history</code>；<code>refreshHistory()</code> 在首屏与研判成功后调用</td>
+                </tr>
+              </table>
+
+              <div class="shell-divider shell-divider--inner" aria-hidden="true"></div>
+
+              <h2 class="stream-heading" id="tr-result">5. 研判结果、关键信息、法律依据</h2>
+              <table class="simple-table grid-table">
+                <tr>
+                  <th>DOM</th>
+                  <td><code>#resultMeta</code>、<code>#missingHint</code>、<code>#workBukongHint</code>、<code>#summaryBox</code>、<code>#suggestionBox</code>、<code>#keyInfoBox</code>、<code>#work-bukong-output</code> / <code>#bukongBox</code>、<code>#lawBox</code></td>
+                </tr>
+                <tr>
+                  <th>实现</th>
+                  <td><code>renderAnalyzeResultFromApi()</code> 拼表与摘要；<code>renderKeyInfo()</code>；<code>mergeBukongFromAnalyze()</code> 根据 <code>bukong</code> 回填表单并写入 <code>#bukongBox</code>；接口 <code>markdown</code> 已含布控（<code>merge_incident_and_bukong_markdown</code>）</td>
+                </tr>
+                <tr>
+                  <th>数据形状</th>
+                  <td>与 <code>services/workbench_service</code> 中研判结构化字段一致（警情类型、风险、摘要、处置建议、法律依据、关键信息等）</td>
+                </tr>
+              </table>
+
+              <div class="shell-divider shell-divider--inner" aria-hidden="true"></div>
+
+              <h2 class="stream-heading" id="tr-judgments">研判记录总览（<code>/judgments</code>）</h2>
+              <table class="simple-table grid-table">
+                <tr>
+                  <th>页面</th>
+                  <td><code>web/judgments.html</code>、<code>web/judgments.js</code>；左侧窄栏为条目列表，右侧为与研判专页相同的 presentation 布局（共用 <code>ar-presentation-render.js</code>）</td>
+                </tr>
+                <tr>
+                  <th>列表数据</th>
+                  <td><code>GET /api/history?limit=120</code>；前端将返回的 <code>history</code> 逆序后渲染为可点击条目</td>
+                </tr>
+                <tr>
+                  <th>详情数据</th>
+                  <td>点击条目后 <code>GET /api/analysis-presentation/&lt;analysis_id&gt;</code>，响应含 <code>presentation</code>、<code>analysis_id</code>、<code>user_feedback</code>，由 <code>window.pliceArPresentation.renderAnalysisPresentation()</code> 写入右侧 DOM</td>
+                </tr>
+              </table>
+
+              <div class="shell-divider shell-divider--inner" aria-hidden="true"></div>
+
+              <h2 class="stream-heading" id="tr-confidence">研判专页置信度（模型自评 + 规则校准）</h2>
+              <p class="hint muted">
+                专页与总览右侧<strong>仅展示「置信度 N%」</strong>，不在界面展示下列长说明；数据仍写入 <code>presentation.ai.confidence_provenance</code> 供排障与审计。
+              </p>
+              <table class="simple-table grid-table">
+                <tr>
+                  <th>实现</th>
+                  <td><code>src/services/analysis_confidence.py</code> → <code>build_confidence_bundle()</code>；研判落库时经 <code>attach_confidence_bundle()</code> 写入 <code>result</code>，再进入 presentation</td>
+                </tr>
+                <tr>
+                  <th>正常路径</th>
+                  <td>
+                    方法 <code>model_calibrated_blend</code>：取模型自评分 <code>analysis_confidence</code>（整数 1–100）与规则校准分（考察关键信息完整度、报警原文长度、规程检索上下文、摘要/处置建议/法律依据等信号），按权重
+                    <strong>0.42（模型）+ 0.58（规则）</strong>加权后取整并限制在约 22–96 区间。面向用户的原文案形如：<em>「综合模型自评（例如 85%）与规则信号（例如 80%）加权得到；规则侧考察关键信息完整度、规程上下文与输出充实度。」</em>（百分数为当次计算值，非固定）
+                  </td>
+                </tr>
+                <tr>
+                  <th>模型说明</th>
+                  <td>若模型返回 <code>confidence_rationale</code>，会写入 <code>confidence_provenance.model_rationale</code>；历史上前端曾将其以「（模型说明：…）」拼在置信度说明后，现已不在界面展示</td>
+                </tr>
+                <tr>
+                  <th>无自评</th>
+                  <td>方法 <code>calibration_only</code>：模型未输出 <code>analysis_confidence</code> 时，展示分为规则校准分；原文案说明以规则信号为主（关键信息、规程检索、摘要建议等）</td>
+                </tr>
+                <tr>
+                  <th>解析失败</th>
+                  <td>方法 <code>parse_fallback</code>：JSON 解析失败时置信度保守压低，原文案提示务必人工复核</td>
+                </tr>
+              </table>
+
+              <div class="shell-divider shell-divider--inner" aria-hidden="true"></div>
+
+              <h2 class="stream-heading" id="tr-bukong">6. 布控（研判同次输出 + 可选校正）</h2>
+              <table class="simple-table grid-table">
+                <tr>
+                  <th>DOM</th>
+                  <td>主区 <code>#work-bukong-output</code>；可选折叠 <code>#work-bukong-adjust</code> 内含 <code>#incidentBg</code>、<code>#suspectDesc</code>、<code>.js-bukong-ex</code>、<code>#bukongBtn</code>、<code>#downloadBukongBtn</code></td>
+                </tr>
+                <tr>
+                  <th>会话回填</th>
+                  <td><code>loadWorkbenchBukongSnapshot()</code> → <code>GET /api/session-snapshot</code>，与研判返回的 <code>bukong</code> 共用会话态</td>
+                </tr>
+                <tr>
+                  <th>手动重算</th>
+                  <td><code>POST /api/bukong</code>；成功后 <code>mergeLatestMarkdownWithBukong()</code> 更新主下载用 Markdown</td>
+                </tr>
+                <tr>
+                  <th>下载</th>
+                  <td>主按钮 <code>incident_analysis.md</code>（研判+布控）；<code>bukong_plan.md</code> 为仅布控</td>
+                </tr>
+              </table>
+
+              <div class="shell-divider shell-divider--inner" aria-hidden="true"></div>
+
+              <h2 class="stream-heading" id="tr-review">7. 复核与导出</h2>
+              <table class="simple-table grid-table">
+                <tr>
+                  <th>DOM</th>
+                  <td>单选 <code>reviewChoice</code>、<code>#reviewNote</code>、<code>#saveReviewBtn</code>、<code>#downloadMdBtn</code>、<code>#downloadJsonBtn</code>、<code>#reviewHint</code></td>
+                </tr>
+                <tr>
+                  <th>保存复核</th>
+                  <td><code>POST /api/review</code>，JSON 含 <code>review_choice</code>、<code>review_note</code>、<code>analysis_id</code>、可选 <code>incident_type_override</code>（人工校正类别）→ <code>build_review_record()</code>、<code>save_review_record()</code></td>
+                </tr>
+                <tr>
+                  <th>导出</th>
+                  <td>研判 Markdown 来自内存态 <code>state.latestMarkdown</code>；复核 JSON 由当前表单与 <code>state.latestResult</code> 组装，均用 <code>downloadText()</code> 本地下载</td>
+                </tr>
+              </table>
+
+              <div class="shell-divider shell-divider--inner" aria-hidden="true"></div>
+
+              <h2 class="stream-heading" id="tr-map">8. 地图中心（<code>/command-map</code>）与地理纠偏</h2>
+              <table class="simple-table grid-table">
+                <tr>
+                  <th>页面与接口</th>
+                  <td><code>web/command-map.html</code> + <code>web/command-map.js</code>；通过 <code>GET /api/map-events</code> 拉取点位（含 <code>geo_source</code>、<code>geo_confidence</code>、<code>location_text</code>、<code>geo_notes</code>）</td>
+                </tr>
+                <tr>
+                  <th>跨域与静态站</th>
+                  <td>统一经 <code>window.pliceResolveApiUrl()</code> 解析 API 地址；<code>plice-env.js</code> 在静态托管（如 Pages）下自动注入 <code>PLICE_API_ORIGIN</code></td>
+                </tr>
+                <tr>
+                  <th>性能优化</th>
+                  <td><code>officer-brief-map.js</code> 与 <code>map-app/src/main.js</code> 已启用瓦片 <code>transition: 0</code>、<code>fit(..., duration: 0)</code>、<code>pointermove</code> 像素级节流，降低缩放与拖动卡顿</td>
+                </tr>
+                <tr>
+                  <th>落点纠偏</th>
+                  <td><code>resolve_geo_for_map()</code>：优先模型 <code>geo</code>；若原文命中明确地标且与模型坐标偏差过大（约 ≥2.5km），自动改为文本锚点（<code>text_anchor_override</code>）并写入说明</td>
+                </tr>
+                <tr>
+                  <th>缺坐标处理</th>
+                  <td>接口返回 <code>skipped_without_coord</code>，前端提示“缺少有效坐标未上图”；详情卡同步展示“坐标来源/置信/说明”，便于人工复核</td>
+                </tr>
+              </table>
+
+              <div class="shell-divider shell-divider--inner" aria-hidden="true"></div>
+
+              <h2 class="stream-heading" id="tr-perf">9. 性能统计（独立页 <code>/performance</code>）</h2>
+              <table class="simple-table grid-table">
+                <tr>
+                  <th>DOM</th>
+                  <td><code>web/performance.html</code> 中 <code>#sec-perf-main</code>：五卡、风险条、耗时表、复核分布表及扩展区块；<code>web/performance.js</code> 绑定 <code>#refreshPerfBtn</code></td>
+                </tr>
+                <tr>
+                  <th>数据拉取</th>
+                  <td>工作台 <code>refreshToolbarMetrics()</code> 与性能页 <code>performance.js</code> 共用 <code>GET /api/performance</code>；响应含 <code>performance</code>、<code>risk_counts</code>、<code>elapsed_trend</code>、<code>review_distribution</code>、<code>scorecard</code></td>
+                </tr>
+                <tr>
+                  <th>服务端</th>
+                  <td><code>build_performance_overview</code>、<code>build_elapsed_trend</code>、<code>build_review_distribution</code>；<code>scorecard</code> 由 <code>api_server._build_scorecard()</code> 组装（响应仍含该字段；性能页「评审维度映射」表已移除，五卡中「布控生成」等仍用 <code>scorecard</code>）</td>
+                </tr>
+              </table>
+
+              <div class="shell-divider shell-divider--inner" aria-hidden="true"></div>
+
+              <h2 class="stream-heading" id="tr-files">10. 关键源码索引</h2>
+              <ul class="plain-list">
+                <li>Flask 与 REST：<code>api_server.py</code></li>
+                <li>会话与研判/布控/绩效：<code>src/services/workbench_service.py</code></li>
+                <li>专网内部 API：<code>src/adapters/http/blueprint.py</code>、<code>src/adapters/ingest/service.py</code></li>
+                <li>性能统计专页：<code>web/performance.html</code>、<code>web/performance.js</code></li>
+                <li>规格说明：<code>docs-md/04-说明/PRIVATE_NETWORK_ADAPTER_SPEC.md</code></li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="docs-theme.js"></script>
+    <script src="plice-env.js"></script>
+    <script src="utils.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="tech-route.js"></script>
+  </body>
+</html>

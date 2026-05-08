@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智警引擎 · 研判记录</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="docs-shell docs-shell--command-workbench command-page--standalone judgments-page ar-page" data-theme="light" data-page="judgments">
+    <div class="site">
+      <header class="site-header command-shell-header page-wide">
+        <div class="command-shell-header__inner">
+          <div class="command-shell-header__brand" aria-label="智警引擎">
+            <span class="command-shell-header__brand-mark"></span>
+            <span class="command-shell-header__brand-text">智警引擎</span>
+            <span class="command-shell-header__brand-ver">智慧警务</span>
+          </div>
+          <div class="command-shell-header__search" role="search">
+            <span class="command-shell-header__search-icon" aria-hidden="true">⌕</span>
+            <input type="search" class="command-shell-header__search-input" placeholder="搜索警情、目标…" aria-label="全局搜索" />
+          </div>
+          <div class="command-shell-header__right">
+            <span id="commandShellClock" class="command-shell-header__clock" aria-live="polite"></span>
+          </div>
+        </div>
+      </header>
+      <main class="site-main command-shell-main">
+        <div class="command-app page-wide">
+          <aside id="app-sidebar" class="command-app-sidebar" aria-label="主导航"></aside>
+
+          <div class="doc-main command-app-body">
+            <header class="judgments-page-head" id="judgments-head">
+              <h1 class="judgments-page-title">研判记录总览</h1>
+            </header>
+
+            <!-- 统计概览：一行4个数字 -->
+            <div class="jd-stats" id="jdStats" aria-label="统计概览">
+              <div class="jd-stat-card">
+                <span class="jd-stat-card__num" id="jdStatAll">0</span>
+                <span class="jd-stat-card__label">全部</span>
+              </div>
+              <div class="jd-stat-card">
+                <span class="jd-stat-card__num jd-stat-card__num--red" id="jdStatHigh">0</span>
+                <span class="jd-stat-card__label">高风险</span>
+              </div>
+              <div class="jd-stat-card">
+                <span class="jd-stat-card__num jd-stat-card__num--green" id="jdStatAdopted">0</span>
+                <span class="jd-stat-card__label">已采纳</span>
+              </div>
+              <div class="jd-stat-card">
+                <span class="jd-stat-card__num jd-stat-card__num--yellow" id="jdStatPending">0</span>
+                <span class="jd-stat-card__label">待复核</span>
+              </div>
+            </div>
+
+            <!-- 标签筛选 -->
+            <div class="jd-filter" id="jdFilter" role="group" aria-label="筛选条件">
+              <button type="button" class="jd-filter__btn jd-filter__btn--active" data-filter="all">
+                全部<span class="jd-filter__count" id="filterCountAll"></span>
+              </button>
+              <button type="button" class="jd-filter__btn" data-filter="high">
+                高风险<span class="jd-filter__count" id="filterCountHigh"></span>
+              </button>
+              <button type="button" class="jd-filter__btn" data-filter="adopted">
+                已采纳<span class="jd-filter__count" id="filterCountAdopted"></span>
+              </button>
+              <button type="button" class="jd-filter__btn" data-filter="pending">
+                待复核<span class="jd-filter__count" id="filterCountPending"></span>
+              </button>
+            </div>
+
+            <div class="judgments-split">
+              <aside class="judgments-rail" aria-label="研判条目">
+                <div class="judgments-rail__head">
+                  <span class="judgments-rail__title">记录</span>
+                  <button type="button" id="judgmentsRefreshBtn" class="btn-ghost" aria-label="刷新列表">刷新</button>
+                </div>
+                <span id="judgmentsMeta" class="judgments-rail__meta muted" aria-live="polite"></span>
+                <div id="judgmentsError" class="judgments-error" hidden></div>
+                <div id="judgmentsEmpty" class="empty-note judgments-rail__empty" hidden>暂无研判记录。请在工作台执行「开始研判」。</div>
+                <div id="judgmentStack" class="judgment-rail-stack" aria-label="已研判警情列表"></div>
+              </aside>
+
+              <section class="judgments-detail-pane judgments-col--detail" aria-label="研判详情">
+                <div id="jdDetailPlaceholder" class="judgments-detail-placeholder muted">
+                  <p class="judgments-detail-placeholder__title">尚未选择</p>
+                  <p>请从左侧点击一条研判记录，查看警情事实与 AI 研判结果。</p>
+                </div>
+                <div id="jdDetailLoading" class="ar-loading muted" hidden>加载中…</div>
+                <div id="jdDetailError" class="judgments-error" hidden></div>
+
+                <!-- 详情内容（有详情时显示） -->
+                <div id="jdDetailContent" hidden>
+                  <!-- 顶部摘要栏 -->
+                  <div class="jd-detail-header" id="jdDetailHeader">
+                    <span class="jd-detail-header__case-id" id="jdArCaseId">—</span>
+                    <span id="jdArRiskBadge" class="jd-detail-header__risk ar-risk-badge">—</span>
+                    <div class="jd-detail-header__meta">
+                      <span class="jd-detail-header__meta-item">
+                        <span class="muted">类型</span>
+                        <strong id="jdArType">—</strong>
+                      </span>
+                      <span class="jd-detail-header__meta-item">
+                        <span class="muted">地点</span>
+                        <strong id="jdArLocation">—</strong>
+                      </span>
+                      <span class="jd-detail-header__meta-item">
+                        <span class="muted">时间</span>
+                        <strong id="jdArTime">—</strong>
+                      </span>
+                      <span class="jd-detail-header__meta-item">
+                        <span class="muted">置信度</span>
+                        <strong id="jdArConfidence">—%</strong>
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- 警情事实 + AI研判 并排两栏 -->
+                  <div class="ar-layout jd-detail-pane-new">
+                    <section class="ar-panel ar-panel--facts">
+                      <h2 class="ar-panel__title">警情事实</h2>
+                      <dl class="ar-dl">
+                        <dt>指派状态</dt><dd id="jdArAssign">—</dd>
+                        <dt>警情描述</dt><dd id="jdArDesc" class="ar-desc">—</dd>
+                      </dl>
+                      <div class="ar-workflow" id="jdArWorkflow" aria-label="流程进度"></div>
+                    </section>
+                    <section class="ar-panel ar-panel--ai">
+                      <h2 class="ar-panel__title">AI 研判</h2>
+                      <div class="ar-gauge-block">
+                        <div class="ar-gauge-ring" id="jdArGaugeRing" style="--ar-p: 0">
+                          <div class="ar-gauge-inner">
+                            <span class="ar-gauge-num" id="jdArGaugeNum">0</span>
+                            <span class="ar-gauge-cap">风险评分</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="ar-factors" id="jdArFactors"></div>
+                      <div class="ar-suggest ar-suggest--primary" id="jdArPrimarySuggest"></div>
+                      <div class="ar-suggest ar-suggest--secondary muted" id="jdArSecondarySuggest"></div>
+                      <div class="ar-related" id="jdArRelated"></div>
+                    </section>
+                  </div>
+
+                  <!-- 操作按钮行（独立在面板外） -->
+                  <div class="jd-actions">
+                    <button type="button" class="btn-primary" id="jdArBtnAdopt">采纳</button>
+                    <button type="button" class="btn-ghost" id="jdArBtnIgnore">忽略</button>
+                    <span class="hint muted" id="jdArFeedbackState"></span>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="docs-theme.js"></script>
+    <script src="plice-env.js"></script>
+    <script src="utils.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="ar-presentation-render.js"></script>
+    <script src="judgments.js"></script>
+  </body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#x4e00;&#x3001;&#x7cfb;&#x7edf;&#x5b9a;&#x4f4d;&#x4e0e;&#x8fd0;&#x884c;&#x5f62;&#x6001;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <p>下面是一份<strong>面向开发与维护</strong>的完整技术讲解，覆盖你当前仓库里「接警工作台 + 多页面指挥壳 + 地图 + 案件闭环 + 可选持久化」的整体设计与关键实现路径。</p>
+<hr>
+<h2 id="一系统定位与运行形态">一、系统定位与运行形态</h2>
+<p>本项目是一个<strong>演示级智慧警务工作台</strong>：</p>
+<ul>
+<li><strong>主入口</strong>：Flask 提供 HTML/静态资源与 JSON API（<code>api_server.py</code>）。</li>
+<li><strong>前端</strong>：以 <code>web/</code> 下多页 HTML + <code>app.js</code> / 各页独立 JS 为主；地图模块另有一套 <strong>Vite 构建的 <code>map-app/</code></strong>，构建产物由 Flask 挂在 <code>/command-map/</code>。</li>
+<li><strong>可选持久化</strong>：研判快照可走 <strong>Supabase</strong>（未配置则全部内存会话）。</li>
+</ul>
+<p>本地典型启动：</p>
+<pre><code class="language-bash">python api_server.py
+<span class="hljs-comment"># 默认监听 8000，静态页与 API 同源</span>
+</code></pre>
+<hr>
+<h2 id="二总体架构分层">二、总体架构（分层）</h2>
+<pre><code>浏览器
+  ├─ 静态页 web/*.html + styles.css + docs-theme.js + 各页 *.js
+  └─ 地图 SPA（map-app/dist，路径 /command-map/）
+        ↓ fetch
+Flask api_server.py
+  ├─ 会话态 SessionStore（内存）
+  ├─ 业务服务 services/*（研判、布控、案件、地理等）
+  ├─ 可选 adapters/persistence/supabase_analysis.py
+  └─ 内部专网 API：adapters/http/blueprint.py → /internal/v1/*
+</code></pre>
+<p><strong>设计要点</strong>：</p>
+<ul>
+<li><strong>UI 与业务解耦</strong>：复杂流程放在 <code>services/</code>，<code>api_server.py</code> 只做路由、组装 JSON、会话读写。</li>
+<li><strong>研判一条链</strong>：接警文本 → LLM 结构化 → 可选 RAG → 可选布控二次 LLM → 快照落内存/Supabase。</li>
+<li><strong>地图一条链</strong>：历史/快照 → 解析 <code>geo</code> / LLM 输出 / 规则推断 → 前端 OpenLayers 展示。</li>
+</ul>
+<hr>
+<h2 id="三前端页面与统一壳">三、前端：页面与统一壳</h2>
+<h3 id="31-布局约定所有主业务页尽量一致">3.1 布局约定（所有主业务页尽量一致）</h3>
+<ul>
+<li><code>body.docs-shell.docs-shell--command-workbench</code></li>
+<li>顶栏：<code>site-header.command-shell-header.page-wide</code>（品牌、<strong>全局搜索占位</strong>、警号登录、部分页有主题切换）</li>
+<li>主体：<code>command-app.page-wide</code>
+<ul>
+<li>左：<code>command-app-sidebar</code>（SVG 导航 + 底部技术路线/退出登录）</li>
+<li>右：<code>doc-main.command-app-body</code>（各页内容）</li>
+</ul>
+</li>
+</ul>
+<p>相关样式集中在 <code>web/styles.css</code>，用 CSS 变量（<code>--cmd-*</code>、<code>--command-header-height</code> 等）控制暗色指挥台视觉与对齐。</p>
+<h3 id="32-接警研判页--webindexhtml">3.2 接警研判页（<code>/</code> → <code>web/index.html</code>）</h3>
+<ul>
+<li><strong>警情接入</strong>：<code>textarea#alarmText</code> + <code>开始研判</code> → <code>POST /api/analyze</code>。</li>
+<li><strong>历史列表</strong>：<code>GET /api/history</code> → <code>renderHistory()</code> 渲染为可点击条目，点击 <code>GET /api/analysis/:id</code> 恢复会话与展示。</li>
+<li><strong>研判结果区</strong>：折叠/展开（<code>workbenchResultsPanel</code>），内含摘要、关键信息、布控、简报地图、复核与下载。</li>
+<li><strong>页内导航</strong>：<code>hash</code> + <code>initWorkbenchInPageNav()</code>，侧栏 <code>href=&quot;#work-overview&quot;</code> 等与主内容锚点联动。</li>
+</ul>
+<h3 id="33-研判记录总览judgments">3.3 研判记录总览（<code>/judgments</code>）</h3>
+<ul>
+<li><code>judgments.html</code> + <code>judgments.js</code></li>
+<li>列表：<code>GET /api/history?limit=120</code></li>
+<li>详情：<code>GET /api/analysis-presentation/:id</code> + <code>ar-presentation-render.js</code> 渲染专页布局。</li>
+<li>支持 URL：<code>/judgments?id=&lt;analysis_id&gt;</code> 自动选中并打开详情。</li>
+</ul>
+<h3 id="34-案件管理command-analysis">3.4 案件管理（<code>/command-analysis</code>）</h3>
+<ul>
+<li><code>command-analysis.html</code> + <code>command-analysis.js</code></li>
+<li><code>GET /api/cases</code>：聚合 KPI + 卡片列表（与研判历史同源）。</li>
+<li><code>PATCH /api/cases/&lt;analysis_id&gt;</code>：人工更新 <code>case</code> 状态/进度。</li>
+<li>「发起新研判」跳转 <code>/</code>。</li>
+</ul>
+<h3 id="35-地图中心command-map">3.5 地图中心（<code>/command-map</code>）</h3>
+<ul>
+<li><strong>生产</strong>：Flask 从 <code>map-app/dist</code> 提供静态资源（<code>vite</code> 的 <code>base: &quot;/command-map/&quot;</code> 与资源路径一致）。</li>
+<li><strong>开发</strong>：<code>map-app</code> 内 <code>npm run dev</code>，<code>vite.config.js</code> 把 <code>/api</code> 等代理到 <code>localhost:8000</code>。</li>
+<li>地图逻辑在 <code>map-app/src/main.js</code>：OpenLayers 矢量点、悬停/选中样式、<code>GET /api/map-events</code>。</li>
+</ul>
+<hr>
+<h2 id="四后端flask-入口与核心-api">四、后端：Flask 入口与核心 API</h2>
+<p>文件：<code>api_server.py</code></p>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>方法</th>
+<th>路径</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>研判</td>
+<td>POST</td>
+<td><code>/api/analyze</code></td>
+<td>调用 <code>analyze_alarm_with_bukong</code>，写历史、快照、可选 Supabase</td>
+</tr>
+<tr>
+<td>历史</td>
+<td>GET</td>
+<td><code>/api/history</code></td>
+<td>Supabase 优先，否则内存 <code>analysis_history</code></td>
+</tr>
+<tr>
+<td>研判快照</td>
+<td>GET</td>
+<td><code>/api/analysis/&lt;id&gt;</code></td>
+<td>恢复单条到会话并返回完整载荷</td>
+</tr>
+<tr>
+<td>专页展示</td>
+<td>GET</td>
+<td><code>/api/analysis-presentation/&lt;id&gt;</code></td>
+<td>presentation JSON</td>
+</tr>
+<tr>
+<td>专页反馈</td>
+<td>POST</td>
+<td><code>/api/analysis-presentation/&lt;id&gt;/feedback</code></td>
+<td>adopt/ignore，同步更新 <code>case</code></td>
+</tr>
+<tr>
+<td>复核</td>
+<td>POST</td>
+<td><code>/api/review</code></td>
+<td>写 <code>review_records</code>，并 <code>sync_case_from_review</code></td>
+</tr>
+<tr>
+<td>地图点</td>
+<td>GET</td>
+<td><code>/api/map-events</code></td>
+<td><code>resolve_geo_for_map</code> 统一落点</td>
+</tr>
+<tr>
+<td>案件</td>
+<td>GET</td>
+<td><code>/api/cases</code></td>
+<td>聚合列表 + KPI</td>
+</tr>
+<tr>
+<td>案件更新</td>
+<td>PATCH</td>
+<td><code>/api/cases/&lt;id&gt;</code></td>
+<td>更新快照内 <code>case</code> + 可选 <code>case_mgmt</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>会话模型</strong>：<code>SessionStore</code> 继承 <code>dict</code> 但支持属性访问，与 <code>services/workbench_service.py</code> 里 <code>ensure_session_state</code> 默认字段对齐。</p>
+<hr>
+<h2 id="五研判流水线llm--可选-rag--布控">五、研判流水线（LLM + 可选 RAG + 布控）</h2>
+<h3 id="51-研判主链路">5.1 研判主链路</h3>
+<ol>
+<li>
+<p><code>services/incident_service.py</code>：<code>analyze_incident()</code></p>
+<ul>
+<li>拼 <code>prompts.INCIDENT_ANALYSIS_PROMPT</code></li>
+<li><code>llm_factory.get_llm()</code> 调用模型</li>
+<li><code>utils/json_utils.parse_llm_json</code> 解析 JSON</li>
+<li><code>apply_risk_postprocess</code>、<code>attach_confidence_bundle</code> 做后处理与置信度说明</li>
+</ul>
+</li>
+<li>
+<p><code>analyze_alarm_with_bukong()</code>（<code>workbench_service</code>）：研判后再跑布控 <code>generate_bukong_plan()</code>，失败不影响研判结果。</p>
+</li>
+<li>
+<p><code>finalize_analysis_persistence()</code>：</p>
+<ul>
+<li><code>build_restore_snapshot_from_pack()</code> 生成快照（含 <code>presentation</code>、<code>geo</code>、<code>officer_brief</code>、<code>disposal_nav</code>、<strong><code>case</code> 默认</strong>等）</li>
+<li><code>remember_analysis_snapshot</code> 写入内存 <code>analysis_by_id</code></li>
+<li><code>persist_analysis_if_configured</code> 可选写入 Supabase</li>
+</ul>
+</li>
+</ol>
+<h3 id="52-结构化输出中的-geo地图用">5.2 结构化输出中的 <code>geo</code>（地图用）</h3>
+<p><code>prompts.py</code> 要求 LLM 必填 <code>geo</code>（WGS84、<code>confidence</code> 0~1 等），服务端用 <code>resolve_geo_for_map()</code> 合并：</p>
+<ul>
+<li>LLM <code>geo</code> 优先</li>
+<li>否则规则 <code>infer_geo_from_text</code>（解析经纬度、区县、地标等）</li>
+<li>最后低置信展示兜底，保证地图可上图（演示策略）</li>
+</ul>
+<hr>
+<h2 id="六地理与地图数据流">六、地理与地图数据流</h2>
+<ol>
+<li>研判快照里存 <code>snap[&quot;geo&quot;]</code>（与 <code>resolve_geo_for_map</code> 一致）。</li>
+<li><code>/api/map-events</code>：对每条历史项取 <code>alarm_text</code> + <code>result</code>（或快照），调用 <code>resolve_geo_for_map</code>，返回 <code>lon/lat/geo_source/geo_confidence/location_text/geo_notes</code> 等。</li>
+<li>前端 <code>map-app</code>：<code>fromLonLat</code> 把 WGS84 投到 Web Mercator；底图 OSM 或自定义 XYZ（环境变量可扩展）。</li>
+</ol>
+<p><strong>注意</strong>：若将来叠国测局底图，需考虑 <strong>GCJ-02 ↔ WGS84</strong> 与当前数据约定是否一致。</p>
+<hr>
+<h2 id="七案件管理闭环你要求的完全闭环">七、案件管理闭环（你要求的「完全闭环」）</h2>
+<p>模块：<code>services/case_management.py</code></p>
+<ul>
+<li><strong>列表</strong>：<code>build_cases_payload()</code> 遍历 <code>history</code>，每条合并 <code>analysis_by_id</code> 或 Supabase <code>fetch_snapshot</code>。</li>
+<li><strong>展示状态</strong>：<code>effective_case_view()</code> — 专页 adopt/ignore 优先，其次手工 PATCH，再复核关键字启发。</li>
+<li><strong>持久化</strong>：<code>supabase/migrations/003_case_mgmt.sql</code> 增加 <code>case_mgmt</code>；<code>persist_analysis_if_configured</code> upsert 时带上 <code>case_mgmt</code>；<code>update_case_mgmt_if_configured</code> 用于 PATCH/反馈后增量更新。</li>
+</ul>
+<p>与前端联动：</p>
+<ul>
+<li><code>command-analysis.js</code> 拉 <code>/api/cases</code>，下拉改状态 → <code>PATCH</code>。</li>
+<li><code>POST .../feedback</code> 与 <code>POST /api/review</code> 会同步 <code>case</code>，KPI 随之变化。</li>
+</ul>
+<hr>
+<h2 id="八内部专网接入可选能力">八、内部专网接入（可选能力）</h2>
+<p><code>adapters/http/blueprint.py</code> 注册在 <code>/internal/v1</code>：</p>
+<ul>
+<li>上传、警情合并、incident 列表/详情等（<code>IngestService</code> + <code>IncidentRepository</code> 内存库）。</li>
+<li>工作台语音流水线会走这里（<code>app.js</code> 里 <code>callInternalApi</code> / <code>callInternalForm</code>）。</li>
+</ul>
+<p>与「研判历史」是两条线：<strong>接入警情</strong> vs <strong>研判记录</strong>，案件页目前以研判为主轴聚合。</p>
+<hr>
+<h2 id="九安全与演示边界你心里要有数">九、安全与演示边界（你心里要有数）</h2>
+<ul>
+<li>警号登录、<code>docs-theme.js</code>：本地 <code>localStorage</code> 演示，<strong>不是</strong>真实鉴权。</li>
+<li>Supabase 用 <strong>service_role</strong> 仅服务端，<strong>绝不能</strong>进浏览器。</li>
+<li>地图坐标含 LLM 估计与兜底，<strong>不等于测绘级警情坐标</strong>。</li>
+<li>全局搜索若实现，应对 <code>q</code> 做长度限制、防 XSS（前端 <code>escHtml</code> 一类）、接口限流（可选）。</li>
+</ul>
+<hr>
+<h2 id="十扩展路线与之前搜索规划衔接">十、扩展路线（与之前「搜索规划」衔接）</h2>
+<p>若要做全局搜索，推荐顺序：</p>
+<ol>
+<li><code>GET /api/search?q=</code> 只搜研判（复用 history + snapshot 文本字段）。</li>
+<li>并入 <code>/api/cases</code> 结果。</li>
+<li>地图命中与 query 跳转。</li>
+<li><code>Cmd/Ctrl+K</code> 与最近搜索。</li>
+</ol>
+<hr>
+<h2 id="十一关键文件索引便于你查代码">十一、关键文件索引（便于你查代码）</h2>
+<table>
+<thead>
+<tr>
+<th>领域</th>
+<th>路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flask 入口</td>
+<td><code>api_server.py</code></td>
+</tr>
+<tr>
+<td>研判 + 快照 + case 默认</td>
+<td><code>src/services/workbench_service.py</code></td>
+</tr>
+<tr>
+<td>案件逻辑</td>
+<td><code>src/services/case_management.py</code></td>
+</tr>
+<tr>
+<td>LLM 研判</td>
+<td><code>src/services/incident_service.py</code>、<code>src/prompts.py</code></td>
+</tr>
+<tr>
+<td>Supabase</td>
+<td><code>src/adapters/persistence/supabase_analysis.py</code>、<code>supabase/migrations/*.sql</code></td>
+</tr>
+<tr>
+<td>主工作台 JS</td>
+<td><code>web/app.js</code></td>
+</tr>
+<tr>
+<td>样式与壳</td>
+<td><code>web/styles.css</code></td>
+</tr>
+<tr>
+<td>地图 Vite</td>
+<td><code>map-app/vite.config.js</code>、<code>map-app/src/main.js</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>如果你希望这份讲解<strong>落到某一块深挖</strong>（例如：只讲「研判快照 JSON 字段与恢复一致性」或「只讲地图坐标优先级」），告诉我章节名我按那一块展开到接口字段级说明。</p>
+
+            
+            
+        </body>
+        </html>

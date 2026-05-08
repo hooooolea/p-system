@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智警引擎 · 性能统计</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="docs-shell docs-shell--command-workbench command-page--standalone" data-theme="light" data-page="performance">
+    <div class="site">
+      <header class="site-header command-shell-header page-wide">
+        <div class="command-shell-header__inner">
+          <div class="command-shell-header__brand" aria-label="智警引擎">
+            <span class="command-shell-header__brand-mark"></span>
+            <span class="command-shell-header__brand-text">智警引擎</span>
+            <span class="command-shell-header__brand-ver">智慧警务</span>
+          </div>
+          <div class="command-shell-header__search" role="search">
+            <span class="command-shell-header__search-icon" aria-hidden="true">⌕</span>
+            <input type="search" class="command-shell-header__search-input" placeholder="搜索警情、目标…" aria-label="全局搜索" />
+          </div>
+          <div class="command-shell-header__right">
+            <span id="commandShellClock" class="command-shell-header__clock" aria-live="polite"></span>
+          </div>
+        </div>
+      </header>
+      <main class="site-main command-shell-main">
+        <div class="command-app page-wide">
+          <aside id="app-sidebar" class="command-app-sidebar" aria-label="主导航"></aside>
+
+          <div class="doc-main command-app-body analysis-result-main">
+            <section class="panel panel--stream" id="sec-perf-main">
+              <div class="panel-head panel-head--plain">
+                <h1 class="stream-heading">性能统计</h1>
+                <button id="refreshPerfBtn" type="button" class="btn-ghost">刷新数据</button>
+              </div>
+              <div class="doc-article-head" style="margin-bottom: var(--space-3)">
+                <p class="hint muted" style="margin-top: 0">核心指标与扩展模块合并于本页，便于汇报与大屏；数据仍来自本会话 <code>/api/performance</code>。</p>
+                <p class="hint muted" style="margin-top: var(--space-2)">本页可点「刷新数据」拉取最新；工作台顶栏「总处理量 / 高风险」仍会随研判自动更新。</p>
+              </div>
+
+              <div class="shell-divider shell-divider--inner" aria-hidden="true"></div>
+              <h2 class="subhead" id="perf-core-heading" style="margin-top: var(--space-3)">核心指标</h2>
+              <p class="hint muted">与会话工作台同源数据：<code>/api/performance</code>。</p>
+              <div id="perfEmptyHint" class="empty-note" hidden>暂无数据。</div>
+              <div id="perfSummaryWrap">
+                <h2 class="subhead" id="perf-risk-heading">风险等级分布</h2>
+                <div id="perfMeta" class="grid5">
+                  <div class="stat-card"><div class="k">总处理量</div><div class="v">—</div></div>
+                  <div class="stat-card"><div class="k">近10次平均耗时</div><div class="v">—</div></div>
+                  <div class="stat-card"><div class="k">复核通过率</div><div class="v">—</div></div>
+                  <div class="stat-card"><div class="k">待补充信息率</div><div class="v">—</div></div>
+                  <div class="stat-card"><div class="k">布控生成</div><div class="v">—</div></div>
+                </div>
+                <p id="perfCaption" class="app-caption app-caption--inline"></p>
+                <div id="perfRiskBars" class="risk-bars"></div>
+                <div class="perf-split">
+                  <div>
+                    <h2 class="subhead" id="perf-trend-heading">最近研判耗时</h2>
+                    <table class="simple-table perf-mini-table" id="perfTrendTable">
+                      <thead><tr><th>序号</th><th>警情类型</th><th>耗时（秒）</th></tr></thead>
+                      <tbody></tbody>
+                    </table>
+                    <p id="perfTrendEmpty" class="hint" hidden>暂无趋势数据。</p>
+                  </div>
+                  <div>
+                    <h2 class="subhead" id="perf-review-dist-heading">复核结论分布</h2>
+                    <table class="simple-table perf-mini-table" id="perfReviewTable">
+                      <thead><tr><th>复核结论</th><th>数量</th></tr></thead>
+                      <tbody></tbody>
+                    </table>
+                    <p id="perfReviewEmpty" class="hint" hidden>暂无复核分布数据。</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="shell-divider shell-divider--inner" style="margin-top: var(--space-4)" aria-hidden="true"></div>
+              <section class="app-shell" style="margin-top: var(--space-3)">
+                <h2 class="stream-heading" style="font-size: 1.25rem">预警质量评测（试点）</h2>
+                <p class="hint muted">来源：<code>/api/evaluation/alerts</code>（同时并入 <code>/api/performance.alert_evaluation</code>）。</p>
+                <div id="alertEvalCards" class="grid5">
+                  <div class="stat-card"><div class="k">Precision</div><div id="alertEvalPrecision" class="v">—</div></div>
+                  <div class="stat-card"><div class="k">误报率</div><div id="alertEvalFpr" class="v">—</div></div>
+                  <div class="stat-card"><div class="k">Recall(Proxy)</div><div id="alertEvalRecall" class="v">—</div></div>
+                  <div class="stat-card"><div class="k">F1(Proxy)</div><div id="alertEvalF1" class="v">—</div></div>
+                  <div class="stat-card"><div class="k">评测样本</div><div id="alertEvalSample" class="v">—</div></div>
+                </div>
+                <p id="alertEvalNote" class="app-caption app-caption--inline"></p>
+              </section>
+
+              <section class="app-shell" style="margin-top: var(--space-3)">
+                <h2 class="stream-heading" style="font-size: 1.25rem">非人脸特征检索（原型）</h2>
+                <p class="hint muted">输入衣着/体态/车辆线索，在历史研判快照中做相似检索（非视觉 ReID）。</p>
+                <div class="actions-inline">
+                  <div class="field field--compact">
+                    <label for="nonfaceQueryInput">检索线索</label>
+                    <input id="nonfaceQueryInput" type="text" placeholder="例如：黑衣 口罩 电动车" />
+                  </div>
+                  <div class="field field--compact">
+                    <label for="nonfaceTopKInput">返回条数</label>
+                    <input id="nonfaceTopKInput" type="number" min="1" max="20" value="5" />
+                  </div>
+                  <button id="nonfaceSearchBtn" type="button" class="btn-primary">执行检索</button>
+                </div>
+                <p id="nonfaceSearchHint" class="hint muted"></p>
+                <table class="simple-table perf-mini-table" id="nonfaceSearchTable">
+                  <thead><tr><th>analysis_id</th><th>相似度</th><th>警情类型</th><th>命中词</th><th>摘要</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+                <p id="nonfaceSearchEmpty" class="hint" hidden>暂无检索结果。</p>
+              </section>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="docs-theme.js"></script>
+    <script src="plice-env.js"></script>
+    <script src="utils.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="site-chrome.js"></script>
+    <script src="perf-render.js"></script>
+    <script src="performance.js"></script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+# 警擎工作台静态站：wrangler deploy。
+# Cloudflare Pages「控制台直接上传」单批 ≤1000 个文件；勿上传仓库根目录（含 node_modules 会超上限）。
+# 静态页只部署 web/：在项目根执行 npm run deploy:pages（Wrangler 可上传至多约 2 万文件，且此处仅 ~20 个文件）。
+# 文档：https://developers.cloudflare.com/workers/wrangler/commands/#deploy
+name = "plice"
+main = "cf-worker/router.mjs"
+compatibility_date = "2026-01-01"
+
+[assets]
+directory = "web"
+binding = "ASSETS"
+# 必须为 none：auto-trailing-slash 会把 /foo.html 307 到 /foo，与 Worker 重写组合会 ERR_TOO_MANY_REDIRECTS。
+html_handling = "none"
+# 必须为 true：否则浏览器「导航」到 / 时可能绕过 Worker，静态层在 none 下不映射 index.html → HTTP 404。
+run_worker_first = true
+
+# 地图接口：与控制台 Variables 保持一致；仅改控制台不更新本文件时，deploy 会提示差异。
+# cloudflared 每次新开的 trycloudflare 地址变了，请同时改这里并重新 deploy（或删掉下行改回只在控制台配）。
+[vars]
+PLICE_BACKEND_URL = "https://score-martin-thumbnail-slowly.trycloudflare.com"

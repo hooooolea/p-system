@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智警引擎 · 指挥态势</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="docs-shell docs-shell--command-workbench command-page--standalone" data-theme="light" data-page="command-situation">
+    <div class="site">
+      <header class="site-header command-shell-header page-wide">
+        <div class="command-shell-header__inner">
+          <div class="command-shell-header__brand" aria-label="智警引擎">
+            <span class="command-shell-header__brand-mark"></span>
+            <span class="command-shell-header__brand-text">智警引擎</span>
+            <span class="command-shell-header__brand-ver">智慧警务</span>
+          </div>
+          <div class="command-shell-header__search" role="search">
+            <span class="command-shell-header__search-icon" aria-hidden="true">⌕</span>
+            <input type="search" class="command-shell-header__search-input" placeholder="搜索警情、目标…" aria-label="全局搜索" />
+          </div>
+          <div class="command-shell-header__right">
+            <span id="commandShellClock" class="command-shell-header__clock" aria-live="polite"></span>
+          </div>
+        </div>
+      </header>
+      <main class="site-main command-shell-main">
+        <div class="command-app page-wide">
+          <aside id="app-sidebar" class="command-app-sidebar" aria-label="主导航"></aside>
+
+          <div class="doc-main command-app-body">
+            <section class="panel panel--stream command-app-panel">
+              <header class="ops-board-head">
+                <h1 class="ops-board-head__title">指挥态势</h1>
+                <button type="button" id="videoAddBtn" class="btn-primary">+ 添加视频源</button>
+              </header>
+
+              <section class="ops-kpis" aria-label="态势概览">
+                <article class="ops-kpi">
+                  <span class="ops-kpi__label">在线视频流</span>
+                  <strong id="videoKpiOnline" class="ops-kpi__value ops-kpi__value--blue">0</strong>
+                </article>
+                <article class="ops-kpi">
+                  <span class="ops-kpi__label">告警事件</span>
+                  <strong id="videoKpiAlerts" class="ops-kpi__value">0</strong>
+                </article>
+                <article class="ops-kpi">
+                  <span class="ops-kpi__label">活跃目标(30m)</span>
+                  <strong id="videoKpiTargets" class="ops-kpi__value ops-kpi__value--green">0</strong>
+                </article>
+                <article class="ops-kpi">
+                  <span class="ops-kpi__label">离线设备</span>
+                  <strong id="videoKpiOffline" class="ops-kpi__value">0</strong>
+                </article>
+              </section>
+
+              <section class="app-shell" style="margin-bottom: var(--space-3)">
+                <div class="actions-inline">
+                  <div class="field field--compact">
+                    <label for="videoCameraId">摄像头ID</label>
+                    <input id="videoCameraId" type="text" placeholder="CAM-001" />
+                  </div>
+                  <div class="field field--compact">
+                    <label for="videoStreamUrl">视频地址</label>
+                    <input id="videoStreamUrl" type="text" placeholder="https://...m3u8 / webrtc url / mp4" />
+                  </div>
+                  <div class="field field--compact">
+                    <label for="videoZone">区域</label>
+                    <input id="videoZone" type="text" placeholder="东门卡口" />
+                  </div>
+                  <button id="videoSaveStreamBtn" type="button" class="btn-primary">保存视频源</button>
+                </div>
+                <div class="actions-inline" style="margin-top:8px">
+                  <div class="field field--compact">
+                    <label for="videoAlertType">告警类型</label>
+                    <input id="videoAlertType" type="text" placeholder="可疑徘徊/越界/异常聚集" />
+                  </div>
+                  <div class="field field--compact">
+                    <label for="videoTraits">非人脸线索</label>
+                    <input id="videoTraits" type="text" placeholder="黑衣 口罩 电动车" />
+                  </div>
+                  <div class="field field--compact">
+                    <label for="videoScore">置信度(0-1)</label>
+                    <input id="videoScore" type="number" min="0" max="1" step="0.01" value="0.78" />
+                  </div>
+                  <button id="videoPushAlertBtn" type="button" class="btn-primary">上报告警</button>
+                  <button id="videoPushBatchBtn" type="button" class="btn-ghost">批量模拟检测</button>
+                </div>
+                <p id="videoSituationHint" class="hint muted" style="margin-top:8px"></p>
+              </section>
+
+              <section class="command-situation-card" id="command-situation-anchor" aria-labelledby="command-situation-title">
+                <div class="command-situation-card__head">
+                  <h2 class="command-situation-card__title" id="command-situation-title">现场视频窗口</h2>
+                  <p class="command-situation-card__sub hint muted">独立页面只处理视频监看，不和接警输入混排。</p>
+                </div>
+                <div class="command-situation-card__body">
+                  <div class="command-situation-video-host">
+                    <video id="commandSituationStandaloneVideo" class="command-situation-video" controls playsinline preload="none"></video>
+                    <div id="commandSituationStandalonePlaceholder" class="command-situation-video-placeholder">
+                      <span>暂无视频流</span>
+                      <span class="command-situation-video-placeholder__hint">当前页面仅承载指挥态势模块。</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="app-shell">
+                <h3 class="stream-heading" style="font-size:1rem">实时告警流水（最新 20 条）</h3>
+                <table class="simple-table perf-mini-table" id="videoAlertsTable">
+                  <thead><tr><th>时间</th><th>摄像头</th><th>目标ID</th><th>告警</th><th>线索</th><th>分值</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+                <p id="videoAlertsEmpty" class="hint" hidden>暂无告警。</p>
+              </section>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="docs-theme.js"></script>
+    <script src="plice-env.js"></script>
+    <script src="utils.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="command-situation.js"></script>
+  </body>
+</html>

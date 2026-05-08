@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#x4e00;&#x3001;&#x9879;&#x76ee;&#x8981;&#x89e3;&#x51b3;&#x7684;&#x95ee;&#x9898;&#xff08;&#x8ba1;&#x5212;&#x4e66;&#x300c;&#x80cc;&#x666f;&sol;&#x76ee;&#x6807;&#x300d;&#x53ef;&#x7528;&#xff09;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h2 id="一项目要解决的问题计划书背景目标可用">一、项目要解决的问题（计划书「背景/目标」可用）</h2>
+<p>面向<strong>接警—研判—复核—布控辅助—态势/记录/统计</strong>的演示型工作台：</p>
+<ul>
+<li>接警员输入警情（文字为主，可接语音流水线演示）。</li>
+<li>系统调用大模型输出<strong>结构化研判</strong>（类型、风险、摘要、关键信息、处置建议、法律依据等）。</li>
+<li>可选 <strong>RAG</strong> 注入规程片段，增强可解释性。</li>
+<li>同一次流程可生成<strong>布控方案</strong>（第二次 LLM，失败不阻断研判）。</li>
+<li>研判结果可<strong>复核、导出</strong>，并进入<strong>研判记录总览</strong>与<strong>案件管理</strong>闭环。</li>
+<li><strong>地图</strong>展示时段内警情点位（坐标来自 LLM + 规则兜底链路）。</li>
+<li>可选 <strong>Supabase</strong> 跨进程恢复研判历史；未配置则全部在<strong>服务端内存会话</strong>中。</li>
+</ul>
+<hr>
+<h2 id="二整体技术形态计划书技术路线架构可用">二、整体技术形态（计划书「技术路线/架构」可用）</h2>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>技术</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Web 服务</td>
+<td><strong>Python Flask</strong>（<code>api_server.py</code>）</td>
+<td>提供页面路由、静态资源、<code>/api/*</code> JSON、可选 <code>/internal/v1/*</code> 内部 API</td>
+</tr>
+<tr>
+<td>业务逻辑</td>
+<td><strong><code>src/services/</code></strong></td>
+<td>研判、布控、快照、案件、地理解析等，避免把业务堆在路由里</td>
+</tr>
+<tr>
+<td>LLM</td>
+<td><strong>LangChain + 厂商适配</strong>（<code>llm_factory.py</code> 等）</td>
+<td>研判与布控两次调用</td>
+</tr>
+<tr>
+<td>RAG</td>
+<td><strong>Chroma</strong>（见 <code>requirements.txt</code> 与 Chroma 路径配置）</td>
+<td>规程检索增强（可开关）</td>
+</tr>
+<tr>
+<td>前端主站</td>
+<td><strong>多页 HTML + 原生 JS + 单一大样式表</strong></td>
+<td><code>web/*.html</code>、<code>web/app.js</code>、<code>web/styles.css</code></td>
+</tr>
+<tr>
+<td>地图子应用</td>
+<td><strong>Vite + OpenLayers</strong>（<code>map-app/</code>）</td>
+<td>独立构建，<code>base: &quot;/command-map/&quot;</code>，由 Flask 挂载 <code>dist</code></td>
+</tr>
+<tr>
+<td>主题/登录演示</td>
+<td><strong><code>web/docs-theme.js</code></strong></td>
+<td>明暗主题、警号本地演示登录</td>
+</tr>
+<tr>
+<td>可选持久化</td>
+<td><strong>Supabase Postgres</strong> + <code>supabase/migrations/*.sql</code></td>
+<td><code>incident_analyses</code> 等表；服务端 <code>service_role</code> 写入</td>
+</tr>
+</tbody>
+</table>
+<p>一句话：<strong>Flask 是总线；主工作台是多页传统前端；地图是独立前端包；研判与案件状态以服务端会话+可选数据库为真源。</strong></p>
+<hr>
+<h2 id="三网页逻辑从用户打开浏览器到各模块计划书功能说明用户流程">三、网页逻辑：从用户打开浏览器到各模块（计划书「功能说明/用户流程」）</h2>
+<h3 id="31-统一壳所有主业务页的交互逻辑">3.1 统一壳（所有主业务页的交互逻辑）</h3>
+<p>除地图 SPA 外，各业务页采用同一套<strong>指挥台壳</strong>：</p>
+<ol>
+<li><strong>顶栏</strong>：品牌、全局搜索框（演示占位/后续可接搜索）、时钟与指标（工作台页）、警号登录、部分页有主题切换。</li>
+<li><strong>左侧主导航</strong>：指挥态势、地图中心、接警研判、研判记录、智能分析、分析报表等；当前页 <code>aria-current</code> + 高亮类。</li>
+<li><strong>右侧主内容区</strong>：各模块自己的面板。</li>
+</ol>
+<p><strong>样式逻辑</strong>：<code>web/styles.css</code> 用 CSS 变量（如 <code>--cmd-bg</code>、<code>--cmd-border</code>、<code>--command-header-height</code>）统一暗色指挥台与对齐；多页通过相同 class 组合减少「换页壳变形」。</p>
+<hr>
+<h3 id="32-接警研判--webindexhtml--webappjs">3.2 接警研判（<code>/</code> → <code>web/index.html</code> + <code>web/app.js</code>）</h3>
+<p><strong>用户操作顺序（网页逻辑）</strong>：</p>
+<ol>
+<li>在「警情接入」输入报警原文（或选快速示例 / 下拉示例）。</li>
+<li>可选勾选「检索增强」。</li>
+<li>点击「开始研判」→ 前端 <code>POST /api/analyze</code>。</li>
+<li>成功后：
+<ul>
+<li>更新「研判概要、警情要点、布控、出警简报、法律依据」等区块；</li>
+<li>刷新历史列表 <code>GET /api/history</code>；</li>
+<li>展开/引导用户查看「研判结果与复核」区域。</li>
+</ul>
+</li>
+<li>用户可：
+<ul>
+<li>打开「研判结果专页」链接（带 <code>analysis_id</code>）；</li>
+<li>打开「研判记录总览」（带当前 <code>id</code> 的链接逻辑）；</li>
+<li>点击历史条目 → <code>GET /api/analysis/&lt;id&gt;</code> 恢复该条到当前工作台视图；</li>
+<li>填写复核结论并保存 → <code>POST /api/review</code>；</li>
+<li>下载 Markdown / 复核 JSON。</li>
+</ul>
+</li>
+</ol>
+<p><strong>页内导航逻辑</strong>：工作台左侧「接警研判」使用 <code>href=&quot;#work-overview&quot;</code> 等锚点；<code>app.js</code> 里 <code>initWorkbenchInPageNav()</code> 拦截 hash 导航、滚动到对应区块，并同步侧栏高亮（避免整页刷新）。</p>
+<p><strong>语音接入逻辑（可选）</strong>：<code>ingestAudioFile</code> → 内部 <code>/internal/v1/uploads</code> 等流水线（<code>callInternalForm</code>），完成后把识别文本合并进报警框并触发研判刷新（与纯文本路径汇合到同一展示函数）。</p>
+<hr>
+<h3 id="33-研判记录总览judgments--judgmentshtml--judgmentsjs">3.3 研判记录总览（<code>/judgments</code> → <code>judgments.html</code> + <code>judgments.js</code>）</h3>
+<p><strong>网页逻辑</strong>：</p>
+<ol>
+<li>进入页面后拉 <code>GET /api/history?limit=120</code>，左侧渲染可点击列表（时间已含年月日格式由后端统一）。</li>
+<li>点击某条 → <code>GET /api/analysis-presentation/&lt;id&gt;</code>，右侧用 <code>ar-presentation-render.js</code> 渲染与专页一致的「警情事实 + AI 研判」布局。</li>
+<li>用户可在专页组件内做「采纳/忽略」→ <code>POST /api/analysis-presentation/&lt;id&gt;/feedback</code>（并会同步案件状态逻辑）。</li>
+<li>URL 带 <code>?id=</code> 时：列表加载完成后自动选中并打开该条（深链）。</li>
+</ol>
+<hr>
+<h3 id="34-智能分析--案件管理command-analysis">3.4 智能分析 / 案件管理（<code>/command-analysis</code>）</h3>
+<p><strong>网页逻辑</strong>：</p>
+<ol>
+<li><code>GET /api/cases</code> 拉 KPI + 卡片列表（数据与研判历史同源聚合）。</li>
+<li>卡片上可改状态下拉 → <code>PATCH /api/cases/&lt;analysis_id&gt;</code>。</li>
+<li>「发起新研判」→ 跳转 <code>/</code> 进入接警研判录入。</li>
+<li>「打开研判」→ <code>/judgments?id=...</code> 深链。</li>
+</ol>
+<p><strong>业务含义</strong>：案件列表不是独立造库，而是<strong>研判记录的业务化视图</strong> + <strong>状态闭环</strong>（人工 PATCH + 专页反馈 + 复核启发）。</p>
+<hr>
+<h3 id="35-地图中心command-map">3.5 地图中心（<code>/command-map</code>）</h3>
+<p><strong>网页逻辑</strong>：</p>
+<ol>
+<li>浏览器加载 Flask 挂载的 <code>map-app</code> 构建页（HTML 壳与主站一致，内嵌 Vite 打包的 JS/CSS）。</li>
+<li>选择时间范围 → <code>GET /api/map-events</code> 拉点位。</li>
+<li>悬停/点击矢量点查看详情（含坐标来源、置信度、说明等）。</li>
+</ol>
+<p><strong>技术逻辑</strong>：OpenLayers 地图视图 + 矢量图层；坐标为 WGS84 经 <code>fromLonLat</code> 投影；后端 <code>resolve_geo_for_map</code> 统一决定每条记录显示点。</p>
+<hr>
+<h3 id="36-其他页面简述">3.6 其他页面（简述）</h3>
+<ul>
+<li><strong>指挥态势</strong>（<code>command-situation.html</code>）：演示视频区 + KPI 壳，与主壳一致。</li>
+<li><strong>分析报表</strong>（<code>performance.html</code>）：性能与统计展示，同源壳。</li>
+<li><strong>技术路线</strong>（<code>tech-route.html</code>）：文档型说明页，同源壳。</li>
+<li><strong>研判结果专页</strong>（<code>analysis-result.html</code>）：单条大屏展示（由工作台链接带 <code>id</code> 打开）。</li>
+</ul>
+<hr>
+<h2 id="四后端逻辑会话快照持久化计划书系统设计">四、后端逻辑：会话、快照、持久化（计划书「系统设计」）</h2>
+<h3 id="41-会话真源默认">4.1 会话真源（默认）</h3>
+<p><code>api_server.py</code> 中 <code>SessionStore</code> 保存：</p>
+<ul>
+<li><code>analysis_history</code>：列表摘要（列表页用）。</li>
+<li><code>analysis_by_id</code>：完整快照（恢复、专页、案件、地图聚合用）。</li>
+<li><code>review_records</code>、<code>risk_counts</code>、布控相关字段等。</li>
+</ul>
+<p><strong>研判成功</strong>时 <code>finalize_analysis_persistence()</code>：</p>
+<ul>
+<li>组装快照（结果、markdown、布控、presentation、geo、officer_brief、disposal_nav、<strong>case 默认</strong>等）；</li>
+<li>写入 <code>analysis_by_id</code>；</li>
+<li>若配置 Supabase，则 upsert 一行。</li>
+</ul>
+<h3 id="42-历史列表来源优先级">4.2 历史列表来源优先级</h3>
+<p><code>GET /api/history</code>：<strong>若 Supabase 可用则读库</strong>，否则读内存 <code>analysis_history</code> 尾部。这样计划书里可写「支持演示内存模式与可选持久化模式」。</p>
+<h3 id="43-案件-case_mgmt可选库字段">4.3 案件 <code>case_mgmt</code>（可选库字段）</h3>
+<p>迁移 <code>003_case_mgmt.sql</code>：<code>incident_analyses.case_mgmt</code> 存 JSON。<br>
+未执行迁移时：内存仍可用；远端 upsert 可能因缺列失败（需在计划书写明「部署需执行 SQL 迁移」）。</p>
+<hr>
+<h2 id="五研判与布控的技术流水线计划书算法模型应用">五、研判与布控的技术流水线（计划书「算法/模型应用」）</h2>
+<ol>
+<li><strong>Prompt</strong>：<code>src/prompts.py</code> 定义输出 JSON schema（含 <code>geo</code> 等字段）。</li>
+<li><strong>调用</strong>：<code>src/services/incident_service.py</code> → LLM → <code>parse_llm_json</code>。</li>
+<li><strong>后处理</strong>：风险规则、置信度 bundle。</li>
+<li><strong>布控</strong>：<code>workbench_service.generate_bukong_plan()</code> 第二次 LLM，结构化 JSON 再渲染 Markdown。</li>
+<li><strong>简报/处置导航</strong>：<code>officer_brief.py</code>、<code>disposal_nav.py</code> 基于结果拼装演示数据或结构化步骤。</li>
+</ol>
+<p>计划书中可强调：<strong>可解释结构化输出 + 二次生成布控</strong>，符合赛题「智能研判 + 辅助决策」表述。</p>
+<hr>
+<h2 id="六地图坐标技术逻辑计划书空间信息处理">六、地图坐标技术逻辑（计划书「空间信息处理」）</h2>
+<p><strong>目标</strong>：在缺少真实地理编码服务时，仍能在地图上<strong>稳定展示</strong>并标明可信度。</p>
+<p><strong>链路</strong>（<code>resolve_geo_for_map</code>）：</p>
+<ol>
+<li>优先采用研判 JSON 中 LLM 给出的 <code>geo</code>（WGS84，<code>confidence</code> 0~1）。</li>
+<li>否则规则解析文本经纬度、区县、地标等（<code>infer_geo_from_text</code>）。</li>
+<li>再不行使用低置信展示兜底点（演示策略），并在接口/前端展示 <code>geo_source</code>、<code>geo_confidence</code>、<code>geo_notes</code>。</li>
+</ol>
+<p>计划书需诚实写：<strong>演示级坐标</strong>，生产应接指挥一张图/地理编码服务并处理坐标系（如 GCJ/WGS）。</p>
+<hr>
+
+            
+            
+        </body>
+        </html>

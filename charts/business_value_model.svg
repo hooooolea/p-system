@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#051937"/>
+      <stop offset="100%" stop-color="#001233"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a2a66"/>
+      <stop offset="100%" stop-color="#06214d"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+
+  <text x="90" y="95" fill="#f8d66d" font-size="54" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-weight="700">
+    &#x9879;&#x76EE;&#x5546;&#x4E1A;&#x4EF7;&#x503C;&#x6A21;&#x578B;&#xFF08;&#x653F;&#x5E9C;&#x4E3B;&#x5BFC;&#xFF09;
+  </text>
+  <text x="92" y="135" fill="#9cc9ff" font-size="24" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif">
+    &#x6570;&#x636E;&#x6765;&#x6E90;&#xFF1A;&#x8BA1;&#x5212;&#x4E66;&#x7B2C;8.3.2&#x8282;&#x4E0E;&#x7B2C;10.2&#x8282;
+  </text>
+
+  <rect x="85" y="175" rx="20" ry="20" width="1430" height="680" fill="none" stroke="#1da6ff" stroke-opacity="0.45" stroke-width="2"/>
+
+  <rect x="120" y="205" rx="16" ry="16" width="430" height="140" fill="url(#card)" filter="url(#shadow)"/>
+  <text x="150" y="252" fill="#9fd1ff" font-size="24" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif">2029&#x5E74;&#x603B;&#x6536;&#x76CA;</text>
+  <text x="150" y="315" fill="#ffffff" font-size="58" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-weight="700">4220.0 &#x4E07;&#x5143;</text>
+
+  <rect x="585" y="205" rx="16" ry="16" width="430" height="140" fill="url(#card)" filter="url(#shadow)"/>
+  <text x="615" y="252" fill="#9fd1ff" font-size="24" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif">2029&#x5E74;&#x51C0;&#x5229;&#x6DA6;</text>
+  <text x="615" y="315" fill="#ffffff" font-size="58" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-weight="700">432.4 &#x4E07;&#x5143;</text>
+
+  <rect x="1050" y="205" rx="16" ry="16" width="430" height="140" fill="url(#card)" filter="url(#shadow)"/>
+  <text x="1080" y="252" fill="#9fd1ff" font-size="24" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif">2029&#x5E74;&#x6536;&#x76CA;&#x7ED3;&#x6784;</text>
+  <text x="1080" y="300" fill="#ffffff" font-size="28" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-weight="700">
+    <tspan x="1080" dy="0">&#x653F;&#x5E9C;&#x91C7;&#x8D2D;+&#x8FD0;&#x7EF4;&#x670D;&#x52A1;</tspan>
+    <tspan x="1080" dy="34">&#x7EA6;90%</tspan>
+  </text>
+
+  <text x="130" y="410" fill="#d7e8ff" font-size="30" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-weight="700">
+    2029&#x5E74;&#x6536;&#x76CA;&#x6784;&#x6210;
+  </text>
+
+  <rect x="130" y="440" width="760" height="72" rx="12" fill="#10387a"/>
+  <rect x="130" y="440" width="456" height="72" rx="12" fill="#1ec5ff"/>
+  <text x="148" y="487" fill="#00254d" font-size="26" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-weight="700">
+    &#x653F;&#x5E9C;&#x91C7;&#x8D2D;&#x6536;&#x5165;&#xFF1A;2528.4&#xFF08;60%&#xFF09;
+  </text>
+
+  <rect x="130" y="540" width="760" height="72" rx="12" fill="#10387a"/>
+  <rect x="130" y="540" width="228" height="72" rx="12" fill="#55e0a8"/>
+  <text x="148" y="587" fill="#003d2a" font-size="26" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-weight="700">
+    &#x8FD0;&#x7EF4;&#x4E0E;&#x5347;&#x7EA7;&#x670D;&#x52A1;&#xFF1A;1268.9&#xFF08;30%&#xFF09;
+  </text>
+
+  <rect x="130" y="640" width="760" height="72" rx="12" fill="#10387a"/>
+  <rect x="130" y="640" width="76" height="72" rx="12" fill="#ffb347"/>
+  <text x="148" y="687" fill="#4a2a00" font-size="26" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-weight="700">
+    &#x884C;&#x4E1A;&#x534F;&#x540C;&#x6280;&#x672F;&#x670D;&#x52A1;&#xFF1A;422.7&#xFF08;10%&#xFF09;
+  </text>
+
+  <text x="940" y="410" fill="#d7e8ff" font-size="30" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-weight="700">
+    &#x4EF7;&#x503C;&#x5B9E;&#x73B0;&#x8DEF;&#x5F84;
+  </text>
+
+  <rect x="930" y="440" rx="14" ry="14" width="540" height="92" fill="url(#card)" stroke="#2bb5ff" stroke-opacity="0.65"/>
+  <text x="960" y="486" fill="#ffffff" font-size="24" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-weight="700">
+    <tspan x="960" dy="0">&#x2460; &#x653F;&#x5E9C;&#x91C7;&#x8D2D;&#xFF1A;&#x5E73;&#x53F0;&#x5EFA;&#x8BBE;&#x4E0E;&#x90E8;&#x7F72;&#x5B9E;&#x65BD;</tspan>
+    <tspan x="960" dy="30">&#x5F62;&#x6210;&#x533A;&#x57DF;&#x7EA7;&#x8B66;&#x52A1;&#x6570;&#x5B57;&#x5316;&#x80FD;&#x529B;&#x5E95;&#x5EA7;</tspan>
+  </text>
+
+  <rect x="930" y="555" rx="14" ry="14" width="540" height="92" fill="url(#card)" stroke="#2bb5ff" stroke-opacity="0.65"/>
+  <text x="960" y="601" fill="#ffffff" font-size="24" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-weight="700">
+    <tspan x="960" dy="0">&#x2461; &#x6301;&#x7EED;&#x8FD0;&#x7EF4;&#xFF1A;7x24&#x4FDD;&#x969C;&#x4E0E;&#x6A21;&#x578B;&#x6301;&#x7EED;&#x4F18;&#x5316;</tspan>
+    <tspan x="960" dy="30">&#x901A;&#x8FC7;&#x5E74;&#x5EA6;&#x670D;&#x52A1;&#x5B9E;&#x73B0;&#x7A33;&#x5B9A;&#x6536;&#x76CA;&#x4E0E;&#x7EED;&#x7B7E;</tspan>
+  </text>
+
+  <rect x="930" y="670" rx="14" ry="14" width="540" height="92" fill="url(#card)" stroke="#2bb5ff" stroke-opacity="0.65"/>
+  <text x="960" y="716" fill="#ffffff" font-size="24" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-weight="700">
+    <tspan x="960" dy="0">&#x2462; &#x8FED;&#x4EE3;&#x5347;&#x7EA7;&#xFF1A;&#x89C4;&#x5219;&#x5E93;&#x4E0E;&#x529F;&#x80FD;&#x6A21;&#x5757;&#x6301;&#x7EED;&#x6269;&#x5C55;</tspan>
+    <tspan x="960" dy="30">&#x5E26;&#x52A8;&#x589E;&#x503C;&#x670D;&#x52A1;&#x4E0E;&#x8DE8;&#x573A;&#x666F;&#x534F;&#x540C;&#x5E94;&#x7528;</tspan>
+  </text>
+
+  <line x1="900" y1="486" x2="930" y2="486" stroke="#6be1ff" stroke-width="4"/>
+  <line x1="900" y1="601" x2="930" y2="601" stroke="#6be1ff" stroke-width="4"/>
+  <line x1="900" y1="716" x2="930" y2="716" stroke="#6be1ff" stroke-width="4"/>
+
+</svg>

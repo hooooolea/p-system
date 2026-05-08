@@ -1,0 +1,12 @@
+{
+  "name": "plice",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "deploy:pages": "wrangler pages deploy web --project-name=plice"
+  },
+  "devDependencies": {
+    "esbuild": "0.27.3",
+    "wrangler": "^4.54.0"
+  }
+}

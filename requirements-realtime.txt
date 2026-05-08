@@ -1,0 +1,3 @@
+# 可选：WebSocket 演示（scripts/realtime_ws_demo.py）
+websockets>=12.0
+msgpack>=1.0.0

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>警擎 · 地图中心</title>
+    <link rel="icon" type="image/svg+xml" href="/command-map/favicon.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body
+    class="docs-shell docs-shell--command-workbench command-page--standalone map-command-page"
+    data-theme="dark"
+  >
+    <div class="site">
+      <header class="site-header command-shell-header page-wide">
+        <div class="command-shell-header__inner">
+          <div class="command-shell-header__brand" aria-label="警擎">
+            <span class="command-shell-header__brand-mark"></span>
+            <span class="command-shell-header__brand-text">警擎</span>
+            <span class="command-shell-header__brand-ver">智慧警务</span>
+          </div>
+          <div class="command-shell-header__search" role="search">
+            <span class="command-shell-header__search-icon" aria-hidden="true">⌕</span>
+            <input
+              type="search"
+              class="command-shell-header__search-input"
+              placeholder="搜索警情、目标、视频…"
+              aria-label="全局搜索（演示）"
+              disabled
+            />
+          </div>
+          <div class="command-shell-header__right">
+            <form class="command-shell-header__badge" id="officerBadgeForm" autocomplete="off">
+              <input
+                id="officerBadgeInput"
+                type="text"
+                inputmode="numeric"
+                placeholder="输入警号"
+                aria-label="输入警号"
+              />
+              <button type="submit" class="command-shell-header__badge-btn">登录</button>
+            </form>
+            <span id="officerBadgeDisplay" class="command-shell-header__badge-display" hidden></span>
+            <button
+              type="button"
+              id="themeToggleBtn"
+              class="command-shell-header__theme"
+              aria-label="切换明暗主题"
+              aria-pressed="false"
+            >
+              <span id="themeToggleIcon">◐</span>
+              <span id="themeToggleText">浅色</span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <main class="site-main command-shell-main">
+        <div class="command-app page-wide">
+          <aside class="command-app-sidebar" aria-label="主导航">
+            <nav class="command-app-nav" aria-label="业务模块">
+              <a class="command-app-nav__link" href="/command-situation.html">
+                <span class="command-app-nav__icon" aria-hidden="true"
+                  ><svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="8"></circle>
+                    <circle cx="12" cy="12" r="3"></circle></svg></span>
+                <span class="command-app-nav__text">指挥态势</span>
+              </a>
+              <a class="command-app-nav__link command-app-nav__link--active" href="/command-map.html" aria-current="page">
+                <span class="command-app-nav__icon" aria-hidden="true"
+                  ><svg viewBox="0 0 24 24">
+                    <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z"></path>
+                    <circle cx="12" cy="10" r="2.5"></circle></svg></span>
+                <span class="command-app-nav__text">地图中心</span>
+              </a>
+              <a class="command-app-nav__link" href="/">
+                <span class="command-app-nav__icon" aria-hidden="true"
+                  ><svg viewBox="0 0 24 24">
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.77.62 2.6a2 2 0 0 1-.45 2.11L8 9.9a16 16 0 0 0 6 6l1.47-1.27a2 2 0 0 1 2.11-.45c.83.29 1.7.5 2.6.62A2 2 0 0 1 22 16.92z"
+                    ></path></svg></span>
+                <span class="command-app-nav__text">接警研判</span>
+              </a>
+              <a class="command-app-nav__link" href="/judgments.html">
+                <span class="command-app-nav__icon" aria-hidden="true"
+                  ><svg viewBox="0 0 24 24">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <circle cx="3.5" cy="6" r="1"></circle>
+                    <circle cx="3.5" cy="12" r="1"></circle>
+                    <circle cx="3.5" cy="18" r="1"></circle></svg></span>
+                <span class="command-app-nav__text">研判记录</span>
+              </a>
+              <a class="command-app-nav__link" href="/command-analysis.html">
+                <span class="command-app-nav__icon" aria-hidden="true"
+                  ><svg viewBox="0 0 24 24">
+                    <rect x="7" y="7" width="10" height="10" rx="2"></rect>
+                    <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"></path></svg></span>
+                <span class="command-app-nav__text">智能分析</span>
+              </a>
+              <a class="command-app-nav__link" href="/performance.html">
+                <span class="command-app-nav__icon" aria-hidden="true"
+                  ><svg viewBox="0 0 24 24">
+                    <line x1="4" y1="20" x2="20" y2="20"></line>
+                    <rect x="6" y="11" width="3" height="7"></rect>
+                    <rect x="11" y="8" width="3" height="10"></rect>
+                    <rect x="16" y="5" width="3" height="13"></rect></svg></span>
+                <span class="command-app-nav__text">分析报表</span>
+              </a>
+            </nav>
+            <nav class="command-app-nav command-app-nav--footer" aria-label="系统">
+              <a class="command-app-nav__link" href="/tech-route.html">
+                <span class="command-app-nav__icon" aria-hidden="true"
+                  ><svg viewBox="0 0 24 24">
+                    <circle cx="6" cy="18" r="2"></circle>
+                    <circle cx="18" cy="6" r="2"></circle>
+                    <path d="M8 18h5a4 4 0 0 0 0-8h-2a4 4 0 0 1 0-8h5"></path></svg></span>
+                <span class="command-app-nav__text">技术路线</span>
+              </a>
+              <span class="command-app-nav__link command-app-nav__link--muted" role="button" tabindex="0" title="演示占位"
+                >系统设置</span>
+              <button type="button" id="officerLogoutBtn" class="command-app-nav__link command-app-nav__link--danger">
+                退出登录
+              </button>
+            </nav>
+          </aside>
+
+          <div class="doc-main command-app-body">
+            <div id="mapCommandRoot" class="map-command-root"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="/docs-theme.js"></script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

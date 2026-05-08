@@ -1,0 +1,252 @@
+[
+  {
+    "text": "三里屯门口两伙人互殴，有人拿刀，现场很乱，快来。",
+    "expected_type": "打架斗殴",
+    "expected_risk": "紧急"
+  },
+  {
+    "text": "夜市摊位前多人打架，已经见血。",
+    "expected_type": "打架斗殴",
+    "expected_risk": "高"
+  },
+  {
+    "text": "KTV门口两名男子持棍冲突，路人被波及。",
+    "expected_type": "打架斗殴",
+    "expected_risk": "高"
+  },
+  {
+    "text": "小区停车位争执升级，三人打成一团。",
+    "expected_type": "打架斗殴",
+    "expected_risk": "高"
+  },
+  {
+    "text": "学校门口家长冲突，有人受伤倒地。",
+    "expected_type": "打架斗殴",
+    "expected_risk": "高"
+  },
+  {
+    "text": "网吧里有人打架砸东西，情绪激动。",
+    "expected_type": "打架斗殴",
+    "expected_risk": "高"
+  },
+  {
+    "text": "烧烤店两桌客人互殴，桌椅都砸了。",
+    "expected_type": "打架斗殴",
+    "expected_risk": "高"
+  },
+  {
+    "text": "工地宿舍发生群殴，十几个人对打。",
+    "expected_type": "打架斗殴",
+    "expected_risk": "高"
+  },
+  {
+    "text": "酒吧门外有人持啤酒瓶追打他人。",
+    "expected_type": "打架斗殴",
+    "expected_risk": "高"
+  },
+  {
+    "text": "地铁口两人厮打，围观很多。",
+    "expected_type": "打架斗殴",
+    "expected_risk": "高"
+  },
+  {
+    "text": "有人冒充公检法说我涉案，让我转账到安全账户。",
+    "expected_type": "诈骗",
+    "expected_risk": "中"
+  },
+  {
+    "text": "我收到中奖短信，点链接后银行卡被扣钱。",
+    "expected_type": "诈骗",
+    "expected_risk": "中"
+  },
+  {
+    "text": "骗子冒充我儿子说出车祸让我立刻打钱。",
+    "expected_type": "诈骗",
+    "expected_risk": "中"
+  },
+  {
+    "text": "对方在二手平台让我先交保证金才发货。",
+    "expected_type": "诈骗",
+    "expected_risk": "中"
+  },
+  {
+    "text": "陌生人拉我进投资群，说稳赚不赔。",
+    "expected_type": "诈骗",
+    "expected_risk": "中"
+  },
+  {
+    "text": "有人冒充客服说退款，要我提供验证码。",
+    "expected_type": "诈骗",
+    "expected_risk": "中"
+  },
+  {
+    "text": "电话说我开通了会员，不取消就自动扣费。",
+    "expected_type": "诈骗",
+    "expected_risk": "中"
+  },
+  {
+    "text": "刷单群让我垫付任务款，返现一直不到账。",
+    "expected_type": "诈骗",
+    "expected_risk": "中"
+  },
+  {
+    "text": "楼上半夜一直敲打装修，孩子都睡不着。",
+    "expected_type": "噪音扰民",
+    "expected_risk": "低"
+  },
+  {
+    "text": "小区广场舞音响太大，已经晚上十一点了。",
+    "expected_type": "噪音扰民",
+    "expected_risk": "低"
+  },
+  {
+    "text": "隔壁商铺喇叭循环促销，声音特别吵。",
+    "expected_type": "噪音扰民",
+    "expected_risk": "低"
+  },
+  {
+    "text": "楼下酒吧凌晨两点还在放重低音。",
+    "expected_type": "噪音扰民",
+    "expected_risk": "低"
+  },
+  {
+    "text": "工地夜间施工，机械噪音很大。",
+    "expected_type": "噪音扰民",
+    "expected_risk": "低"
+  },
+  {
+    "text": "邻居经常深夜打麻将喧哗。",
+    "expected_type": "噪音扰民",
+    "expected_risk": "低"
+  },
+  {
+    "text": "街边摊位外放音乐扰民。",
+    "expected_type": "噪音扰民",
+    "expected_risk": "低"
+  },
+  {
+    "text": "我在胡同里被人抢手机，对方骑电动车往东跑了。",
+    "expected_type": "盗窃抢劫",
+    "expected_risk": "高"
+  },
+  {
+    "text": "商场里钱包被偷了，怀疑是扒手。",
+    "expected_type": "盗窃抢劫",
+    "expected_risk": "中"
+  },
+  {
+    "text": "便利店刚被持刀抢劫，收银台现金被拿走。",
+    "expected_type": "盗窃抢劫",
+    "expected_risk": "紧急"
+  },
+  {
+    "text": "家里门锁被撬，电脑和首饰不见了。",
+    "expected_type": "盗窃抢劫",
+    "expected_risk": "中"
+  },
+  {
+    "text": "停车场有人砸车窗偷包。",
+    "expected_type": "盗窃抢劫",
+    "expected_risk": "中"
+  },
+  {
+    "text": "路口有人拦路抢包，还推倒了受害人。",
+    "expected_type": "盗窃抢劫",
+    "expected_risk": "高"
+  },
+  {
+    "text": "仓库夜里被盗，监控拍到两名嫌疑人。",
+    "expected_type": "盗窃抢劫",
+    "expected_risk": "中"
+  },
+  {
+    "text": "十字路口两车相撞，有人被困车内。",
+    "expected_type": "交通事故",
+    "expected_risk": "紧急"
+  },
+  {
+    "text": "高架桥追尾三车，现场堵死了。",
+    "expected_type": "交通事故",
+    "expected_risk": "高"
+  },
+  {
+    "text": "电动车和行人相撞，老人腿部受伤。",
+    "expected_type": "交通事故",
+    "expected_risk": "高"
+  },
+  {
+    "text": "小区门口轻微剐蹭，双方在争执。",
+    "expected_type": "交通事故",
+    "expected_risk": "中"
+  },
+  {
+    "text": "疑似醉驾撞护栏，司机神志不清。",
+    "expected_type": "交通事故",
+    "expected_risk": "高"
+  },
+  {
+    "text": "公交车急刹导致乘客摔倒受伤。",
+    "expected_type": "交通事故",
+    "expected_risk": "高"
+  },
+  {
+    "text": "我丈夫喝酒后砸东西还打我，孩子在旁边哭。",
+    "expected_type": "家庭纠纷",
+    "expected_risk": "高"
+  },
+  {
+    "text": "夫妻吵架很激烈，邻居担心出事。",
+    "expected_type": "家庭纠纷",
+    "expected_risk": "中"
+  },
+  {
+    "text": "父子因为财产问题打起来了。",
+    "expected_type": "家庭纠纷",
+    "expected_risk": "高"
+  },
+  {
+    "text": "家里老人和子女冲突，情绪失控。",
+    "expected_type": "家庭纠纷",
+    "expected_risk": "中"
+  },
+  {
+    "text": "疑似家暴，受害人请求保护。",
+    "expected_type": "家庭纠纷",
+    "expected_risk": "高"
+  },
+  {
+    "text": "我家七岁孩子放学后一直没回家。",
+    "expected_type": "失踪人口",
+    "expected_risk": "紧急"
+  },
+  {
+    "text": "老人有阿尔茨海默症，下午出门后失联。",
+    "expected_type": "失踪人口",
+    "expected_risk": "高"
+  },
+  {
+    "text": "家人凌晨离家后手机关机联系不上。",
+    "expected_type": "失踪人口",
+    "expected_risk": "中"
+  },
+  {
+    "text": "游客在景区走失，最后出现在北门。",
+    "expected_type": "失踪人口",
+    "expected_risk": "中"
+  },
+  {
+    "text": "居民楼电表箱起火，烟很大。",
+    "expected_type": "火灾",
+    "expected_risk": "紧急"
+  },
+  {
+    "text": "餐馆后厨燃气着火，有爆燃风险。",
+    "expected_type": "火灾",
+    "expected_risk": "紧急"
+  },
+  {
+    "text": "仓库冒烟疑似着火，现场有化学品。",
+    "expected_type": "火灾",
+    "expected_risk": "紧急"
+  }
+]

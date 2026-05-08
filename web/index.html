@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智警引擎 · 工作台</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/ol@9.2.4/ol.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="docs-shell docs-shell--command-workbench" data-theme="light" data-page="index">
+    <noscript>
+      <div class="boot-need-js">请启用 JavaScript；本地运行 <code>python api_server.py</code>。</div>
+    </noscript>
+
+    <!-- 顶部栏 -->
+    <header class="site-header command-shell-header page-wide">
+      <div class="command-shell-header__inner">
+        <div class="command-shell-header__brand" aria-label="智警引擎">
+          <span class="command-shell-header__brand-mark"></span>
+          <span class="command-shell-header__brand-text">智警引擎</span>
+          <span class="command-shell-header__brand-ver">智慧警务</span>
+        </div>
+        <div class="command-shell-header__right">
+          <span id="commandShellClock" class="command-shell-header__clock" aria-live="polite"></span>
+        </div>
+      </div>
+    </header>
+    <input id="useRag" type="checkbox" checked hidden />
+
+    <main class="site-main command-shell-main">
+      <div class="command-app page-wide">
+        <aside id="app-sidebar" class="command-app-sidebar" aria-label="主导航"></aside>
+
+        <div class="doc-main command-app-body page-body-wrap">
+
+          <!-- 页面标题 -->
+          <div class="page-title-block">
+            <h1 class="page-title">接警研判</h1>
+            <p class="page-subtitle">语音与文字多源接入 · 智能研判与布控辅助</p>
+          </div>
+
+          <!-- ===== 警情录入 ===== -->
+          <section class="section-card" aria-labelledby="work-alarm-input-heading">
+            <div class="section-card__head">
+              <div class="section-card__head-left">
+                <span class="section-card__icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </span>
+                <h2 class="section-card__title" id="work-alarm-input-heading">警情录入</h2>
+              </div>
+            </div>
+
+            <div class="ingest-layout">
+              <!-- 左：文件上传 -->
+              <div class="ingest-left">
+                <div class="upload-row">
+                  <label class="upload-chip" for="ingestAudioFile">
+                    <input id="ingestAudioFile" type="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.webm,.ogg,.flac" hidden />
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                    音频文件
+                  </label>
+                  <label class="upload-chip" for="ingestVideoFile">
+                    <input id="ingestVideoFile" type="file" accept="video/*,.mp4,.mov,.mkv,.avi,.m4v,.webm" hidden />
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect width="15" height="14" x="1" y="5" rx="2" ry="2"/></svg>
+                    视频文件
+                  </label>
+                </div>
+                <div class="field field--compact">
+                  <label for="ingestAlarmNoInput">警情编号</label>
+                  <input id="ingestAlarmNoInput" type="text" placeholder="可选，同编号合并" />
+                </div>
+                <div class="field field--compact">
+                  <label for="ingestAlarmTextInput">接警备注</label>
+                  <textarea id="ingestAlarmTextInput" rows="2" placeholder="与语音一并写入"></textarea>
+                </div>
+                <p id="ingestVoiceWorkbenchHint" class="hint hint--blue"></p>
+              </div>
+
+              <!-- 右：报警内容输入 -->
+              <div class="ingest-right">
+                <div class="alarm-block">
+                  <div class="alarm-block__top">
+                    <label for="alarmText" class="alarm-block__label">报警内容</label>
+                    <div class="quick-row">
+                      <button type="button" class="pill js-quick-example" data-option-index="1">打架斗殴</button>
+                      <button type="button" class="pill js-quick-example" data-option-index="4">交通事故</button>
+                      <button type="button" class="pill js-quick-example" data-option-index="3">电信诈骗</button>
+                      <button type="button" class="pill js-quick-example" data-option-index="5">火灾险情</button>
+                      <button type="button" class="pill js-quick-example" data-option-index="10">紧急医疗</button>
+                    </div>
+                  </div>
+                  <textarea
+                    id="alarmText"
+                    class="alarm-textarea"
+                    rows="5"
+                    placeholder="粘贴或输入完整报警原文&#10;含事发地点、当事人特征、具体诉求、现场状况…"
+                  ></textarea>
+                  <div class="alarm-block__foot">
+                    <select id="exampleSelect" class="select-sm" aria-label="更多示例">
+                      <option value="">更多类型（20+真实案例）…</option>
+                      <option value="喂喂喂110吗你们快来！我在朝阳区三里屯那条街往南走第二个路口，我朋友开的那个酒吧门口，三个喝得烂醉的老外追着一个中国女孩打，其中一个光头老外抄起路边的塑料路锥就往那女孩头上砸，另一个矮的老外把她手机摔地上踩碎了，女孩已经被打趴在地上了满脸是血哭都哭不出来，地上全是碎玻璃，那三个老外还在那儿嗷嗷叫说Chinese kill kill，周围路人没人敢拉架因为那三个都一米九以上膀大腰圆的，我躲在对面奶茶店门口打的电话，你们快点来啊派多点人来，那几个老外看着像练过格斗的！">打架斗殴</option>
+                      <option value="110我要报警！我爸今年82岁了老年痴呆症中期，前天中午12点半从海淀黄庄小区出门说去接我妈妈下班（我妈妈在北大医院挂号室上班），结果走丢了到现在人还没回来，我爸穿灰色夹克外套、黑色布鞋、戴一顶旧军绿色鸭舌帽，个子大概一米七，走路有点驼背，说话一口北京土话，耳朵有点背叫他名字要大声好几遍他才能反应过来，他身上没带手机钱包身份证，什么都没有，就揣了一包中华烟在身上，嘴里一直念叨要去接老伴儿，我家已经发动亲戚朋友找了快48小时了，报了黄庄派出所也立案了但是还没消息，拜托你们帮忙找找！">失踪人口</option>
+                      <option value="喂110转反诈中心吗我要举报一个诈骗电话，下午三点半接到一个+86 10 开头自称是北京市公安局出入境管理处的电话，对方说我名下有一本护照在哈尔滨太平机场被人用来非法入境，说我涉嫌一起跨国金融诈骗案，案值216万，主犯已经被抓了从犯里有我，检察院已经发了刑事拘捕令，还说我名下的工商银行卡和招商银行卡全部要被冻结清查，如果想证明清白就要配合他们远程笔录，还要把我所有存款转到所谓的安全账户进行资金比对审查，我问他们工号和姓名他说是姓陈的警号062218，我当时就感觉不对劲，你们帮我查查这个电话是不是真的？">电信诈骗</option>
+                      <option value="您好是122吗，我在东三环国贸桥南往北方向中间车道，我的车被追尾了，后备箱完全变形了，后车安全气囊全弹出来了，对方驾驶员是个女司机她说她踩刹车踩成油门了，她车前脸也撞烂了，现在她人还算清醒但是脸色特别白一直说胸口闷喘不上气，我的车是黑色帕萨特京A牌照，对方是白色本田CRV京Q牌照，两车都动弹不了，占了两条车道，后面的车已经堵到双井桥了大概三公里，她在车里说怀孕了四个月怕流产，我已经打了120但是救护车堵在路上来不了，地上全是碎零件和油渍，现场没有任何警示三角牌因为我车里的被撞飞了，请赶紧派人来疏导交通！">交通事故</option>
+                      <option value="119吗赶紧来！西城区旧鼓楼大街甲39号外馆斜街往东200米路南，名字叫金宇综合市场的大院里，三楼最东头那间平房着火了我们灭火器根本灭不掉，火已经有两米多高了，黑烟滚滚的，隔壁就是加油站啊，旁边还堆了一堆废旧轮胎和塑料筐，火星子一直往周围蹦，周围群众都在往外跑，有个老太太腿脚不好摔倒在门口了两个人架着她才出来，我刚才打了119但是接线员说最近消防站在拓宽施工消防车出不来要从德外那边调过来要30分钟，这边火势蔓延特别快，你们能不能快点来啊，加油站就在着火点不到50米的地方啊！">火灾险情</option>
+                      <option value="东城区南锣鼓巷地铁站E口往外走第二个巷子口的公共厕所旁边，有个满身酒气的中年男的躺在地上抽搐，口吐白沫，地上还有一滩血和一地碎酒瓶碴子，旁边有个女的抱着个三四岁的小孩在那儿哭喊救命，我路过看见的，那男的身上穿着深蓝色工作服工牌上写着是附近某工地的工人，他抽搐的时候把小桌板踹翻了砸到了旁边垃圾桶，垃圾桶倒在了一辆蓝色马自达小轿车上把车灯撞碎了，车主正拽着那女的不放说让她赔，我看着不对劲打了120但是急救说得四十分钟才能到，那男的好像羊癫疯发作抽搐越来越厉害，我该怎么办？">醉酒滋事</option>
+                      <option value="我要报警投诉我家楼上那个邻居太恶劣了！我们住在东城区豆瓣小区2号楼4单元502，他们是今年三月刚搬来的租户，装修搞得我们全家快疯了。每天早上六点半就开始用电钻，钻墙的声音像在脑子里打洞一样，我母亲78岁有心脏病被吵得心脏都快跳出来了，孩子才四岁一听到那个声音就吓得尖叫。我老公上去好声好气跟他们说能不能避开早七点到九点这个时间段，他们开门就骂我老公多管闲事说他们上班装修有什么错，还拿东西砸我老公的头后来被其他邻居拉开了，物业来了他们就装可怜说工期紧没办法，居委会调解了三次每次他们表面答应回去还是照样干，我录了几十段视频能清楚听到电钻声和孩子的哭声，请问我能申请人身保护令吗？">邻里纠纷</option>
+                      <option value="您好我要报警，海淀区学院路石油勘探研究院西门门口的自行车棚，发现一个黑色双肩包深色帆布材质大概电脑包大小，拉链半开着，里面露出一捆红黄蓝线包着的像是电线一样的东西，还有一个小型的金属盒子上面有天线和几个按钮，这个包放在一辆锈迹斑斑的自行车后座上，自行车没有锁停在那儿快两天了，周围人都说不是自己的，学院路那条街平时人流量很大早高峰的时候人挤人，万一是什么危险物品后果不堪设想，我已经拍了照片包的样子和放置的位置，请你们赶紧派人来看看！">可疑物品</option>
+                      <option value="昌平区回龙观东大街与科星路交叉路口，政府信访办门口聚集了至少七八十号人，拉着四条白色横幅上面分别写着\"开放商欺诈销售还我血汗钱\"、\"违规切割承重墙危害居民安全\"、\"虚假宣传欺骗业主血本无归\"、\"请求政府为民做主严惩奸商\"，人群把信访办大门堵得严严实实，工作人员根本进不去，有几个大爷大妈坐在地上哭喊，周围停了三辆警车和两辆120急救车，现场有个女的情绪激动要跳楼被消防员拦下来了，有个老头心脏病发作倒地不起已经送医院了，特警在维持秩序但人群越聚越多，还有很多直播网红在那儿拍视频蹭流量请你们赶紧派人来！">聚集维权</option>
+                      <option value="丰台区右安门外南站幸福路和开阳里西街交叉口，便道上有个老人倒地不起我路过看见的，老人大概七十多岁穿灰色中山装和黑布鞋倒在地上头部旁边有一滩血，已经有好多人围在那儿但是没人敢扶，有个年轻女的蹲在旁边拿着手机在录像但是不敢动他，老人的眼睛半睁着嘴巴一张一张的像是想说话又说不出来，他身下压着一辆倒下的共享单车，看起来像是骑车的时候摔的，当时应该是下过雨地上有积水现在老人的衣服全湿了身上全是泥，我打了120但是说还得二十分钟，我怕老人有生命危险，能不能让急救车快点来？">紧急医疗</option>
+                      <option value="通州区梨园中心小学门口，下午四点半放学的时候，一辆车牌号为冀R开头黑色大众帕萨特突然冲进校门口的人群中，当场撞倒了至少七八个正在等家长的小学生，还有两个老师被撞飞了出去，车引擎盖都撞变形了前挡风玻璃全碎了，司机是个五十多岁的男的穿着西装像是喝醉了的样子，车停在校门口一动不动还压着两个小孩的腿，有个小孩被压在车轮下面了周围家长在喊救人，但司机好像没反应还坐在驾驶座上发呆，有家长拿砖头砸了车窗想拉他下来但他就是不下来还在摸手机打电话，地上全是血和书包课本，有的小孩在尖叫有的已经不动了太吓人了！">故意伤害</option>
+                      <option value="我是朝阳区望京SOHO对面阜安西路便民综合市场二楼干货摊位的老板，我们摊位被人恶意泼漆锁门了！今天凌晨三点多有人拿红漆在我卷帘门上写了\"欠债还钱杀人偿命\"八个大字，还把我摊位的不锈钢卷帘门锁眼用胶水堵死了，锁芯完全拧不动了，我联系了物业他们说要我自己报警处理，我这个摊位每月租金一万二，库存还有十几万的干货眼看要过期了，现在门都开不了进不去，怀疑是之前给我供货的那个老张欠了高利贷跑了连累到我，但我根本没欠任何人钱啊，请110赶紧来看看这到底怎么回事！">恶意滋事</option>
+                      <option value="大兴区黄村镇清源路与兴华大街交叉口往东100米路南的绿化带里，发现一具男性尸体仰面躺在灌木丛中！我是早上晨跑路过的早上六点十分左右，看到那人穿深色羽绒服和蓝色牛仔裤躺在那里一动不动，脸上盖着一张报纸，周围有十米范围内有大量凌乱的脚印和散落的物品，像是打斗过的痕迹，有一只运动鞋被甩到了一边，旁边灌木丛的树枝也有折断的迹象，地上还有几滴暗红色的液体已经干了，我还看到不远处有一辆被砸烂的电动车倒在路边但没有其他车和人，我怕破坏现场没有靠近看，赶紧打了110，请问是你们的人来还是需要我保护现场等刑侦？">命案现场</option>
+                      <option value="顺义区天竺镇府前一街与天柱东路交叉口，发现一辆白色金杯面包车没有牌照停在大街上，车门半开着车窗全碎了，车里有很浓的汽油味和血腥味！今天凌晨两点左右我下夜班路过看到的，那车停的位置特别蹊跷正好在监控摄像头底下但灯是灭的，我凑近闻了闻有很刺鼻的味道像是汽油和血混在一起，驾驶座上有深色的液体痕迹副驾驶也有，方向盘上还有头发粘着，看着像有人被拖拽过但是车内外都没看到人，周围也没有其他异常，请赶紧派人来看看这车是不是涉案车辆！">涉刑事案件</option>
+                      <option value="房山区拱辰街道良乡中路月华大街路口，我家楼下地下室的暖气管道爆裂了，整个地下室全被热水和蒸汽淹没了，水还在不停地往上涌，地下室里住着三个送外卖的小哥他们的电动车和所有行李全泡在水里了，物业电话打不通，暖气公司的维修工说要从丰台调人来至少两小时，我现在站在楼道里都能听到地下室传来哗哗的水声和管道的轰鸣声，水已经漫到了楼梯第三级台阶了还在往上涨，这楼住了快两百户人家都是老头老太太，万一地下室蒸汽太大大爷大妈们下楼的时候被烫伤了怎么办，求求你们赶紧派人来看看！">设施故障</option>
+                      <option value="怀柔区雁栖湖景区门口往北两公里处的范崎路路边，有人在悬崖边要跳崖！是一年轻女的穿红裙子站在悬崖边的大石头上，下面就是几十米深的山谷看起来特别吓人，她站在那儿哭喊说不想活了，有几个游客在旁边劝但是没人敢靠近怕刺激到她，那个悬崖没有任何护栏风又特别大，她的情绪非常激动已经往悬崖边挪了好几次了，地上扔了好几个安定类药盒子空的那种，有个男的站在远处打电话好像在跟谁说最后一面什么的哭着说的，这地方手机信号特别差我打了十几次110才打通，你们快来啊再不来人就没了！">自杀干预</option>
+                      <option value="密云区鼓楼大街与新中街交叉路口的交通岗亭，有一名交警被多名摊贩围堵打骂！我是路过的行人看到的，当时是下午三点左右，一个穿制服的年轻交警在执法清理占道经营的水果摊，那几个摊贩是两男一女的中年妇女，其中一个胖的揪着交警的领子骂骂咧咧的还往他脸上吐口水，另一个瘦的用手机怼着脸录像说警察打人了，旁边还有个纹身的光头男的在后面推搡交警，那个小交警被围在中间特别无助，帽子都被打掉了，周围群众围了一圈没人敢拉架，那几个摊贩还扬言说认识区里领导要弄死那个交警，请问你们管不管？">袭警事件</option>
+                      <option value="平谷区滨河街道府前街与文化街交汇处的公共厕所内，发现一名女子抱着一个新生婴儿疑似遗弃！早上八点我去上厕所的时候看到女厕所最里面那个隔间的门虚掩着里面有婴儿的哭声，我推门进去看到一个年轻女子穿着灰色羽绒服坐在地上，脸色惨白精神恍惚的样子，怀里抱着一个用碎花小被包裹的婴儿，婴儿哭得声音都哑了脸上全是湿疹红斑，那女的看起来像是刚生完孩子没多久虚弱得站都站不稳，我问她怎么回事她就是哭不说话也不肯把孩子给我们，旁边地上有带血的纸巾和产褥垫，厕所地上全是血脚印从门口一直延伸到那个隔间，我怕出人命赶紧打了120和110，请你们赶紧来！">妇婴救助</option>
+                      <option value="延庆区八达岭长城景区北八楼附近，有一名外籍女游客从城墙外侧滚落受伤！下午两点左右我和几个朋友在北八楼拍照片，听到一声尖叫就看到有个金发碧眼的外国女游客从城墙外侧约三四米高的地方滚到了城墙根的台阶下，她滚落的时候还带下了一大堆碎石尘土，那女的躺在地上不动弹穿着橙色冲锋衣和黑色登山靴，身上好几处都在流血尤其是头部，她同行的一个外国男的和她用英语交流但她只能发出很微弱的呻吟声，脸色越来越白瞳孔好像有点放大了，周围有很多各国游客在围观但都不敢动她，景区的救援人员说从山下爬上来要半小时，怕来不及请你们从昌平那边派急救车过来！">游客伤亡</option>
+                      <option value="石景山区古城大街与八角南路交叉口，八角游乐园地铁站A口外面，有人当街持刀抢劫！我是被抢的那个，事发太突然了，今天傍晚六点半我刚出地铁站戴着耳机走路，突然有个穿黑色卫衣戴口罩的年轻男子从后面冲上来一把拽住我脖子上的金项链就往下扯，链子当时就被扯断了他拿着我的链子就往古城大街方向跑，链子大概有二十多克上面挂着个生肖吊坠是我的结婚纪念日老公送的，那人跑得特别快一百米也就几秒钟的工夫，边跑边回头看我追没追，手里还挥舞着一把大概二十厘米长的水果刀，刀刃在路灯下反光，我喊了几声抢劫但是路人都在发愣，有个外卖小哥倒是追了几步但是那人跑进小巷子里不见了，请你们赶紧来看看！">抢劫抢夺</option>
+                      <option value="大兴区亦庄经济开发区荣华路与锦绣街交叉口的某个写字楼门口，发现一名女子被陌生男子强行拖拽上车！今天早上九点十分我刚到公司楼下等的电梯，看到一个穿白色连衣裙挎米色皮包的年轻女子在路边打电话，突然一个穿深蓝色polo衫的中年男的开着一辆银灰色本田商务车停在她旁边，那男的下来二话不说拽着那女的手臂就往车旁边拖，女的尖叫着挣扎还摔倒了在地上被拖着走，她大喊救命说那男的是骗子不是她老公，周围等公交的几个人都在观望没人上前帮忙，那女的被塞进车里后车门关上那男的就发动车往北开走了，我用手机拍了车牌号但是手抖拍得不太清楚，好像是京P但是后面的字母数字看不太准，请你们赶紧查查！">绑架拐骗</option>
+                      <option value="丰台区六里桥长途客运站候车大厅里，有一名男子在公共厕所内自残！下午四点二十左右我去上厕所的时候听到隔壁隔间里传来刀子割肉的那种声音还伴随着低沉的呻吟，我从门缝里看到那男的坐在地上左手腕在流血地上已经流了一大滩，他右手拿着美工刀片在手腕上比划着，嘴里在嘟囔活着没意思什么的，看着三十出头穿灰色帽衫背着黑色双肩包，脸上全是泪水眼睛通红，旁边还有个打开的行李箱里面的东西散落了一地，我轻轻敲了敲隔间的门问他要不要报警他说不要我滚，但是我真的怕他把自己割死了，请你们赶紧来！">自残自杀</option>
+                      <option value="崇文区磁器口路口东北角的工商银行门口，有人在公共场所故意纵火！今天中午十二点十分左右，我在银行里面办业务突然看到门外有火光，原来是一个穿黄色外卖服的外卖小哥在门口点了一个纸箱子堆在银行大门前，火已经烧起来了虽然不大但是银行门口有三个干粉灭火器都被人为破坏了把手，那外卖小哥站在火堆旁边手里还拿着打火机表情特别激动的在打电话说老板欠他工资还打人他不想活了，银行的保安和工作人员都不敢出去，拉了警戒线但火已经有往里蔓延的趋势了，那个外卖小哥突然把打火机扔进火里然后就坐在地上哭说不想活了请你们帮帮他！">纵火事件</option>
+                    </select>
+                    <button id="analyzeBtn" type="button" class="btn-primary">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                      开始研判
+                    </button>
+                  </div>
+                  <p id="analyzeHint" class="hint"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="ingest-bottom">
+              <a class="link-btn" href="/judgments.html" target="_blank" rel="noopener noreferrer">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                研判记录总览
+              </a>
+              <details class="history-drawer">
+                <summary>历史记录</summary>
+                <div id="historyList" class="history-list muted">暂无记录</div>
+              </details>
+            </div>
+          </section>
+
+          <!-- ===== 研判结果 ===== -->
+          <section id="workbenchResultsPanel" class="result-section work-review-section" aria-label="研判结果" hidden>
+
+            <div class="result-header">
+              <div class="result-header__left">
+                <span class="result-header__icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </span>
+                <h2 class="result-header__title">研判结果</h2>
+                <span id="workbenchResultsToggleHint" class="result-header__hint muted"></span>
+                <span class="result-header__meta" id="resultMeta"></span>
+              </div>
+              <div class="result-header__right">
+                <button type="button" id="workbenchToggleResultsBtn" class="btn-ghost btn-sm" aria-expanded="false">查看研判结果与复核</button>
+              </div>
+            </div>
+
+            <div id="missingHint" class="result-hint"></div>
+
+            <!-- 概要横条 -->
+            <div class="result-meta-strip">
+              <div class="meta-chip">
+                <span class="meta-chip__lbl">警情类型</span>
+                <span class="meta-chip__val" id="resultIncidentType">—</span>
+              </div>
+              <div class="meta-chip">
+                <span class="meta-chip__lbl">风险等级</span>
+                <span class="meta-chip__val"><span class="risk-tag" id="resultRiskLevel">—</span></span>
+              </div>
+              <div class="meta-chip">
+                <span class="meta-chip__lbl">处理耗时</span>
+                <span class="meta-chip__val" id="resultDuration">—</span>
+              </div>
+            </div>
+
+            <!-- 要点 -->
+            <div class="key-points">
+              <div class="key-point">
+                <span class="key-point__lbl">警情摘要</span>
+                <div id="summaryBox" class="key-point__body">暂无研判结果。</div>
+              </div>
+              <div class="key-point">
+                <span class="key-point__lbl">处置建议</span>
+                <div id="suggestionBox" class="key-point__body prose--muted">暂无。</div>
+              </div>
+            </div>
+            <div id="keyInfoBox" class="key-info-list"></div>
+
+            <!-- 类型确认 -->
+            <div id="incidentTypeConfirmPanel" class="type-panel" hidden>
+              <button type="button" id="confirmIncidentTypeBtn" class="type-confirm-btn">
+                <span class="type-confirm-btn__model">系统判别：<strong id="modelIncidentTypeLabel">—</strong></span>
+                <span class="type-confirm-btn__adopt">采纳</span>
+              </button>
+              <div class="type-row">
+                <select id="incidentTypeOverrideSelect" aria-label="人工校正警情类别"></select>
+                <button type="button" id="applyIncidentTypeOverrideBtn" class="btn-ghost">修改</button>
+              </div>
+              <p id="incidentTypeConfirmHint" class="hint"></p>
+            </div>
+            <div class="link-row">
+              <a id="openAnalysisResultPage" class="link-btn" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true">研判结果专页</a>
+              <a id="openJudgmentsPage" class="link-btn" href="/judgments.html" target="_blank" rel="noopener noreferrer">研判记录总览</a>
+            </div>
+
+            <!-- 布控与执行 -->
+            <div id="workBukongSection" class="work-bukong-section" hidden>
+              <div id="work-bukong-output">
+                <div id="bukongBox" class="box" hidden></div>
+              </div>
+              <details class="details-panel" id="work-bukong-adjust">
+                <summary>校正布控要素后重新生成（可选）</summary>
+                <div class="details-body">
+                  <p class="hint muted">以下为研判流水线自动写入的布控输入，无需接警员先手工填写即可出布控；仅现场更正时再改。</p>
+                  <div class="bukong-ex-row">
+                    <button type="button" class="pill js-bukong-ex" data-ex="0">示例1</button>
+                    <button type="button" class="pill js-bukong-ex" data-ex="1">示例2</button>
+                    <button type="button" class="pill js-bukong-ex" data-ex="2">示例3</button>
+                  </div>
+                  <div class="two-col">
+                    <div class="field">
+                      <label for="suspectDesc">嫌疑人特征（研判自动抽取，可改）</label>
+                      <textarea id="suspectDesc" rows="3" placeholder="研判完成后自动填充"></textarea>
+                    </div>
+                    <div class="field">
+                      <label for="incidentBg">案情背景（研判自动拼装，可改）</label>
+                      <textarea id="incidentBg" rows="3" placeholder="含报警原文、类型、摘要等"></textarea>
+                    </div>
+                  </div>
+                  <div class="btn-row">
+                    <button id="bukongBtn" type="button" class="btn-primary">重新生成布控</button>
+                    <button id="downloadBukongBtn" type="button" class="btn-ghost" disabled>下载布控方案</button>
+                  </div>
+                </div>
+              </details>
+            </div>
+            <p id="workBukongHint" class="hint" aria-live="polite"></p>
+
+            <!-- 人工复核 -->
+            <div class="review-section" id="work-review-heading">
+              <div class="review-radios" role="radiogroup" aria-label="复核结论">
+                <label class="radio-pill"><input type="radio" name="reviewChoice" value="同意系统结果" checked /><span>同意系统结果</span></label>
+                <label class="radio-pill"><input type="radio" name="reviewChoice" value="驳回系统结果" /><span>驳回系统结果</span></label>
+                <label class="radio-pill"><input type="radio" name="reviewChoice" value="需补充信息后再判定" /><span>需补充信息后再判定</span></label>
+              </div>
+              <div class="review-form">
+                <div class="field">
+                  <label for="reviewNote">复核备注（可选）</label>
+                  <input id="reviewNote" type="text" placeholder="例如：地点待核实" />
+                </div>
+                <div class="btn-row">
+                  <button id="saveReviewBtn" type="button" class="btn-ghost">保存复核结论</button>
+                  <button id="downloadMdBtn" type="button" class="btn-primary">下载研判与布控</button>
+                  <button id="downloadJsonBtn" type="button" class="btn-ghost">下载复核记录</button>
+                </div>
+              </div>
+              <p id="reviewHint" class="hint"></p>
+            </div>
+
+            <!-- 法律依据（折叠） -->
+            <details class="details-panel">
+              <summary>法律依据</summary>
+              <div id="lawBox" class="box details-body"></div>
+            </details>
+
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer page-wide">
+      <div class="site-footer__inner">
+        <strong>智警引擎</strong>
+        <nav class="footer-nav" aria-label="站点">
+          <a href="/">工作台</a>
+          <a href="/judgments.html">研判记录</a>
+          <a href="/performance.html">性能统计</a>
+          <a href="/tech-route.html">技术路线</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+
+  <script src="https://cdn.jsdelivr.net/npm/ol@9.2.4/dist/ol.js" crossorigin="anonymous"></script>
+  <script>
+    window.PLICE_OL_XYZ_URL = "/tiles/{z}/{x}/{y}.png";
+    window.PLICE_OL_ATTRIBUTION = "© 本地离线瓦片";
+  </script>
+  <script src="plice-env.js"></script>
+  <script src="utils.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="officer-brief-map.js"></script>
+  <script src="perf-render.js"></script>
+  <script src="app.js"></script>
+</html>

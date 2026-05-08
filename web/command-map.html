@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智警引擎 · 地图中心</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@9.2.4/ol.css" crossorigin="anonymous" />
+  </head>
+  <body class="docs-shell docs-shell--command-workbench command-page--standalone" data-theme="light" data-page="command-map">
+    <div class="site">
+      <header class="site-header command-shell-header page-wide">
+        <div class="command-shell-header__inner">
+          <div class="command-shell-header__brand" aria-label="智警引擎">
+            <span class="command-shell-header__brand-mark"></span>
+            <span class="command-shell-header__brand-text">智警引擎</span>
+            <span class="command-shell-header__brand-ver">智慧警务</span>
+          </div>
+          <div class="command-shell-header__search" role="search">
+            <span class="command-shell-header__search-icon" aria-hidden="true">⌕</span>
+            <input type="search" class="command-shell-header__search-input" placeholder="搜索警情、目标…" aria-label="全局搜索" />
+          </div>
+          <div class="command-shell-header__right">
+            <span id="commandShellClock" class="command-shell-header__clock" aria-live="polite"></span>
+          </div>
+        </div>
+      </header>
+      <main class="site-main command-shell-main">
+        <div class="command-app page-wide">
+          <aside id="app-sidebar" class="command-app-sidebar" aria-label="主导航"></aside>
+
+          <div class="doc-main command-app-body">
+            <section class="panel panel--stream command-app-panel">
+              <header class="command-page-head">
+                <h1 class="command-page-head__title">地图中心</h1>
+                <p class="command-page-head__sub">地图模块独立页面，承载点位展示与详情联动</p>
+              </header>
+              <section class="app-shell" style="margin-bottom: var(--space-3)">
+                <p class="hint muted" style="margin: 0 0 var(--space-2)">
+                  落点依赖研判 JSON 中的 <code>geo</code> 与规则推断：报警原文与「发案地点」请尽量写清
+                  <strong>省市区县、路口、小区/商圈、道路门牌</strong>；无空间线索时多条警情可能叠在同一展示兜底点，属预期行为。
+                </p>
+                <div class="actions-inline">
+                  <div class="field field--compact">
+                    <label for="mapRangeStart">开始时间</label>
+                    <input id="mapRangeStart" type="datetime-local" />
+                  </div>
+                  <div class="field field--compact">
+                    <label for="mapRangeEnd">结束时间</label>
+                    <input id="mapRangeEnd" type="datetime-local" />
+                  </div>
+                  <button id="mapRangeApplyBtn" type="button" class="btn-primary">按时间段加载</button>
+                  <span id="mapRangeHint" class="hint muted"></span>
+                </div>
+              </section>
+              <section class="command-situation-card">
+                <div class="command-situation-card__head">
+                  <h2 class="command-situation-card__title">警情地图</h2>
+                </div>
+                <div class="command-situation-card__body">
+                  <div id="commandMapCanvas" class="officer-brief-map-canvas" style="height: 58vh; min-height: 380px"></div>
+                </div>
+              </section>
+              <section id="commandMapDetail" class="officer-brief-map-detail app-shell" hidden>
+                <div id="commandMapDetailTitle" class="officer-brief-map-detail__title"></div>
+                <div id="commandMapDetailBody" class="officer-brief-map-detail__body"></div>
+              </section>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="docs-theme.js"></script>
+    <script src="plice-env.js"></script>
+    <script src="utils.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ol@9.2.4/dist/ol.js" crossorigin="anonymous"></script>
+    <!-- 专网无法访问 openstreetmap.org 时，在下一行取消注释其一：内网 XYZ 瓦片 URL，或 true 表示不要底图只显示点位 -->
+    <!-- <script>window.PLICE_OL_XYZ_URL = "https://内网地图服务/tiles/{z}/{x}/{y}.png";</script> -->
+    <!-- <script>window.PLICE_MAP_OFFLINE_NO_TILES = true;</script> -->
+    <script src="officer-brief-map.js"></script>
+    <script src="command-map.js"></script>
+  </body>
+</html>

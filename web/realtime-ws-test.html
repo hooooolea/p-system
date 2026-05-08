@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebSocket · JSON / MessagePack 联调</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 52rem;
+        margin: 1rem auto;
+        padding: 0 1rem;
+      }
+      pre {
+        background: #0f172a;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 8px;
+        overflow: auto;
+        max-height: 50vh;
+        font-size: 0.8125rem;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 0.75rem;
+      }
+      input[type="text"] {
+        flex: 1 1 12rem;
+        padding: 0.35rem 0.5rem;
+      }
+      label {
+        user-select: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>WebSocket 联调（JSON 文本 / MessagePack 二进制）</h1>
+    <p class="muted">
+      先运行：<code>pip install -r requirements-realtime.txt</code>，再执行
+      <code>python scripts/realtime_ws_demo.py</code> 或 <code>python scripts/realtime_ws_demo.py --msgpack</code>
+    </p>
+    <div class="row">
+      <input id="wsUrl" type="text" value="ws://127.0.0.1:8765" aria-label="WebSocket URL" />
+      <label><input id="expectMsgpack" type="checkbox" /> 服务端为 MessagePack 二进制</label>
+      <button type="button" id="btnConnect">连接</button>
+      <button type="button" id="btnClose">断开</button>
+    </div>
+    <pre id="log" aria-live="polite"></pre>
+    <script src="https://cdn.jsdelivr.net/npm/@msgpack/msgpack@3.1.1/dist.umd/msgpack.js"></script>
+    <script>
+      (function () {
+        const logEl = document.getElementById("log");
+        const lines = [];
+        function log(msg) {
+          const t = new Date().toISOString().slice(11, 23);
+          lines.push("[" + t + "] " + msg);
+          if (lines.length > 200) lines.shift();
+          logEl.textContent = lines.join("\n");
+          logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        let ws = null;
+        const urlInput = document.getElementById("wsUrl");
+        const expectMp = document.getElementById("expectMsgpack");
+
+        function decodeMessage(data) {
+          if (typeof data === "string") {
+            return JSON.parse(data);
+          }
+          if (data instanceof ArrayBuffer) {
+            if (!expectMp.checked) {
+              try {
+                return JSON.parse(new TextDecoder().decode(data));
+              } catch (_) {
+                /* fall through */
+              }
+            }
+            const mp = typeof msgpack !== "undefined" ? msgpack : typeof MessagePack !== "undefined" ? MessagePack : null;
+            if (mp && typeof mp.decode === "function") {
+              return mp.decode(new Uint8Array(data));
+            }
+            throw new Error("收到二进制帧但未加载 msgpack 解码器");
+          }
+          return data;
+        }
+
+        document.getElementById("btnConnect").addEventListener("click", () => {
+          if (ws && ws.readyState === WebSocket.OPEN) {
+            log("已在连接中");
+            return;
+          }
+          const url = urlInput.value.trim();
+          ws = new WebSocket(url);
+          ws.binaryType = "arraybuffer";
+          ws.onopen = () => log("已连接 " + url);
+          ws.onclose = () => log("已断开");
+          ws.onerror = () => log("连接错误");
+          ws.onmessage = (ev) => {
+            try {
+              const obj = decodeMessage(ev.data);
+              log("帧: " + JSON.stringify(obj));
+            } catch (e) {
+              log("解析失败: " + (e && e.message));
+            }
+          };
+        });
+
+        document.getElementById("btnClose").addEventListener("click", () => {
+          if (ws) {
+            ws.close();
+            ws = null;
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

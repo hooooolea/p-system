@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智警引擎 · 智能分析</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="docs-shell docs-shell--command-workbench command-page--standalone" data-theme="light" data-page="command-analysis">
+    <div class="site">
+      <header class="site-header command-shell-header page-wide">
+        <div class="command-shell-header__inner">
+          <div class="command-shell-header__brand" aria-label="智警引擎">
+            <span class="command-shell-header__brand-mark"></span>
+            <span class="command-shell-header__brand-text">智警引擎</span>
+            <span class="command-shell-header__brand-ver">智慧警务</span>
+          </div>
+          <div class="command-shell-header__search" role="search">
+            <span class="command-shell-header__search-icon" aria-hidden="true">⌕</span>
+            <input type="search" class="command-shell-header__search-input" placeholder="搜索警情、目标…" aria-label="全局搜索" />
+          </div>
+          <div class="command-shell-header__right">
+            <span id="commandShellClock" class="command-shell-header__clock" aria-live="polite"></span>
+          </div>
+        </div>
+      </header>
+      <main class="site-main command-shell-main">
+        <div class="command-app page-wide">
+          <aside id="app-sidebar" class="command-app-sidebar" aria-label="主导航"></aside>
+
+          <div class="doc-main command-app-body">
+            <section class="panel panel--stream command-app-panel">
+              <header class="ops-board-head">
+                <h1 class="ops-board-head__title">案件管理</h1>
+                <div class="ops-board-head__tools">
+                  <button type="button" id="casesRefreshBtn" class="btn-ghost">刷新列表</button>
+                  <button type="button" id="newCaseBtn" class="btn-primary">发起新研判</button>
+                </div>
+              </header>
+              <p class="muted command-page-head__sub" style="margin: -8px 0 12px">
+                列表数据来自<strong>接警研判</strong>产生的记录；在研判专页<strong>采纳/忽略</strong>或此处修改状态会同步闭环。点击“发起新研判”可直接前往接警研判录入警情。
+              </p>
+
+              <div id="casesError" class="judgments-error" hidden></div>
+
+              <section class="ops-kpis" aria-label="统计概览">
+                <article class="ops-kpi">
+                  <span class="ops-kpi__label">案件总数</span>
+                  <strong class="ops-kpi__value" id="kpiTotal">0</strong>
+                </article>
+                <article class="ops-kpi">
+                  <span class="ops-kpi__label">调查中</span>
+                  <strong class="ops-kpi__value ops-kpi__value--blue" id="kpiInvestigating">0</strong>
+                </article>
+                <article class="ops-kpi">
+                  <span class="ops-kpi__label">已结案</span>
+                  <strong class="ops-kpi__value ops-kpi__value--green" id="kpiClosed">0</strong>
+                </article>
+                <article class="ops-kpi">
+                  <span class="ops-kpi__label">已搁置</span>
+                  <strong class="ops-kpi__value" id="kpiSuspended">0</strong>
+                </article>
+              </section>
+
+              <div id="casesEmpty" class="empty-note" hidden>暂无案件。请在「接警研判」提交警情并完成研判后回到本页查看。</div>
+              <section id="opsCards" class="ops-cards" aria-label="案件列表"></section>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="docs-theme.js"></script>
+    <script src="plice-env.js"></script>
+    <script src="utils.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="command-analysis.js"></script>
+  </body>
+</html>

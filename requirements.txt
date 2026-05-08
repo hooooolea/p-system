@@ -1,0 +1,17 @@
+langchain>=0.2.0
+langchain-core>=0.2.0
+langchain-community>=0.2.0
+langchain-openai>=0.1.0
+chromadb>=0.5.0
+langchain-chroma>=0.1.0
+zhipuai>=2.1.0
+tiktoken>=0.7.0
+python-dotenv>=1.0.0
+pandas>=2.0.0
+pydantic>=2.0.0
+socksio>=1.0.0
+flask>=3.0.0
+# 研判历史持久化（可选）；不配 SUPABASE_URL 则不使用
+supabase>=2.4.0
+# ASR（ModelScope pipeline，见 asr/说明.md）；需已安装 PyTorch
+modelscope>=1.14.0

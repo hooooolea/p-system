@@ -1,0 +1,27 @@
+# 本地环境与大依赖（勿上传 Cloudflare / Git）
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+
+# 前端依赖与构建产物（Pages 只上传构建结果或静态 web/ 时勿带 node_modules）
+map-app/node_modules/
+app/node_modules/
+
+# 向量库与运行时数据
+chroma_db/
+
+# ASR 权重（按需从 ModelScope 拉取，见 asr/说明.md）
+asr/model.pt
+
+# 密钥与上传测试文件
+.env
+data/uploads/*.wav
+
+# Cloudflare Wrangler 本地状态
+.wrangler/
+
+# 系统文件
+.DS_Store
