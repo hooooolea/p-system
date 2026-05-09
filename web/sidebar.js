@@ -14,7 +14,7 @@
     {
       href: "/workbench.html",
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
-      label: "警情研判",
+      label: "接警研判",
     },
     {
       href: "/judgments.html",
@@ -26,11 +26,11 @@
 
   function isActive(href, currentPage) {
     if (href === "/") return currentPage === "index";
-    var pathname = window.location.pathname;
-    // 去掉 .html 后缀统一匹配
-    var normalized = pathname.endsWith(".html") ? pathname.slice(0, -5) : pathname;
+    // 用 data-page 属性（来自 document.body.getAttribute("data-page")）做匹配
+    // 避免 window.location.pathname 在 CF Worker 子路径下的前缀问题
     var target = href.endsWith(".html") ? href.slice(0, -5) : href;
-    return normalized === target || normalized === href;
+    // currentPage 已经是 "command-situation" / "command-map" / "workbench" / "judgments"
+    return currentPage === target;
   }
 
   function injectSidebar(currentPage) {

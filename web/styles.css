@@ -105,6 +105,7 @@ body[data-theme="light"] {
   --cmd-surface-alt: #f8fafc !important;
   --cmd-text: #1a1a1a !important;
   --cmd-muted: #64748b !important;
+  --gray-50: #f8fafc !important;
 }
 
 *,
@@ -5517,10 +5518,37 @@ body.map-command-page .doc-main.command-app-body {
   min-height: 0;
 }
 
+body.map-command-page .command-app-panel.panel--stream {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+body.map-command-page .command-situation-card {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+body.map-command-page .command-situation-card__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .command-app-panel.panel--stream {
   padding: 0;
   flex: 1;
   min-height: 0;
+}
+
+/* 浅色主题覆盖 */
+body.docs-shell--command-workbench[data-theme="light"] .command-app-panel.panel--stream {
+  background: transparent;
+  border: none;
 }
 
 .command-page-head {
@@ -5547,6 +5575,17 @@ body.map-command-page .doc-main.command-app-body {
   font-weight: 700;
   color: var(--cmd-text);
   letter-spacing: 0.02em;
+}
+
+/* 浅色主题覆盖 */
+body.docs-shell--command-workbench[data-theme="light"] .command-page-head {
+  padding-top: 6px;
+}
+body.docs-shell--command-workbench[data-theme="light"] .command-page-head__title {
+  color: #111827;
+}
+body.docs-shell--command-workbench[data-theme="light"] .command-page-head__sub {
+  color: #6b7280;
 }
 
 .command-page-head__sub {
@@ -6207,18 +6246,18 @@ body.docs-shell--command-workbench[data-theme="light"] .command-app-nav__link--a
 }
 
 .docs-shell[data-theme="light"] .ops-kpis {
-  border-color: var(--dark-200);
-  background: var(--color-surface);
+  border-color: #e2e8f0;
+  background: #ffffff;
 }
 
 .docs-shell[data-theme="light"] .ops-kpi {
   background: var(--gray-50);
-  border-right-color: var(--dark-200);
+  border-right-color: #e2e8f0;
 }
 
 .docs-shell[data-theme="light"] .ops-case {
-  background: var(--color-surface);
-  border-color: var(--dark-200);
+  background: #ffffff;
+  border-color: #e2e8f0;
 }
 
 .docs-shell[data-theme="light"] .ops-case__progress {
@@ -6226,12 +6265,12 @@ body.docs-shell--command-workbench[data-theme="light"] .command-app-nav__link--a
 }
 
 .docs-shell[data-theme="light"] .ops-case__actions {
-  border-top-color: var(--dark-200);
+  border-top-color: #e2e8f0;
 }
 
 .docs-shell[data-theme="light"] .ops-case__status {
-  background: var(--color-surface);
-  border-color: var(--dark-200);
+  background: #ffffff;
+  border-color: #e2e8f0;
 }
 
 /* ===== 新工作台布局 ===== */

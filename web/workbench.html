@@ -5,6 +5,7 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>智警引擎 · 警情研判</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,82 +24,65 @@
       ::-webkit-scrollbar-track { background: transparent; }
       ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
       ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+      .ref-card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      }
+      .ref-page-header { margin-bottom: 8px; }
+      .ref-page-header__title { font-size: 1.25rem; font-weight: 700; color: #111827; }
+      .ref-page-header__sub { font-size: 0.875rem; color: #6b7280; }
+      .ref-card__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+      .ref-card__head-icon { color: #2563eb; }
+      .ref-card__title { font-size: 1rem; font-weight: 600; color: #111827; }
+      .ref-card__footer { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+      .ref-tag-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+      .ref-tag-row__label { font-size: 0.875rem; font-weight: 500; color: #374151; }
+      .ref-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+      .ref-textarea-wrap { margin-bottom: 16px; }
+      .ref-textarea { width: 100%; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; font-size: 0.9rem; resize: vertical; min-height: 80px; font-family: inherit; }
+      .ref-textarea:focus { outline: none; border-color: #2563eb; }
+      .ref-btn-outline { background: #fff; border: 1px solid #d1d5db; border-radius: 6px; padding: 6px 12px; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+      .ref-btn-outline:hover { border-color: #9ca3af; }
+      .analyze-btn { background: #2563eb; color: #fff; border: none; border-radius: 6px; padding: 8px 16px; font-size: 0.875rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+      .analyze-btn:hover { background: #1d4ed8; }
+      .ref-aux-layout { display: flex; gap: 16px; }
+      .ref-aux-left { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+      .ref-file-tabs { display: flex; gap: 4px; border-bottom: 1px solid #e5e7eb; }
+      .file-tab { background: none; border: none; padding: 8px 12px; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; gap: 6px; color: #6b7280; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+      .file-tab.active { color: #2563eb; border-bottom-color: #2563eb; font-weight: 500; }
+      .ref-field { display: flex; flex-direction: column; gap: 6px; }
+      .ref-field__label { font-size: 0.875rem; font-weight: 500; color: #374151; }
+      .ref-field__input, .ref-field__textarea { border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px 10px; font-size: 0.875rem; font-family: inherit; }
+      .ref-field__input:focus, .ref-field__textarea:focus { outline: none; border-color: #2563eb; }
+      .ref-field__textarea { resize: vertical; min-height: 60px; }
+      .tag-btn { background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 6px; padding: 4px 10px; font-size: 0.8125rem; cursor: pointer; color: #374151; }
+      .tag-btn.active { background: #eff6ff; border-color: #2563eb; color: #2563eb; }
+      .ref-tips-card { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 12px 16px; display: flex; gap: 12px; align-items: flex-start; }
+      .ref-tips-card__icon { color: #0284c7; flex-shrink: 0; margin-top: 2px; }
+      .ref-tips-card__title { font-size: 0.875rem; font-weight: 600; color: #0369a1; margin-bottom: 6px; }
+      .ref-tips-card__list { margin: 0; padding-left: 18px; font-size: 0.8125rem; color: #075985; }
+      .ref-tips-card__list li { margin-bottom: 4px; }
+      .ref-history { background: #fafafa; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; min-height: 120px; }
+      .ref-history__head { font-size: 0.75rem; font-weight: 600; color: #6b7280; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+      .ref-history__body { font-size: 0.8125rem; color: #9ca3af; text-align: center; }
+      .ref-history__empty p { margin: 8px 0 0; }
+      .ref-history__item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
+      .ref-history__item:last-child { border-bottom: none; }
     </style>
   </head>
-  <body>
-
-    <div class="flex h-full">
-
-      <!-- Sidebar -->
-      <aside class="ref-sidebar">
-        <!-- Logo -->
-        <div class="ref-sidebar__logo">
-          <div class="ref-sidebar__logo-mark">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
-            </svg>
-          </div>
-          <div>
-            <div class="ref-sidebar__logo-name">智警引擎</div>
-            <div class="ref-sidebar__logo-ver">智慧警务</div>
-          </div>
-        </div>
-
-        <!-- Nav -->
-        <nav class="ref-sidebar__nav">
-          <a href="command-situation.html" class="sidebar-item" data-navigate="command-situation">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            指挥态势
-          </a>
-          <a href="command-map.html" class="sidebar-item" data-navigate="command-map">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
-            </svg>
-            地图中心
-          </a>
-          <a href="workbench.html" class="sidebar-item active" data-navigate="workbench">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
-            </svg>
-            接警研判
-          </a>
-          <a href="judgments.html" class="sidebar-item" data-navigate="judgments">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
-            </svg>
-            研判记录
-          </a>
-        </nav>
-
-        <!-- Status Footer -->
-        <div class="ref-sidebar__footer">
-          <div class="ref-sidebar__status-box">
-            <div class="ref-sidebar__status-row">
-              <span class="ref-sidebar__status-dot"></span>
-              <span>系统正常</span>
+  <body class="docs-shell docs-shell--command-workbench command-page--standalone" data-theme="light" data-page="workbench">
+    <div class="site">
+      <main class="site-main command-shell-main">
+        <div class="command-app page-wide">
+          <aside id="app-sidebar" class="command-app-sidebar" aria-label="主导航"></aside>
+          <div class="doc-main command-app-body">
+            <!-- Page Header -->
+            <div class="ref-page-header">
+              <h1 class="ref-page-header__title">接警研判</h1>
+              <span class="ref-page-header__sub">智能辅助研判，提升接警效率与准确性</span>
             </div>
-            <div class="ref-sidebar__status-row">
-              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
-              </svg>
-              <span>RAG</span>
-            </div>
-            <div id="sidebarClock" class="ref-sidebar__clock"></div>
-          </div>
-        </div>
-      </aside>
-
-      <!-- Main Content -->
-      <main class="ref-main">
-
-        <!-- Page Header -->
-        <div class="ref-page-header">
-          <h1 class="ref-page-header__title">接警研判</h1>
-          <span class="ref-page-header__sub">智能辅助研判，提升接警效率与准确性</span>
-        </div>
 
         <!-- Card 1: 报警内容 -->
         <div class="ref-card">
@@ -348,11 +332,12 @@
           </details>
 
         </section>
-
-      </main>
+      </div>
     </div>
+  </main>
+</div>
 
-    <script src="plice-env.js"></script>
+<script src="plice-env.js"></script>
     <script src="api.js"></script>
     <script src="utils.js"></script>
     <script src="sidebar.js"></script>
@@ -394,17 +379,6 @@
       updateSidebarClock();
       setInterval(updateSidebarClock, 1000);
 
-      /* 统一侧边栏索引：点击非当前页只切换 active 聚焦，不跳转 */
-      document.querySelectorAll('.ref-sidebar__nav .sidebar-item[data-navigate]').forEach(function(link) {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          /* 切换 active 聚焦，不触发页面跳转 */
-          document.querySelectorAll('.ref-sidebar__nav .sidebar-item').forEach(function(el) {
-            el.classList.remove('active');
-          });
-          this.classList.add('active');
-        });
-      });
     </script>
   </body>
 </html>
