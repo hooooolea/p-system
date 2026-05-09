@@ -5,6 +5,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 .Python
+node_modules/
 
 # Flask API 后端（不传）
 api_server.py
