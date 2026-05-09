@@ -27,44 +27,22 @@
 
           <div class="doc-main command-app-body">
             <header class="command-page-head">
-              <h1 class="command-page-head__title">研判记录总览</h1>
+              <h1 class="command-page-head__title">研判记录纵览</h1>
+              <div class="jd-filter" id="jdFilter" role="group" aria-label="筛选条件">
+                <button type="button" class="jd-filter__btn jd-filter__btn--active" data-filter="all">
+                  全部<span class="jd-filter__count" id="filterCountAll"></span>
+                </button>
+                <button type="button" class="jd-filter__btn" data-filter="high">
+                  高风险<span class="jd-filter__count" id="filterCountHigh"></span>
+                </button>
+                <button type="button" class="jd-filter__btn" data-filter="adopted">
+                  已采纳<span class="jd-filter__count" id="filterCountAdopted"></span>
+                </button>
+                <button type="button" class="jd-filter__btn" data-filter="pending">
+                  待复核<span class="jd-filter__count" id="filterCountPending"></span>
+                </button>
+              </div>
             </header>
-
-            <!-- 统计概览：一行4个数字 -->
-            <div class="jd-stats" id="jdStats" aria-label="统计概览">
-              <div class="jd-stat-card">
-                <span class="jd-stat-card__num" id="jdStatAll">0</span>
-                <span class="jd-stat-card__label">全部</span>
-              </div>
-              <div class="jd-stat-card">
-                <span class="jd-stat-card__num jd-stat-card__num--red" id="jdStatHigh">0</span>
-                <span class="jd-stat-card__label">高风险</span>
-              </div>
-              <div class="jd-stat-card">
-                <span class="jd-stat-card__num jd-stat-card__num--green" id="jdStatAdopted">0</span>
-                <span class="jd-stat-card__label">已采纳</span>
-              </div>
-              <div class="jd-stat-card">
-                <span class="jd-stat-card__num jd-stat-card__num--yellow" id="jdStatPending">0</span>
-                <span class="jd-stat-card__label">待复核</span>
-              </div>
-            </div>
-
-            <!-- 标签筛选 -->
-            <div class="jd-filter" id="jdFilter" role="group" aria-label="筛选条件">
-              <button type="button" class="jd-filter__btn jd-filter__btn--active" data-filter="all">
-                全部<span class="jd-filter__count" id="filterCountAll"></span>
-              </button>
-              <button type="button" class="jd-filter__btn" data-filter="high">
-                高风险<span class="jd-filter__count" id="filterCountHigh"></span>
-              </button>
-              <button type="button" class="jd-filter__btn" data-filter="adopted">
-                已采纳<span class="jd-filter__count" id="filterCountAdopted"></span>
-              </button>
-              <button type="button" class="jd-filter__btn" data-filter="pending">
-                待复核<span class="jd-filter__count" id="filterCountPending"></span>
-              </button>
-            </div>
 
             <div class="judgments-split">
               <aside class="judgments-rail" aria-label="研判条目">

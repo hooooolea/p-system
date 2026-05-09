@@ -26,24 +26,10 @@
           <span class="command-shell-header__brand-ver">智慧警务</span>
         </div>
         <div class="command-shell-header__right">
-          <div class="cmd-status-pills" aria-label="系统状态">
-            <span class="cmd-status-pill cmd-status-pill--online">
-              <span class="cmd-status-pill__dot"></span>
-              <span class="cmd-status-pill__label">在线</span>
-            </span>
-            <span class="cmd-status-pill">
-              <span class="cmd-status-pill__val">2</span>
-              <span class="cmd-status-pill__label">在线警员</span>
-            </span>
-            <span class="cmd-status-pill">
-              <span class="cmd-status-pill__val">47</span>
-              <span class="cmd-status-pill__label">今日警情</span>
-            </span>
-            <span class="cmd-status-pill cmd-status-pill--warn">
-              <span class="cmd-status-pill__val">0</span>
-              <span class="cmd-status-pill__label">预警</span>
-            </span>
-          </div>
+          <span class="cmd-status-pill cmd-status-pill--online">
+            <span class="cmd-status-pill__dot"></span>
+            <span class="cmd-status-pill__label">系统正常</span>
+          </span>
           <span id="commandShellClock" class="command-shell-header__clock" aria-live="polite"></span>
         </div>
       </div>
@@ -163,19 +149,6 @@
           <!-- ===== 研判结果 ===== -->
           <section id="workbenchResultsPanel" class="result-section work-review-section" aria-label="研判结果" hidden>
 
-            <div class="result-header">
-              <div class="result-header__left">
-                <h2 class="result-header__title">研判结果</h2>
-                <span id="workbenchResultsToggleHint" class="result-header__hint muted"></span>
-                <span class="result-header__meta" id="resultMeta"></span>
-              </div>
-              <div class="result-header__right">
-                <button type="button" id="workbenchToggleResultsBtn" class="btn-ghost btn-sm" aria-expanded="false">查看研判结果与复核</button>
-              </div>
-            </div>
-
-            <div id="missingHint" class="result-hint"></div>
-
             <!-- 概要横条 -->
             <div class="result-meta-strip">
               <div class="meta-chip">
@@ -205,56 +178,6 @@
             </div>
             <div id="keyInfoBox" class="key-info-list"></div>
 
-            <!-- 类型确认 -->
-            <div id="incidentTypeConfirmPanel" class="type-panel" hidden>
-              <button type="button" id="confirmIncidentTypeBtn" class="type-confirm-btn">
-                <span class="type-confirm-btn__model">系统判别：<strong id="modelIncidentTypeLabel">—</strong></span>
-                <span class="type-confirm-btn__adopt">采纳</span>
-              </button>
-              <div class="type-row">
-                <select id="incidentTypeOverrideSelect" aria-label="人工校正警情类别"></select>
-                <button type="button" id="applyIncidentTypeOverrideBtn" class="btn-ghost">修改</button>
-              </div>
-              <p id="incidentTypeConfirmHint" class="hint"></p>
-            </div>
-            <div class="link-row">
-              <a id="openAnalysisResultPage" class="link-btn" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true">研判结果专页</a>
-              <a id="openJudgmentsPage" class="link-btn" href="/judgments.html" target="_blank" rel="noopener noreferrer">研判记录总览</a>
-            </div>
-
-            <!-- 布控与执行 -->
-            <div id="workBukongSection" class="work-bukong-section" hidden>
-              <div id="work-bukong-output">
-                <div id="bukongBox" class="box" hidden></div>
-              </div>
-              <details class="details-panel" id="work-bukong-adjust">
-                <summary>校正布控要素后重新生成（可选）</summary>
-                <div class="details-body">
-                  <p class="hint muted">以下为研判流水线自动写入的布控输入，无需接警员先手工填写即可出布控；仅现场更正时再改。</p>
-                  <div class="bukong-ex-row">
-                    <button type="button" class="pill js-bukong-ex" data-ex="0">示例1</button>
-                    <button type="button" class="pill js-bukong-ex" data-ex="1">示例2</button>
-                    <button type="button" class="pill js-bukong-ex" data-ex="2">示例3</button>
-                  </div>
-                  <div class="two-col">
-                    <div class="field">
-                      <label for="suspectDesc">嫌疑人特征（研判自动抽取，可改）</label>
-                      <textarea id="suspectDesc" rows="3" placeholder="研判完成后自动填充"></textarea>
-                    </div>
-                    <div class="field">
-                      <label for="incidentBg">案情背景（研判自动拼装，可改）</label>
-                      <textarea id="incidentBg" rows="3" placeholder="含报警原文、类型、摘要等"></textarea>
-                    </div>
-                  </div>
-                  <div class="btn-row">
-                    <button id="bukongBtn" type="button" class="btn-primary">重新生成布控</button>
-                    <button id="downloadBukongBtn" type="button" class="btn-ghost" disabled>下载布控方案</button>
-                  </div>
-                </div>
-              </details>
-            </div>
-            <p id="workBukongHint" class="hint" aria-live="polite"></p>
-
             <!-- 人工复核 -->
             <div class="review-section" id="work-review-heading">
               <div class="review-radios" role="radiogroup" aria-label="复核结论">
@@ -270,7 +193,6 @@
                 <div class="btn-row">
                   <button id="saveReviewBtn" type="button" class="btn-ghost">保存复核结论</button>
                   <button id="downloadMdBtn" type="button" class="btn-primary">下载研判与布控</button>
-                  <button id="downloadJsonBtn" type="button" class="btn-ghost">下载复核记录</button>
                 </div>
               </div>
               <p id="reviewHint" class="hint"></p>

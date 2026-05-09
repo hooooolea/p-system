@@ -10,11 +10,8 @@
 const HTML_REWRITES = [
   ["/command-map", "/command-map.html"],
   ["/command-situation", "/command-situation.html"],
-  ["/command-analysis", "/command-analysis.html"],
-  ["/performance", "/performance.html"],
   ["/judgments", "/judgments.html"],
   ["/tech-route", "/tech-route.html"],
-  ["/analysis-result", "/analysis-result.html"],
 ];
 
 function normalizePathname(pathname) {
@@ -41,6 +38,20 @@ export default {
     }
     if (pathname === "/workbench/core-metrics.js" || pathname === "/workbench/review-dimensions.js") {
       return Response.redirect(new URL("/performance.js", request.url).toString(), 302);
+    }
+
+    // 视频态势：代理到 Flask 后端（streams + events）
+    if (pathname.startsWith("/api/video/streams") || pathname.startsWith("/api/video/events")) {
+      const backend =
+        typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim().replace(/\/$/, "") : "";
+      if (backend) {
+        const upstream = `${backend}${url.pathname}${url.search}`;
+        return fetch(new Request(upstream, request), { redirect: "follow" });
+      }
+      return new Response(JSON.stringify({ error: "backend not configured" }), {
+        status: 503,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+      });
     }
 
     // 地图页：前端默认请求同源 /api/map-events；静态 web 下无此文件 → 404。此处代理或返回空 JSON。

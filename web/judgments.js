@@ -42,11 +42,6 @@ function renderStats(items) {
   const adopted = items.filter((i) => i.user_feedback === "adopt").length;
   const pending = items.filter((i) => !i.user_feedback || i.user_feedback === "pending").length;
 
-  document.getElementById("jdStatAll").textContent = all;
-  document.getElementById("jdStatHigh").textContent = high;
-  document.getElementById("jdStatAdopted").textContent = adopted;
-  document.getElementById("jdStatPending").textContent = pending;
-
   // 筛选标签上的数字
   document.getElementById("filterCountAll").textContent = all ? ` ${all}` : "";
   document.getElementById("filterCountHigh").textContent = high ? ` ${high}` : "";
