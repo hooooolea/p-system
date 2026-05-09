@@ -46,26 +46,26 @@
 
         <!-- Nav -->
         <nav class="ref-sidebar__nav">
-          <a href="command-situation.html" class="sidebar-item">
+          <a href="command-situation.html" class="sidebar-item" data-navigate="command-situation">
             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
             指挥态势
           </a>
-          <a href="command-map.html" class="sidebar-item">
+          <a href="command-map.html" class="sidebar-item" data-navigate="command-map">
             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
             </svg>
             地图中心
           </a>
-          <a href="workbench.html" class="sidebar-item active">
+          <a href="workbench.html" class="sidebar-item active" data-navigate="workbench">
             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
             </svg>
             接警研判
           </a>
-          <a href="judgments.html" class="sidebar-item">
+          <a href="judgments.html" class="sidebar-item" data-navigate="judgments">
             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
             </svg>
@@ -393,6 +393,18 @@
       }
       updateSidebarClock();
       setInterval(updateSidebarClock, 1000);
+
+      /* 统一侧边栏索引：点击非当前页只切换 active 聚焦，不跳转 */
+      document.querySelectorAll('.ref-sidebar__nav .sidebar-item[data-navigate]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          /* 切换 active 聚焦，不触发页面跳转 */
+          document.querySelectorAll('.ref-sidebar__nav .sidebar-item').forEach(function(el) {
+            el.classList.remove('active');
+          });
+          this.classList.add('active');
+        });
+      });
     </script>
   </body>
 </html>
