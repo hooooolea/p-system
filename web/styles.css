@@ -5095,6 +5095,21 @@ body.docs-shell--command-workbench .doc-aside {
   background: transparent;
 }
 
+/* 指挥台：默认深色主题 警情录入卡片 */
+.section-card {
+  background: rgba(13, 17, 24, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+.section-card__title {
+  color: var(--cmd-text);
+}
+.ingest-layout .alarm-block {
+  background: rgba(15, 23, 42, 0.35);
+  border-color: rgba(148, 163, 184, 0.15);
+}
+
 /* 浅色模式：主工作台 警情录入卡片 */
 .docs-shell[data-theme="light"] .section-card {
   background: #ffffff;
@@ -6119,15 +6134,15 @@ body.ar-page.docs-shell[data-theme="light"] .ar-panel .hint {
 
 /* ========== 指挥台壳（工作台 · 仿管理端侧栏 + 顶栏 + 主区卡片） ========== */
 body.docs-shell--command-workbench {
-  --cmd-bg: #06080d;
-  --cmd-surface: #0d1118;
-  --cmd-elevated: #121a24;
-  --cmd-border: rgba(255, 255, 255, 0.07);
-  --cmd-text: #e6edf3;
-  --cmd-muted: #8b949e;
-  --cmd-accent: #1677ff;
-  --cmd-accent-soft: rgba(22, 119, 255, 0.16);
-  --cmd-danger: #f85149;
+  --cmd-bg: #f2f4f7;
+  --cmd-surface: #ffffff;
+  --cmd-elevated: #f8fafc;
+  --cmd-border: #e5e7eb;
+  --cmd-text: #1a1a1a;
+  --cmd-muted: #64748b;
+  --cmd-accent: #0085d0;
+  --cmd-accent-soft: rgba(0, 133, 208, 0.1);
+  --cmd-danger: #dc2626;
   --command-section-gap: var(--space-4);
   --command-header-height: 53px;
   --command-left-baseline: 12px;
@@ -6147,6 +6162,8 @@ body.docs-shell--command-workbench[data-theme="light"] {
   --cmd-accent: #0085d0;
   --cmd-accent-soft: rgba(0, 133, 208, 0.1);
   --cmd-danger: #dc2626;
+  background: var(--cmd-bg);
+  color: var(--cmd-text);
 }
 
 body.docs-shell--command-workbench .site {
@@ -6175,7 +6192,7 @@ body.docs-shell--command-workbench .site-header.command-shell-header {
 
 .command-shell-header__inner {
   display: grid;
-  grid-template-columns: 220px minmax(360px, 520px) minmax(320px, 1fr);
+  grid-template-columns: 220px 1fr auto;
   align-items: center;
   gap: var(--space-4);
   padding: 10px var(--command-left-baseline);
@@ -6261,6 +6278,64 @@ body.docs-shell--command-workbench .site-header.command-shell-header {
   font-size: 0.8125rem;
   font-variant-numeric: tabular-nums;
   color: var(--cmd-muted);
+}
+
+/* 系统状态 pill */
+.cmd-status-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cmd-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--cmd-border);
+  color: var(--cmd-muted);
+  white-space: nowrap;
+}
+
+.cmd-status-pill__val {
+  color: var(--cmd-text);
+  font-weight: 700;
+}
+
+.cmd-status-pill__label {
+  font-weight: 400;
+}
+
+.cmd-status-pill--online .cmd-status-pill__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 5px #22c55e;
+  flex-shrink: 0;
+}
+
+.cmd-status-pill--warn .cmd-status-pill__val {
+  color: #f59e0b;
+}
+
+/* 浅色主题适配 */
+body.docs-shell--command-workbench[data-theme="light"] .cmd-status-pill {
+  background: rgba(0, 133, 208, 0.06);
+  border-color: rgba(0, 133, 208, 0.2);
+  color: var(--cmd-muted);
+}
+
+body.docs-shell--command-workbench[data-theme="light"] .cmd-status-pill__val {
+  color: var(--cmd-text);
+}
+
+body.docs-shell--command-workbench[data-theme="light"] .cmd-status-pill--warn .cmd-status-pill__val {
+  color: #d97706;
 }
 
 .command-shell-header__rag {
@@ -6421,7 +6496,6 @@ body.docs-shell--command-workbench .site-header.command-shell-header {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   padding: 0;
   background: var(--cmd-surface);
   border-right: 1px solid var(--cmd-border);
@@ -6435,16 +6509,18 @@ body.docs-shell--command-workbench .site-header.command-shell-header {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 12px 0 0;
+  padding: 12px 0 12px;
+  flex-grow: 1;
+  min-height: 0;
 }
 
 .command-app-nav--footer {
   padding-left: 0;
   padding-right: 0;
-  margin-top: var(--space-5);
-  padding-top: var(--space-4);
+  padding-top: var(--space-3);
   padding-bottom: 12px;
   border-top: 1px solid var(--cmd-border);
+  margin-top: 0;
 }
 
 /* 独立页面也保持同一固定侧栏模式，避免页面切换后形态变化 */
@@ -7023,20 +7099,7 @@ body.docs-shell--command-workbench .site-footer {
   }
 }
 
-body.docs-shell--command-workbench[data-theme="light"] {
-  --cmd-bg: #f0f2f5;
-  --cmd-surface: #ffffff;
-  --cmd-elevated: #fafafa;
-  --cmd-border: #e8e8e8;
-  --cmd-text: #1f1f1f;
-  --cmd-muted: #595959;
-  --cmd-accent: #1677ff;
-  --cmd-accent-soft: rgba(22, 119, 255, 0.1);
-  --cmd-danger: #cf1322;
-  background: var(--cmd-bg);
-  color: var(--cmd-text);
-}
-
+/* 独立模块页：案件管理风格 */
 body.docs-shell--command-workbench[data-theme="light"] .command-shell-header__search,
 body.docs-shell--command-workbench[data-theme="light"] .command-ingest-card__textarea,
 body.docs-shell--command-workbench[data-theme="light"] .command-example-select,
@@ -7276,13 +7339,13 @@ body.docs-shell--command-workbench[data-theme="light"] .command-app-nav__link--a
 .page-title {
   font-size: 20px;
   font-weight: 700;
-  color: var(--color-text);
+  color: var(--cmd-text);
   margin: 0 0 4px;
 }
 
 .page-subtitle {
   font-size: 13px;
-  color: var(--color-text-muted);
+  color: var(--cmd-muted);
   margin: 0;
 }
 
@@ -7452,7 +7515,27 @@ body.docs-shell--command-workbench[data-theme="light"] .command-app-nav__link--a
   align-items: center;
   gap: var(--space-2);
   margin-top: var(--space-2);
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+/* 浅色主题：统一所有区域背景 */
+body.docs-shell--command-workbench[data-theme="light"] .workbench-command-rail {
+  background: #ffffff;
+}
+body.docs-shell--command-workbench[data-theme="light"] .workbench-module {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+body.docs-shell--command-workbench[data-theme="light"] .command-situation-card {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+body.docs-shell--command-workbench[data-theme="light"] .command-situation-card__title {
+  color: #0f172a;
+}
+body.docs-shell--command-workbench[data-theme="light"] .workbench-command-stage {
+  background: transparent;
 }
 
 .alarm-textarea {
@@ -7765,9 +7848,9 @@ body.docs-shell--command-workbench[data-theme="light"] .command-app-nav__link--a
   padding: 7px 16px;
   min-width: 100px;
   font-size: 13px;
-  color: var(--color-text);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  color: var(--cmd-text);
+  background: var(--cmd-surface);
+  border: 1px solid var(--cmd-border);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all 0.15s;

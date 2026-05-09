@@ -1500,10 +1500,11 @@ function initCommandShellClock() {
     const da = String(d.getDate()).padStart(2, "0");
     const h = String(d.getHours()).padStart(2, "0");
     const m = String(d.getMinutes()).padStart(2, "0");
-    el.textContent = `${mo}/${da} ${h}:${m}`;
+    const s = String(d.getSeconds()).padStart(2, "0");
+    el.textContent = `${mo}/${da} ${h}:${m}:${s}`;
   };
   fmt();
-  setInterval(fmt, 30000);
+  setInterval(fmt, 1000);
 }
 
 function initQuickExamplePills() {
