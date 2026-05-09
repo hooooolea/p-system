@@ -795,7 +795,7 @@ body.docs-shell--command-workbench[data-theme="light"] .site {
 body.docs-shell--command-workbench[data-theme="light"] .command-app-sidebar {
   background: #ffffff;
   border-right: 1px solid #e5e7eb;
-  width: 224px;
+  width: 240px;
 }
 body.docs-shell--command-workbench[data-theme="light"] .sidebar-top {
   height: 64px;

@@ -33,10 +33,10 @@
                 <p class="hint muted">按工作台 <code>index.html</code> 自上而下各区块，对应前端事件、HTTP 接口与服务层实现。</p>
               </div>
 
-              <section class="app-shell" id="tr-status-matrix" class="mb-4">
+              <section class="app-shell mb-4" id="tr-status-matrix">
                 <div class="panel-head panel-head--plain">
-                  <h2 class="stream-heading" class="tr-heading">实现状态矩阵（实时）</h2>
-                  <div class="actions-inline" class="gap-2">
+                  <h2 class="stream-heading tr-heading">实现状态矩阵（实时）</h2>
+                  <div class="actions-inline gap-2">
                     <button id="techStatusRefreshBtn" type="button" class="btn-ghost">刷新状态</button>
                     <button id="techEvidenceGenBtn" type="button" class="btn-primary">生成答辩证据</button>
                     <button id="techEvidenceCopyBtn" type="button" class="btn-ghost">复制 Markdown</button>
@@ -50,9 +50,9 @@
                   <tbody></tbody>
                 </table>
                 <p id="techStatusHint" class="hint muted"></p>
-                <details class="command-ingest-card__history" class="mt-3">
+                <details class="command-ingest-card__history mt-3">
                   <summary>答辩证据摘要（Markdown）</summary>
-                  <pre id="techEvidenceOutput" class="app-shell" class="pre-wrap">尚未生成</pre>
+                  <pre id="techEvidenceOutput" class="app-shell pre-wrap">尚未生成</pre>
                 </details>
               </section>
 
