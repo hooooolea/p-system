@@ -51,6 +51,7 @@
 html {
   font-size: 15px;
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior: contain;
 }
 
 body {
@@ -2373,13 +2374,14 @@ textarea {
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-input:focus,
-select:focus,
-textarea:focus {
+/* command-workbench 页面：去掉所有输入框的蓝色聚焦效果 */
+body.docs-shell--command-workbench input:focus,
+body.docs-shell--command-workbench select:focus,
+body.docs-shell--command-workbench textarea:focus {
   outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--cm-blue-focus);
-  background: var(--color-surface);
+  border-color: var(--cmd-border);
+  box-shadow: none;
+  background: var(--cmd-surface);
 }
 
 textarea {
@@ -6487,7 +6489,7 @@ body.docs-shell--command-workbench[data-theme="light"] .cmd-status-pill--warn .c
 /* 所有 command-workbench 页面：.command-shell-main 顶部留出 header 高度，防止内容被 sticky header 遮挡 */
 body.docs-shell--command-workbench .site-main.command-shell-main {
   flex: 1;
-  padding-top: var(--command-header-height, 53px);
+  padding-top: 44px;
   padding-bottom: var(--space-5);
 }
 
@@ -6520,8 +6522,8 @@ body.docs-shell--command-workbench .site-main.command-shell-main {
   flex-direction: column;
   gap: 4px;
   padding: 12px 0 12px;
-  flex-grow: 1;
   min-height: 0;
+  flex-shrink: 1;
 }
 
 .command-app-nav--footer {
@@ -6530,13 +6532,18 @@ body.docs-shell--command-workbench .site-main.command-shell-main {
   padding-top: var(--space-3);
   padding-bottom: 12px;
   border-top: 1px solid var(--cmd-border);
-  margin-top: 0;
+  margin-top: auto;
   flex-shrink: 0;
 }
 
 /* 独立页面也保持同一固定侧栏模式，避免页面切换后形态变化 */
 body.command-page--standalone .command-app {
   min-height: calc(100vh - var(--command-header-height));
+}
+
+/* command-shell-main 已处理顶部偏移，command-app-body 不需要再叠 top padding */
+body.docs-shell--command-workbench .doc-main.command-app-body {
+  padding-top: 0;
 }
 
 .command-app-nav__link {
@@ -6675,7 +6682,7 @@ body.docs-shell--command-workbench.judgments-page .judgments-detail-pane {
 
 /* judgments 页仍带 ar-page 类，覆盖其旧版 site-main 留白，确保与其他模块页齐平 */
 body.docs-shell--command-workbench.ar-page .site-main.command-shell-main {
-  padding-top: 53px;
+  padding-top: 44px;
   padding-bottom: var(--space-5);
 }
 
@@ -7589,7 +7596,7 @@ body.docs-shell--command-workbench[data-theme="light"] .workbench-command-stage 
 
 .alarm-textarea:focus {
   outline: none;
-  border-color: var(--cm-blue);
+  border-color: var(--cmd-border);
 }
 
 /* 胶囊按钮 */
