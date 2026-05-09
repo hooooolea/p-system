@@ -12,9 +12,9 @@
       label: "地图中心",
     },
     {
-      href: "/",
+      href: "/workbench.html",
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
-      label: "接警研判",
+      label: "警情研判",
     },
     {
       href: "/judgments.html",
@@ -67,10 +67,53 @@
         }).join("")
       : "";
 
+  /* ====== 侧栏底部状态栏 ====== */
+    var savedBadge = localStorage.getItem('plice_badge') || '';
+    var clockHtml =
+      '<span id="commandShellClock" class="sidebar-clock"></span>';
+    var statusHtml =
+      '<span class="sidebar-status">' +
+      '<span class="sidebar-status__dot"></span>' +
+      '<span class="sidebar-status__label">系统正常</span>' +
+      '</span>';
+    var ragLabel = document.getElementById('useRag');
+    var ragChecked = ragLabel && ragLabel.checked ? 'checked' : '';
+    var ragHtml =
+      '<label class="sidebar-rag">' +
+      '<input id="useRag" type="checkbox" ' +
+      ragChecked +
+      ' />' +
+      '<span>RAG</span>' +
+      '</label>';
+    var footerHtml =
+      '<div class="sidebar-footer">' +
+      '<div class="sidebar-footer__badge">' +
+      '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>' +
+      '<span>' +
+      (savedBadge ? savedBadge : '未登录') +
+      '</span>' +
+      '</div>' +
+      '<div class="sidebar-footer__row">' +
+      statusHtml +
+      ragHtml +
+      clockHtml +
+      '</div>' +
+      '</div>';
+
     sidebar.innerHTML =
+      '<div class="sidebar-top">' +
+      '<div class="sidebar-logo">' +
+      '<div class="sidebar-logo__mark"></div>' +
+      '<div class="sidebar-logo__text">' +
+      '<span class="sidebar-logo__name">智警引擎</span>' +
+      '<span class="sidebar-logo__ver">智慧警务</span>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
       '<nav class="command-app-nav" aria-label="业务模块">' +
       navHtml +
-      (sysHtml ? '</nav><nav class="command-app-nav command-app-nav--footer" aria-label="系统">' + sysHtml + '</nav>' : '</nav>');
+      (sysHtml ? '</nav><nav class="command-app-nav command-app-nav--footer" aria-label="系统">' + sysHtml + '</nav>' : '</nav>') +
+      footerHtml;
   }
 
   /* 页面初始化时根据 data-page 属性注入侧边栏 */
