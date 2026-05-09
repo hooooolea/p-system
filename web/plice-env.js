@@ -11,7 +11,8 @@
 
   function looksLikeStaticPagesHost(hostname) {
     const h = String(hostname || "").toLowerCase();
-    return h.endsWith(".pages.dev") || h === "pages.dev" || h.endsWith(".github.io") || h.endsWith(".workers.dev");
+    // workers.dev 上的页面走 CF Worker 同源代理，不需要 tunnel URL
+    return h.endsWith(".pages.dev") || h === "pages.dev" || h.endsWith(".github.io") || (h.endsWith(".workers.dev") && h !== "workers.dev");
   }
 
   if (typeof window !== "undefined" && !window.PLICE_API_ORIGIN) {
@@ -19,15 +20,10 @@
       const pageOrigin = window.location.origin.replace(/\/$/, "");
       const h = window.location.hostname;
       if (looksLikeStaticPagesHost(h)) {
-        // 先尝试从 CF Worker 获取 tunnel URL
-        fetch(`${pageOrigin}/api/tunnel-url`, { signal: AbortSignal.timeout(TUNNEL_FETCH_TIMEOUT) })
-          .then(r => r.ok ? r.text() : null)
-          .then(url => {
-            if (url) {
-              window.PLICE_API_ORIGIN = url.replace(/\/$/, "");
-            }
-          })
-          .catch(() => { /* ignore */ });
+        // 不再从 /api/tunnel-url 获取 tunnel URL；
+        // 所有 API 走 CF Worker 同源代理（/api/* 被 router.mjs 全局反向代理），
+        // 浏览器始终用相对路径，无 CORS 问题。
+        window.PLICE_API_ORIGIN = ""; // 空字符串 → pliceResolveApiUrl 返回相对路径
       }
     } catch (e) {
       /* ignore */

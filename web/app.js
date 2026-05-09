@@ -234,17 +234,17 @@ function renderAnalyzeResultFromApi(data) {
     if (rationEl) rationEl.textContent = data.result?.confidence_rationale || "";
     const ki = data.result?.key_info || {};
     document.getElementById("cardKeyInfo").innerHTML =
-      `<span class="analyze-card__keyinfo-item"><span class="ki-label">地点</span>${ki.location || "未知"}</span>` +
-      `<span class="analyze-card__keyinfo-item"><span class="ki-label">人数</span>${ki.persons_involved || "未知"}</span>` +
-      `<span class="analyze-card__keyinfo-item"><span class="ki-label">敏感</span>${ki.time_sensitivity || "未知"}</span>` +
-      `<span class="analyze-card__keyinfo-item"><span class="ki-label">武器</span>${ki.has_weapon || "未知"}</span>`;
+      `<span class="ki-item"><span class="ki-label">地点</span><span class="ki-val">${ki.location || "未知"}</span></span>` +
+      `<span class="ki-item"><span class="ki-label">人数</span><span class="ki-val">${ki.persons_involved || "未知"}</span></span>` +
+      `<span class="ki-item"><span class="ki-label">敏感</span><span class="ki-val">${ki.time_sensitivity || "未知"}</span></span>` +
+      `<span class="ki-item"><span class="ki-label">武器</span><span class="ki-val">${ki.has_weapon || "未知"}</span></span>`;
     const stepsEl = document.getElementById("cardSteps");
     if (stepsEl) {
       const steps = data.disposal_nav?.steps || [];
       stepsEl.innerHTML = steps.map(s =>
-        `<span class="analyze-card__step">` +
-        `<span class="analyze-card__step-num">${s.id}</span>` +
-        `<span class="analyze-card__step-title">${s.title}</span>` +
+        `<span class="rs-step">` +
+        `<span class="rs-step__num">${s.id}</span>` +
+        `<span class="rs-step__title">${s.title}</span>` +
         `</span>`
       ).join("");
     }
@@ -1285,7 +1285,7 @@ function buildReviewPayload() {
   };
 }
 
-document.getElementById("exampleSelect").addEventListener("change", (e) => {
+document.getElementById("exampleSelect")?.addEventListener("change", (e) => {
   if (e.target.value) {
     document.getElementById("alarmText").value = e.target.value;
   }
@@ -1557,6 +1557,22 @@ function initQuickExamplePills() {
       sel.dispatchEvent(new Event("change", { bubbles: true }));
     });
   });
+}
+
+// 标签按钮切换（参考样式）
+function toggleTag(btn) {
+  document.querySelectorAll('.wb-tag').forEach(b => {
+    b.classList.remove('wb-tag--active', 'active');
+  });
+  btn.classList.add('wb-tag--active', 'active');
+}
+
+// 文件标签页切换
+function switchFileTab(tab) {
+  document.querySelectorAll('.wb-file-tab').forEach(t => {
+    t.classList.remove('wb-file-tab--active', 'active');
+  });
+  tab.classList.add('wb-file-tab--active', 'active');
 }
 
 initThemeToggle();

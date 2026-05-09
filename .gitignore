@@ -6,9 +6,26 @@ __pycache__/
 *$py.class
 .Python
 
-# 前端依赖与构建产物（Pages 只上传构建结果或静态 web/ 时勿带 node_modules）
-map-app/node_modules/
-app/node_modules/
+# Flask API 后端（不传）
+api_server.py
+src/
+adapters/
+services/
+utils/
+retriever.py
+rag_retriever.py
+prompts.py
+incident_analyzer.py
+evaluation.py
+schemas.py
+llm_factory.py
+requirements.txt
+requirements-realtime.txt
+run_eval.py
+test_quick.py
+env.example
+.env
+build_doc.py
 
 # 向量库与运行时数据
 chroma_db/
@@ -17,7 +34,6 @@ chroma_db/
 asr/model.pt
 
 # 密钥与上传测试文件
-.env
 data/uploads/*.wav
 
 # Cloudflare Wrangler 本地状态
@@ -25,3 +41,9 @@ data/uploads/*.wav
 
 # 系统文件
 .DS_Store
+
+# 备份与文档
+web/backup/
+*.docx
+*.doc
+计划书.txt

@@ -13,11 +13,13 @@
 - **前端**：纯静态 HTML/JS/CSS，Cloudflare Workers 部署
 - **后端**：Flask（端口 8000）+ cloudflared tunnel
 - **CF Worker**：`https://plice.ejuer-z.workers.dev`
-- **本地 tunnel**：`https://oldest-river-swing-measure.trycloudflare.com`
+- **本地 tunnel**：`https://oldest-river-swing-measure.trycloudflare.com`（重启后会变）
+
+> **操作规范：不要 git commit + push。本地改完文件后直接 `npx wrangler deploy`。**
 
 ---
 
-## 二、运行状态
+## 三、运行状态
 
 | 服务 | 状态 | 地址 |
 |------|------|------|

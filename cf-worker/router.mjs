@@ -86,33 +86,38 @@ export default {
       });
     }
 
-    // 返回当前配置的 tunnel URL（供前端 plice-env.js 动态获取）
-    if (request.method === "GET" && pathname === "/api/tunnel-url") {
-      const backend = typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim() : "";
-      return new Response(backend, { status: 200, headers: { "Content-Type": "text/plain" } });
-    }
-
-    // 工具带性能指标
-    if (request.method === "GET" && pathname === "/api/performance") {
-      const backend =
-        typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim().replace(/\/$/, "") : "";
-      if (backend) {
-        const upstream = `${backend}${url.pathname}${url.search}`;
-        return fetch(new Request(upstream, request), { redirect: "follow" });
-      }
-      return new Response(JSON.stringify({ total: 0, high: 0, medium: 0, low: 0 }), {
-        status: 200,
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-      });
-    }
-
-    // 研判分析
+    // 研判分析 POST /api/analyze
     if (request.method === "POST" && pathname === "/api/analyze") {
       const backend =
         typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim().replace(/\/$/, "") : "";
       if (backend) {
         const upstream = `${backend}${url.pathname}${url.search}`;
         return fetch(new Request(upstream, request), { redirect: "follow" });
+      }
+      return new Response(JSON.stringify({ error: "backend not configured" }), {
+        status: 503,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+      });
+    }
+
+    // 全局 API 反向代理：所有 /api/* 和 /internal/* 路径都代理到后端，
+    // 解决浏览器直连 tunnel URL 的 CORS 问题。
+    if (
+      (pathname.startsWith("/api/") || pathname.startsWith("/internal/")) &&
+      pathname !== "/api/tunnel-url"
+    ) {
+      const backend =
+        typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim().replace(/\/$/, "") : "";
+      if (backend) {
+        const upstream = `${backend}${url.pathname}${url.search}`;
+        return fetch(new Request(upstream, request), { redirect: "follow" });
+      }
+      // 后端未配置时，对只读接口返回空数据，对写接口返回错误
+      if (request.method === "GET") {
+        return new Response(JSON.stringify({}), {
+          status: 200,
+          headers: { "Content-Type": "application/json; charset=utf-8" },
+        });
       }
       return new Response(JSON.stringify({ error: "backend not configured" }), {
         status: 503,

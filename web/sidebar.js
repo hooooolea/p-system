@@ -39,13 +39,13 @@
 
     var navHtml = NAV_ITEMS.map(function (item) {
       return (
-        '<a class="command-app-nav__link' +
-        (isActive(item.href, currentPage) ? " command-app-nav__link--active" : "") +
+        '<a class="sidebar-item' +
+        (isActive(item.href, currentPage) ? " active" : "") +
         '" href="' +
         item.href +
-        '"><span class="command-app-nav__icon" aria-hidden="true">' +
+        '">' +
         item.icon +
-        "</span><span class=\"command-app-nav__text\">" +
+        "<span>" +
         item.label +
         "</span></a>"
       );
@@ -54,13 +54,13 @@
     var sysHtml = SYS_ITEMS.length
       ? SYS_ITEMS.map(function (item) {
           return (
-            '<a class="command-app-nav__link' +
-            (isActive(item.href, currentPage) ? " command-app-nav__link--active" : "") +
+            '<a class="sidebar-item' +
+            (isActive(item.href, currentPage) ? " active" : "") +
             '" href="' +
             item.href +
-            '"><span class="command-app-nav__icon" aria-hidden="true">' +
+            '">' +
             item.icon +
-            "</span><span class=\"command-app-nav__text\">" +
+            "<span>" +
             item.label +
             "</span></a>"
           );
@@ -69,41 +69,36 @@
 
   /* ====== 侧栏底部状态栏 ====== */
     var savedBadge = localStorage.getItem('plice_badge') || '';
-    var clockHtml =
-      '<span id="commandShellClock" class="sidebar-clock"></span>';
-    var statusHtml =
-      '<span class="sidebar-status">' +
-      '<span class="sidebar-status__dot"></span>' +
-      '<span class="sidebar-status__label">系统正常</span>' +
-      '</span>';
-    var ragLabel = document.getElementById('useRag');
-    var ragChecked = ragLabel && ragLabel.checked ? 'checked' : '';
-    var ragHtml =
-      '<label class="sidebar-rag">' +
-      '<input id="useRag" type="checkbox" ' +
-      ragChecked +
-      ' />' +
-      '<span>RAG</span>' +
-      '</label>';
-    var footerHtml =
-      '<div class="sidebar-footer">' +
-      '<div class="sidebar-footer__badge">' +
+    var badgeHtml =
+      '<div class="sidebar-badge">' +
       '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>' +
       '<span>' +
       (savedBadge ? savedBadge : '未登录') +
       '</span>' +
+      '</div>';
+    var clockHtml = '<div class="sidebar-time" id="sidebarClock"></div>';
+    var footerHtml =
+      '<div class="sidebar-status-box">' +
+      '<div class="sidebar-status-row">' +
+      '<span class="sidebar-status-dot"></span>' +
+      '<span>系统正常</span>' +
       '</div>' +
-      '<div class="sidebar-footer__row">' +
-      statusHtml +
-      ragHtml +
+      '<div class="sidebar-status-row sidebar-status-row--rag">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>' +
+      '<span>RAG</span>' +
+      '</div>' +
       clockHtml +
       '</div>' +
-      '</div>';
+      badgeHtml;
 
     sidebar.innerHTML =
       '<div class="sidebar-top">' +
       '<div class="sidebar-logo">' +
-      '<div class="sidebar-logo__mark"></div>' +
+      '<div class="sidebar-logo__mark">' +
+      '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">' +
+      '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>' +
+      '</svg>' +
+      '</div>' +
       '<div class="sidebar-logo__text">' +
       '<span class="sidebar-logo__name">智警引擎</span>' +
       '<span class="sidebar-logo__ver">智慧警务</span>' +
