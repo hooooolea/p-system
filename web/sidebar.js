@@ -26,7 +26,11 @@
 
   function isActive(href, currentPage) {
     if (href === "/") return currentPage === "index";
-    return window.location.pathname.endsWith(href);
+    var pathname = window.location.pathname;
+    // 去掉 .html 后缀统一匹配
+    var normalized = pathname.endsWith(".html") ? pathname.slice(0, -5) : pathname;
+    var target = href.endsWith(".html") ? href.slice(0, -5) : href;
+    return normalized === target || normalized === href;
   }
 
   function injectSidebar(currentPage) {
