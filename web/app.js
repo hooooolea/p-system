@@ -47,8 +47,8 @@ function internalRequestHeaders(extra = {}) {
   return h;
 }
 
-/** 默认15秒超时 */
-const DEFAULT_FETCH_TIMEOUT_MS = 15000;
+/** 默认90秒超时（MiniMax M2.7 较慢） v20260509b */
+const DEFAULT_FETCH_TIMEOUT_MS = 90000;
 
 async function callInternalApi(path, options = {}) {
   const { headers = {}, timeoutMs = DEFAULT_FETCH_TIMEOUT_MS, ...rest } = options;
@@ -69,7 +69,7 @@ async function callInternalApi(path, options = {}) {
     return data;
   } catch (e) {
     clearTimeout(timer);
-    if (e.name === "AbortError") throw new Error("请求超时");
+    if (e.name === "AbortError") throw new Error("请求超时（已超过1.5分钟）");
     throw e;
   }
 }
@@ -202,7 +202,56 @@ function renderAnalyzeResultFromApi(data) {
   state.latestAnalysisId = data.analysis_id || "";
   state.latestMarkdown = data.markdown || "";
   state.lastAnalyzeResponse = data;
-  document.getElementById("resultMeta").innerHTML = buildResultMetaHtml(data);
+
+  // 更新顶部三格结果栏
+  const typeEl = document.getElementById("resultIncidentType");
+  if (typeEl) typeEl.textContent = data.result?.incident_type || "未知";
+  const riskEl = document.getElementById("resultRiskLevel");
+  if (riskEl) {
+    const lvl = data.result?.risk_level || "未知";
+    riskEl.textContent = lvl;
+    // 移除旧颜色 class，加新的
+    riskEl.className = "risk-tag";
+    if (lvl === "高" || lvl === "紧急" || lvl === "极高") riskEl.classList.add("risk-tag--高");
+    else if (lvl === "中" || lvl === "较大") riskEl.classList.add("risk-tag--中");
+    else if (lvl === "低" || lvl === "一般") riskEl.classList.add("risk-tag--低");
+  }
+  const durEl = document.getElementById("resultDuration");
+  if (durEl) durEl.textContent = data.elapsed != null ? `${Number(data.elapsed).toFixed(1)}s` : "—";
+
+  // 渲染 AI 研判卡片
+  const card = document.getElementById("analyzeCard");
+  if (card) {
+    card.hidden = false;
+    const idEl = document.getElementById("cardAnalysisId");
+    if (idEl) idEl.textContent = data.analysis_id ? `#${data.analysis_id}` : "";
+    const conf = data.result?.analysis_confidence ?? 0;
+    const fillEl = document.getElementById("cardConfFill");
+    if (fillEl) fillEl.style.width = `${conf}%`;
+    const pctEl = document.getElementById("cardConfPct");
+    if (pctEl) pctEl.textContent = `${conf}%`;
+    const rationEl = document.getElementById("cardConfRation");
+    if (rationEl) rationEl.textContent = data.result?.confidence_rationale || "";
+    const ki = data.result?.key_info || {};
+    document.getElementById("cardKeyInfo").innerHTML =
+      `<span class="analyze-card__keyinfo-item"><span class="ki-label">地点</span>${ki.location || "未知"}</span>` +
+      `<span class="analyze-card__keyinfo-item"><span class="ki-label">人数</span>${ki.persons_involved || "未知"}</span>` +
+      `<span class="analyze-card__keyinfo-item"><span class="ki-label">敏感</span>${ki.time_sensitivity || "未知"}</span>` +
+      `<span class="analyze-card__keyinfo-item"><span class="ki-label">武器</span>${ki.has_weapon || "未知"}</span>`;
+    const stepsEl = document.getElementById("cardSteps");
+    if (stepsEl) {
+      const steps = data.disposal_nav?.steps || [];
+      stepsEl.innerHTML = steps.map(s =>
+        `<span class="analyze-card__step">` +
+        `<span class="analyze-card__step-num">${s.id}</span>` +
+        `<span class="analyze-card__step-title">${s.title}</span>` +
+        `</span>`
+      ).join("");
+    }
+  }
+
+  // 保留 resultMeta 更新逻辑（tech-route 页面用）
+  if (document.getElementById("resultMeta")) document.getElementById("resultMeta").innerHTML = buildResultMetaHtml(data);
   setText("summaryBox", data.result?.summary || "暂无摘要");
   const sug = data.result?.disposal_suggestion;
   const sugEl = document.getElementById("suggestionBox");
@@ -215,7 +264,6 @@ function renderAnalyzeResultFromApi(data) {
   renderOfficerBrief(data.officer_brief || null);
   mergeBukongFromAnalyze(data);
   void loadWorkbenchBukongSnapshot().then(() => syncWorkBukongSectionVisibility());
-  syncAnalysisResultPageLink();
   syncWorkBukongSectionVisibility();
   updateIncidentTypeConfirmPanel(data);
   revealWorkbenchResults({ scroll: true });
@@ -268,7 +316,11 @@ function revealWorkbenchResults({ scroll = false } = {}) {
 function collapseWorkbenchResults() {
   const panel = document.getElementById("workbenchResultsPanel");
   const btn = document.getElementById("workbenchToggleResultsBtn");
-  if (panel) panel.hidden = true;
+  if (panel) {
+    panel.hidden = true;
+    const card = document.getElementById("analyzeCard");
+    if (card) card.hidden = true;
+  }
   if (btn) {
     btn.textContent = "查看研判结果与复核";
     btn.setAttribute("aria-expanded", "false");
@@ -303,26 +355,7 @@ function syncWorkBukongSectionVisibility() {
   wrap.hidden = !(hasAnalysis || hasBukongSurface);
 }
 
-function syncAnalysisResultPageLink() {
-  const a = document.getElementById("openAnalysisResultPage");
-  const j = document.getElementById("openJudgmentsPage");
-  const jb = document.getElementById("openBottomJudgmentsBtn");
-  const id = state.latestAnalysisId;
-  if (!a) return;
-  if (id) {
-    a.href = `/analysis-result.html?id=${encodeURIComponent(id)}`;
-    a.removeAttribute("aria-disabled");
-    a.classList.remove("is-disabled");
-    if (j) j.href = `/judgments.html?id=${encodeURIComponent(id)}`;
-    if (jb) jb.href = `/judgments.html?id=${encodeURIComponent(id)}`;
-  } else {
-    a.href = "#";
-    a.setAttribute("aria-disabled", "true");
-    a.classList.add("is-disabled");
-    if (j) j.href = "/judgments.html";
-    if (jb) jb.href = "/judgments.html";
-  }
-}
+
 
 function setWorkBukongHint(text) {
   const el = document.getElementById("workBukongHint");
@@ -1199,16 +1232,23 @@ document.getElementById("analyzeBtn").addEventListener("click", async () => {
   }
   setButtonLoading("analyzeBtn", true, "研判中...");
   setText("analyzeHint", "研判中...");
+  let elapsed = 0;
+  const timerId = setInterval(() => {
+    elapsed += 1;
+    setText("analyzeHint", `研判中... 已耗时 ${elapsed} 秒`);
+  }, 1000);
   try {
     const data = await callApi("/api/analyze", {
       method: "POST",
       body: JSON.stringify({ alarm_text: alarmText, use_rag: useRag }),
     });
+    clearInterval(timerId);
     renderAnalyzeResultFromApi(data);
     renderHistory(data.history || []);
     refreshToolbarMetrics();
-    setText("analyzeHint", "研判与布控已完成");
+    setText("analyzeHint", `研判完成，耗时 ${elapsed} 秒`);
   } catch (err) {
+    clearInterval(timerId);
     setText("analyzeHint", err.message);
   } finally {
     setButtonLoading("analyzeBtn", false, "开始研判");
@@ -1259,7 +1299,7 @@ document.getElementById("downloadMdBtn").addEventListener("click", () => {
   downloadText("incident_analysis.md", state.latestMarkdown, "text/markdown;charset=utf-8");
 });
 
-document.getElementById("downloadJsonBtn").addEventListener("click", () => {
+document.getElementById("downloadJsonBtn")?.addEventListener("click", () => {
   if (!state.latestResult) {
     setText("reviewHint", "暂无可下载的复核记录");
     return;
@@ -1532,5 +1572,4 @@ initCommandShellClock();
 initOfficerBadgeLogin();
 initQuickExamplePills();
 refreshHistory();
-syncAnalysisResultPageLink();
 syncWorkBukongSectionVisibility();

@@ -54,6 +54,20 @@ export default {
       });
     }
 
+    // 研判记录 /api/history
+    if (request.method === "GET" && pathname.startsWith("/api/history")) {
+      const backend =
+        typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim().replace(/\/$/, "") : "";
+      if (backend) {
+        const upstream = `${backend}${url.pathname}${url.search}`;
+        return fetch(new Request(upstream, request), { redirect: "follow" });
+      }
+      return new Response(JSON.stringify({ history: [] }), {
+        status: 200,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+      });
+    }
+
     // 地图页：前端默认请求同源 /api/map-events；静态 web 下无此文件 → 404。此处代理或返回空 JSON。
     if (request.method === "GET" && pathname.startsWith("/api/map-events")) {
       const backend =
@@ -69,6 +83,40 @@ export default {
           "Cache-Control": "no-store",
           "X-Plice-Map-Events": "stub-empty",
         },
+      });
+    }
+
+    // 返回当前配置的 tunnel URL（供前端 plice-env.js 动态获取）
+    if (request.method === "GET" && pathname === "/api/tunnel-url") {
+      const backend = typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim() : "";
+      return new Response(backend, { status: 200, headers: { "Content-Type": "text/plain" } });
+    }
+
+    // 工具带性能指标
+    if (request.method === "GET" && pathname === "/api/performance") {
+      const backend =
+        typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim().replace(/\/$/, "") : "";
+      if (backend) {
+        const upstream = `${backend}${url.pathname}${url.search}`;
+        return fetch(new Request(upstream, request), { redirect: "follow" });
+      }
+      return new Response(JSON.stringify({ total: 0, high: 0, medium: 0, low: 0 }), {
+        status: 200,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+      });
+    }
+
+    // 研判分析
+    if (request.method === "POST" && pathname === "/api/analyze") {
+      const backend =
+        typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim().replace(/\/$/, "") : "";
+      if (backend) {
+        const upstream = `${backend}${url.pathname}${url.search}`;
+        return fetch(new Request(upstream, request), { redirect: "follow" });
+      }
+      return new Response(JSON.stringify({ error: "backend not configured" }), {
+        status: 503,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
       });
     }
 

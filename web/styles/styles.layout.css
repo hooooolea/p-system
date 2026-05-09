@@ -1,0 +1,662 @@
+/* 整站骨架 */
+.site {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-wide {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  /* 品牌底边线（移动风点缀，非渐变） */
+  box-shadow: var(--shadow-card), inset 0 -2px 0 0 var(--cm-blue);
+}
+
+.site-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--cm-blue);
+}
+
+.brand p {
+  margin: var(--space-1) 0 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  max-width: 36rem;
+  line-height: 1.45;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.nav-link:hover {
+  color: var(--color-text);
+  background: var(--gray-100);
+}
+
+.nav-link.active {
+  color: var(--cm-blue);
+  background: var(--cm-blue-soft);
+  border-color: var(--cm-blue-border);
+}
+
+.site-toolbar {
+  padding-top: var(--space-3);
+  padding-bottom: 0;
+}
+
+/* 直接借鉴 ui/theme.css 的内容壳语言 */
+.app-shell {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}
+
+.top-shell {
+  background: var(--color-surface);
+  border: 1px solid var(--dark-100);
+  border-radius: 4px;
+  padding: 10px 12px;
+}
+
+.top-shell-static {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(420px, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.top-shell-static__main {
+  min-width: 0;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--gray-900);
+  line-height: 1.3;
+}
+
+.app-subtitle {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--gray-500);
+  line-height: 1.4;
+}
+
+.meta-line {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: var(--gray-600);
+}
+
+.app-caption {
+  margin: 0 0 var(--space-3);
+  font-size: 0.75rem;
+  color: var(--gray-600);
+}
+
+.app-caption--inline {
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.top-control-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.top-control-card {
+  background: var(--color-surface);
+  border: 1px solid var(--dark-100);
+  border-radius: 4px;
+  padding: 8px 10px;
+}
+
+.top-control-card__label {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.top-control-card__value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.toggle-line {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+}
+
+.shell-divider {
+  margin-top: var(--space-4);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.shell-divider--inner {
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+
+
+/* ===== command-app shell ===== */
+}
+
+body.docs-shell--command-workbench .site-header.command-shell-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background: var(--cmd-surface);
+  border-bottom: 1px solid var(--cmd-border);
+  box-shadow: none;
+}
+
+.command-shell-header__inner {
+  display: grid;
+  grid-template-columns: 240px 1fr auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 10px 12px;
+  min-height: 52px;
+  overflow: hidden;
+}
+
+.command-shell-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.command-shell-header__brand-mark {
+  width: 10px;
+  height: 28px;
+  border-radius: 3px;
+  background: var(--cmd-accent);
+}
+
+.command-shell-header__brand-text {
+  font-weight: 800;
+  font-size: 1.125rem;
+  letter-spacing: 0.04em;
+  color: var(--cmd-text);
+}
+
+.command-shell-header__brand-ver {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--cmd-muted);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--cmd-border);
+}
+
+.command-shell-header__search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 520px;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--cmd-border);
+}
+
+.command-shell-header__search-icon {
+  color: var(--cmd-muted);
+  font-size: 1rem;
+}
+
+.command-shell-header__search-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--cmd-muted);
+  font-size: 0.875rem;
+}
+
+.command-shell-header__search-input::placeholder {
+  color: var(--cmd-muted);
+}
+
+.command-shell-header__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-self: end;
+  flex-shrink: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.command-shell-header__clock {
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--cmd-muted);
+}
+
+/* 系统状态 pill */
+.cmd-status-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cmd-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--cmd-border);
+  color: var(--cmd-muted);
+  white-space: nowrap;
+}
+
+.cmd-status-pill__val {
+  color: var(--cmd-text);
+  font-weight: 700;
+}
+
+.cmd-status-pill__label {
+  font-weight: 400;
+}
+
+.cmd-status-pill--online .cmd-status-pill__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 5px #22c55e;
+  flex-shrink: 0;
+}
+
+.cmd-status-pill--warn .cmd-status-pill__val {
+  color: #f59e0b;
+}
+
+/* 浅色主题适配 */
+body.docs-shell--command-workbench[data-theme="light"] .cmd-status-pill {
+  background: rgba(0, 133, 208, 0.06);
+  border-color: rgba(0, 133, 208, 0.2);
+  color: var(--cmd-muted);
+}
+
+body.docs-shell--command-workbench[data-theme="light"] .cmd-status-pill__val {
+  color: var(--cmd-text);
+}
+
+body.docs-shell--command-workbench[data-theme="light"] .cmd-status-pill--warn .cmd-status-pill__val {
+  color: #d97706;
+}
+
+.command-shell-header__rag {
+  font-size: 0.75rem;
+  color: var(--cmd-muted);
+}
+
+.command-shell-header__metrics {
+  display: flex;
+  gap: 16px;
+  font-size: 0.75rem;
+  color: var(--cmd-muted);
+}
+
+.command-shell-header__metric strong {
+  color: var(--cmd-text);
+  font-weight: 700;
+}
+
+.command-shell-header__notify {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--cmd-border);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.command-shell-header__notify-bell {
+  width: 14px;
+  height: 14px;
+  border-radius: 50% 50% 2px 2px;
+  border: 2px solid var(--cmd-muted);
+  border-bottom-width: 0;
+  position: relative;
+}
+
+.command-shell-header__notify-bell::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--cmd-muted);
+}
+
+.command-shell-header__notify-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  font-size: 0.625rem;
+  font-weight: 800;
+  line-height: 16px;
+  text-align: center;
+  color: var(--color-surface);
+  background: #d03050;
+}
+
+.command-shell-header__user {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.25;
+}
+
+.command-shell-header__user-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--cmd-text);
+}
+
+.command-shell-header__user-dept {
+  font-size: 0.6875rem;
+  color: var(--cmd-muted);
+}
+
+.command-shell-header__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.command-shell-header__badge input {
+  width: 110px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--cmd-border);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--cmd-text);
+  font-size: 0.75rem;
+}
+
+.command-shell-header__badge input::placeholder {
+  color: var(--cmd-muted);
+}
+
+.command-shell-header__badge-btn {
+  width: auto;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(22, 119, 255, 0.5);
+  background: rgba(22, 119, 255, 0.15);
+  color: var(--cmd-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.command-shell-header__badge-display {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--cmd-border);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--cmd-text);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.command-shell-header__theme {
+  border: 1px solid var(--cmd-border);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--cmd-text);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+/* 所有 command-workbench 页面：.command-shell-main 顶部留出 header 高度，防止内容被 sticky header 遮挡 */
+body.docs-shell--command-workbench .site-main.command-shell-main {
+  flex: 1;
+  padding-top: var(--command-header-height, 53px);
+  padding-bottom: var(--space-5);
+}
+
+.command-app {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  min-height: calc(100vh - var(--command-header-height));
+}
+
+.command-app-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background: var(--cmd-surface);
+  border-right: 1px solid var(--cmd-border);
+  position: fixed;
+  left: 0;
+  top: var(--command-header-height);
+  height: calc(100vh - var(--command-header-height));
+  overflow-y: auto;
+  z-index: 60;
+}
+
+.command-app-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 0 var(--space-3);
+  min-height: 0;
+  flex-shrink: 1;
+}
+
+.command-app-nav--footer {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: var(--space-3);
+  padding-bottom: 12px;
+  border-top: 1px solid var(--cmd-border);
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+/* 独立页面也保持同一固定侧栏模式，避免页面切换后形态变化 */
+body.command-page--standalone .command-app {
+  min-height: calc(100vh - var(--command-header-height));
+}
+
+/* command-shell-main 已处理顶部偏移，command-app-body 不需要再叠 top padding */
+body.docs-shell--command-workbench .doc-main.command-app-body {
+  padding-top: 0;
+}
+
+.command-app-nav__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--cmd-muted);
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease;
+}
+
+.command-app-nav__link:hover {
+  color: var(--cmd-text);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.command-app-nav__link--active {
+  color: var(--cmd-text);
+  background: var(--cmd-accent-soft);
+  border-color: rgba(22, 119, 255, 0.35);
+  box-shadow: inset 3px 0 0 var(--cmd-accent);
+}
+
+.command-app-nav__link--muted {
+  opacity: 0.85;
+}
+
+.command-app-nav__link--danger {
+  color: var(--cmd-danger);
+}
+
+/* 浅色主题：导航链接样式覆盖 */
+body.docs-shell--command-workbench[data-theme="light"] .command-app-nav__link {
+  color: var(--gray-600);
+}
+
+body.docs-shell--command-workbench[data-theme="light"] .command-app-nav__link:hover {
+  background: rgba(0, 133, 208, 0.08);
+  color: var(--cmd-accent);
+}
+
+body.docs-shell--command-workbench[data-theme="light"] .command-app-nav__link--active {
+  color: var(--cmd-accent);
+  background: rgba(0, 133, 208, 0.1);
+  border-color: rgba(0, 133, 208, 0.3);
+  box-shadow: inset 3px 0 0 var(--cmd-accent);
+}
+
+body.docs-shell--command-workbench[data-theme="light"] .command-app-sidebar {
+  background: var(--cmd-surface);
+  border-right-color: var(--cmd-border);
+}
+
+body.docs-shell--command-workbench[data-theme="light"] .command-app-nav--footer {
+  border-top-color: var(--cmd-border);
+}
+
+body.docs-shell--command-workbench[data-theme="light"] .site-header.command-shell-header {
+  background: var(--cmd-surface);
+  border-bottom-color: var(--cmd-border);
+  box-shadow: none;
+}
+
+body.docs-shell--command-workbench[data-theme="light"] .command-app {
+  background: var(--cmd-bg);
+}
+
+body.docs-shell--command-workbench[data-theme="light"] .site {
+  background: var(--cmd-bg);
+}
+
+.command-app-nav__link--danger:hover {
+  color: #ff7b72;
+  background: rgba(248, 81, 73, 0.08);
+}
+
+.command-app-nav__icon {
+  width: 1.25rem;
+  text-align: center;
+  font-size: 0;
+  opacity: 0.92;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.command-app-nav__icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.command-app-body {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-4) var(--space-4) var(--space-5) calc(240px + var(--space-4));
+  overflow-x: auto;
+}
+
+/* 统一多页面首屏对齐：去掉历史页面残留的额外上边距 */

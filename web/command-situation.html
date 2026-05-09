@@ -11,13 +11,13 @@
     <div class="site">
       <header class="site-header command-shell-header page-wide">
         <div class="command-shell-header__inner">
-          <div class="command-shell-header__brand" aria-label="智警引擎">
+          <div class="command-shell-header__brand">
             <span class="command-shell-header__brand-mark"></span>
             <span class="command-shell-header__brand-text">智警引擎</span>
             <span class="command-shell-header__brand-ver">智慧警务</span>
           </div>
           <div class="command-shell-header__right">
-            <span id="commandShellClock" class="command-shell-header__clock" aria-live="polite"></span>
+            <span id="commandShellClock" class="command-shell-header__clock"></span>
           </div>
         </div>
       </header>
@@ -51,7 +51,7 @@
                 </article>
               </section>
 
-              <section class="app-shell" style="margin-bottom: var(--space-3)">
+              <section class="app-shell mb-3">
                 <div class="actions-inline">
                   <div class="field field--compact">
                     <label for="videoCameraId">摄像头ID</label>
@@ -67,7 +67,7 @@
                   </div>
                   <button id="videoSaveStreamBtn" type="button" class="btn-primary">保存视频源</button>
                 </div>
-                <div class="actions-inline" style="margin-top:8px">
+                <div class="actions-inline mt-2">
                   <div class="field field--compact">
                     <label for="videoAlertType">告警类型</label>
                     <input id="videoAlertType" type="text" placeholder="可疑徘徊/越界/异常聚集" />
@@ -83,7 +83,7 @@
                   <button id="videoPushAlertBtn" type="button" class="btn-primary">上报告警</button>
                   <button id="videoPushBatchBtn" type="button" class="btn-ghost">批量模拟检测</button>
                 </div>
-                <p id="videoSituationHint" class="hint muted" style="margin-top:8px"></p>
+                <p id="videoSituationHint" class="hint muted mt-2"></p>
               </section>
 
               <section class="command-situation-card" id="command-situation-anchor" aria-labelledby="command-situation-title">
@@ -103,7 +103,7 @@
               </section>
 
               <section class="app-shell">
-                <h3 class="stream-heading" style="font-size:1rem">实时告警流水（最新 20 条）</h3>
+                <h3 class="stream-heading">实时告警流水（最新 20 条）</h3>
                 <table class="simple-table perf-mini-table" id="videoAlertsTable">
                   <thead><tr><th>时间</th><th>摄像头</th><th>目标ID</th><th>告警</th><th>线索</th><th>分值</th></tr></thead>
                   <tbody></tbody>
@@ -117,7 +117,8 @@
     </div>
     <script src="docs-theme.js"></script>
     <script src="plice-env.js"></script>
-    <script src="utils.js"></script>
+    <script src="api.js"></script>
+  <script src="utils.js"></script>
     <script src="sidebar.js"></script>
     <script src="command-situation.js"></script>
   </body>

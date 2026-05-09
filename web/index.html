@@ -12,42 +12,41 @@
       crossorigin="anonymous"
     />
   </head>
-  <body class="docs-shell docs-shell--command-workbench" data-theme="light" data-page="index">
+  <body class="docs-shell docs-shell--command-workbench command-page--standalone" data-theme="light" data-page="index">
     <noscript>
       <div class="boot-need-js">请启用 JavaScript；本地运行 <code>python api_server.py</code>。</div>
     </noscript>
 
-    <!-- 顶部栏 -->
-    <header class="site-header command-shell-header page-wide">
-      <div class="command-shell-header__inner">
-        <div class="command-shell-header__brand" aria-label="智警引擎">
-          <span class="command-shell-header__brand-mark"></span>
-          <span class="command-shell-header__brand-text">智警引擎</span>
-          <span class="command-shell-header__brand-ver">智慧警务</span>
+    <div class="site">
+      <header class="site-header command-shell-header page-wide">
+        <div class="command-shell-header__inner">
+          <div class="command-shell-header__brand">
+            <span class="command-shell-header__brand-mark"></span>
+            <span class="command-shell-header__brand-text">智警引擎</span>
+            <span class="command-shell-header__brand-ver">智慧警务</span>
+          </div>
+          <div class="command-shell-header__right">
+            <span class="cmd-status-pill cmd-status-pill--online">
+              <span class="cmd-status-pill__dot"></span>
+              <span class="cmd-status-pill__label">系统正常</span>
+            </span>
+            <label class="hdr-toggle">
+              <input id="useRag" type="checkbox" checked />
+              <span>RAG</span>
+            </label>
+            <span id="commandShellClock" class="command-shell-header__clock"></span>
+          </div>
         </div>
-        <div class="command-shell-header__right">
-          <span class="cmd-status-pill cmd-status-pill--online">
-            <span class="cmd-status-pill__dot"></span>
-            <span class="cmd-status-pill__label">系统正常</span>
-          </span>
-          <span id="commandShellClock" class="command-shell-header__clock" aria-live="polite"></span>
-        </div>
-      </div>
-    </header>
-    <input id="useRag" type="checkbox" checked hidden />
+      </header>
 
-    <main class="site-main command-shell-main">
-      <div class="command-app page-wide">
-        <aside id="app-sidebar" class="command-app-sidebar" aria-label="主导航"></aside>
+      <main class="site-main command-shell-main">
+        <div class="command-app page-wide">
+          <aside id="app-sidebar" class="command-app-sidebar" aria-label="主导航"></aside>
 
-        <div class="doc-main command-app-body page-body-wrap">
-
-          <!-- 页面标题 -->
-          <header class="command-page-head">
-            <h1 class="command-page-head__title">接警研判</h1>
-          </header>
-
-          <!-- ===== 报警内容输入 ===== -->
+          <div class="doc-main command-app-body">
+            <header class="command-page-head">
+              <h1 class="command-page-head__title">接警研判</h1>
+            </header>
           <section class="section-card" aria-labelledby="work-alarm-input-heading">
             <div class="section-card__head">
               <div class="section-card__head-left">
@@ -77,7 +76,7 @@
                   <option value="喂喂喂110吗你们快来！我在朝阳区三里屯那条街往南走第二个路口，我朋友开的那个酒吧门口，三个喝得烂醉的老外追着一个中国女孩打，其中一个光头老外抄起路边的塑料路锥就往那女孩头上砸，另一个矮的老外把她手机摔地上踩碎了，女孩已经被打趴在地上了满脸是血哭都哭不出来，地上全是碎玻璃，那三个老外还在那儿嗷嗷叫说Chinese kill kill，周围路人没人敢拉架因为那三个都一米九以上膀大腰圆的，我躲在对面奶茶店门口打的电话，你们快点来啊派多点人来，那几个老外看着像练过格斗的！">打架斗殴</option>
                   <option value="110我要报警！我爸今年82岁了老年痴呆症中期，前天中午12点半从海淀黄庄小区出门说去接我妈妈下班（我妈妈在北大医院挂号室上班），结果走丢了到现在人还没回来，我爸穿灰色夹克外套、黑色布鞋、戴一顶旧军绿色鸭舌帽，个子大概一米七，走路有点驼背，说话一口北京土话，耳朵有点背叫他名字要大声好几遍他才能反应过来，他身上没带手机钱包身份证，什么都没有，就揣了一包中华烟在身上，嘴里一直念叨要去接老伴儿，我家已经发动亲戚朋友找了快48小时了，报了黄庄派出所也立案了但是还没消息，拜托你们帮忙找找！">失踪人口</option>
                   <option value="喂110转反诈中心吗我要举报一个诈骗电话，下午三点半接到一个+86 10 开头自称是北京市公安局出入境管理处的电话，对方说我名下有一本护照在哈尔滨太平机场被人用来非法入境，说我涉嫌一起跨国金融诈骗案，案值216万，主犯已经被抓了从犯里有我，检察院已经发了刑事拘捕令，还说我名下的工商银行卡和招商银行卡全部要被冻结清查，如果想证明清白就要配合他们远程笔录，还要把我所有存款转到所谓的安全账户进行资金比对审查，我问他们工号和姓名他说是姓陈的警号062218，我当时就感觉不对劲，你们帮我查查这个电话是不是真的？">电信诈骗</option>
-                  <option value="您好是122吗，我在东三环国贸桥南往北方向中间车道，我的车被追尾了，后备箱完全变形了，后车安全气囊全弹出来了，对方驾驶员是个女司机她说她踩刹车踩成油门了，她车前脸也撞烂了，现在她人还算清醒但是脸色特别白一直说胸口闷喘不上气，我的车是黑色帕萨特京A牌照，对方是白色本田CRV京Q牌照，两车都动弹不了，占了两条车道，后面的车已经堵到双井桥了大概三公里，她在车里说怀孕了四个月怕流产，我已经打了120但是救护车堵在路上来不了，地上全是碎零件和油渍，现场没有任何警示三角牌因为我车里的被撞飞了，请赶紧派人来疏导交通！">交通事故</option>
+                  <option value="您好是110吗，我在东三环国贸桥南往北方向中间车道，我的车被追尾了，后备箱完全变形了，后车安全气囊全弹出来了，对方驾驶员是个女司机她说她踩刹车踩成油门了，她车前脸也撞烂了，现在她人还算清醒但是脸色特别白一直说胸口闷喘不上气，我的车是黑色帕萨特京A牌照，对方是白色本田CRV京Q牌照，两车都动弹不了，占了两条车道，后面的车已经堵到双井桥了大概三公里，她在车里说怀孕了四个月怕流产，我已经打了120但是救护车堵在路上来不了，地上全是碎零件和油渍，现场没有任何警示三角牌因为我车里的被撞飞了，请赶紧派人来疏导交通！">交通事故</option>
                   <option value="119吗赶紧来！西城区旧鼓楼大街甲39号外馆斜街往东200米路南，名字叫金宇综合市场的大院里，三楼最东头那间平房着火了我们灭火器根本灭不掉，火已经有两米多高了，黑烟滚滚的，隔壁就是加油站啊，旁边还堆了一堆废旧轮胎和塑料筐，火星子一直往周围蹦，周围群众都在往外跑，有个老太太腿脚不好摔倒在门口了两个人架着她才出来，我刚才打了119但是接线员说最近消防站在拓宽施工消防车出不来要从德外那边调过来要30分钟，这边火势蔓延特别快，你们能不能快点来啊，加油站就在着火点不到50米的地方啊！">火灾险情</option>
                   <option value="东城区南锣鼓巷地铁站E口往外走第二个巷子口的公共厕所旁边，有个满身酒气的中年男的躺在地上抽搐，口吐白沫，地上还有一滩血和一地碎酒瓶碴子，旁边有个女的抱着个三四岁的小孩在那儿哭喊救命，我路过看见的，那男的身上穿着深蓝色工作服工牌上写着是附近某工地的工人，他抽搐的时候把小桌板踹翻了砸到了旁边垃圾桶，垃圾桶倒在了一辆蓝色马自达小轿车上把车灯撞碎了，车主正拽着那女的不放说让她赔，我看着不对劲打了120但是急救说得四十分钟才能到，那男的好像羊癫疯发作抽搐越来越厉害，我该怎么办？">醉酒滋事</option>
                   <option value="我要报警投诉我家楼上那个邻居太恶劣了！我们住在东城区豆瓣小区2号楼4单元502，他们是今年三月刚搬来的租户，装修搞得我们全家快疯了。每天早上六点半就开始用电钻，钻墙的声音像在脑子里打洞一样，我母亲78岁有心脏病被吵得心脏都快跳出来了，孩子才四岁一听到那个声音就吓得尖叫。我老公上去好声好气跟他们说能不能避开早七点到九点这个时间段，他们开门就骂我老公多管闲事说他们上班装修有什么错，还拿东西砸我老公的头后来被其他邻居拉开了，物业来了他们就装可怜说工期紧没办法，居委会调解了三次每次他们表面答应回去还是照样干，我录了几十段视频能清楚听到电钻声和孩子的哭声，请问我能申请人身保护令吗？">邻里纠纷</option>
@@ -149,6 +148,28 @@
           <!-- ===== 研判结果 ===== -->
           <section id="workbenchResultsPanel" class="result-section work-review-section" aria-label="研判结果" hidden>
 
+            <!-- 分析结果卡片 -->
+            <div id="analyzeCard" class="analyze-card" hidden>
+              <div class="analyze-card__header">
+                <span class="analyze-card__title">AI 研判分析</span>
+                <span id="cardAnalysisId" class="analyze-card__id"></span>
+              </div>
+              <div class="analyze-card__body">
+                <div class="analyze-card__row">
+                  <div class="analyze-card__conf">
+                    <span class="analyze-card__lbl">置信度</span>
+                    <div class="conf-bar">
+                      <div id="cardConfFill" class="conf-bar__fill"></div>
+                    </div>
+                    <span id="cardConfPct" class="conf-bar__pct"></span>
+                  </div>
+                  <div class="analyze-card__keyinfo" id="cardKeyInfo"></div>
+                </div>
+                <div id="cardConfRation" class="analyze-card__ration"></div>
+                <div class="analyze-card__steps" id="cardSteps"></div>
+              </div>
+            </div>
+
             <!-- 概要横条 -->
             <div class="result-meta-strip">
               <div class="meta-chip">
@@ -208,6 +229,7 @@
         </div>
       </div>
     </main>
+    </div>
   </body>
 
   <script src="https://cdn.jsdelivr.net/npm/ol@9.2.4/dist/ol.js" crossorigin="anonymous"></script>
@@ -216,6 +238,7 @@
     window.PLICE_OL_ATTRIBUTION = "© 本地离线瓦片";
   </script>
   <script src="plice-env.js"></script>
+  <script src="api.js"></script>
   <script src="utils.js"></script>
   <script src="sidebar.js"></script>
   <script src="officer-brief-map.js"></script>

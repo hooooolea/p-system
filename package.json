@@ -3,10 +3,13 @@
   "private": true,
   "scripts": {
     "deploy": "wrangler deploy",
-    "deploy:pages": "wrangler pages deploy web --project-name=plice"
+    "deploy:pages": "wrangler pages deploy web --project-name=plice",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "esbuild": "0.27.3",
+    "prettier": "^3.4.0",
     "wrangler": "^4.54.0"
   }
 }

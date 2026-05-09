@@ -49,9 +49,9 @@ function setText(idOrEl, text) {
  * 带超时的fetch封装
  * @param {string} url
  * @param {RequestInit} options
- * @param {number} timeoutMs 默认15000ms
+ * @param {number} timeoutMs 默认90000ms（1.5分钟）
  */
-async function fetchWithTimeout(url, options = {}, timeoutMs = 15000) {
+async function fetchWithTimeout(url, options = {}, timeoutMs = 90000) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 

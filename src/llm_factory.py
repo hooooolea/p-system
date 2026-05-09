@@ -29,4 +29,13 @@ def get_llm():
             dashscope_api_key=os.getenv("DASHSCOPE_API_KEY"),
             temperature=0.1,
         )
+    if provider == "minimax":
+        from langchain_openai import ChatOpenAI
+
+        return ChatOpenAI(
+            model="MiniMax-M2.7-highspeed",
+            openai_api_key=os.getenv("MINIMAX_API_KEY"),
+            openai_api_base="https://api.minimax.chat/v1",
+            temperature=0.1,
+        )
     raise ValueError(f"不支持的LLM提供商: {provider}")

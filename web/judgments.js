@@ -111,10 +111,7 @@ function showDetailError(msg) {
 }
 
 async function fetchPresentation(id) {
-  const res = await fetch(pliceApiUrl(`/api/analysis-presentation/${encodeURIComponent(id)}`));
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || res.statusText);
-  return data;
+  return apiGetPresentation(id);
 }
 
 async function openDetail(analysisId) {
@@ -170,9 +167,7 @@ async function loadJudgments() {
   setDetailState("placeholder");
 
   try {
-    const res = await fetch(pliceApiUrl("/api/history?limit=120"));
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || res.statusText);
+    const data = await apiGetHistory(120);
     allItems = Array.isArray(data.history) ? data.history : [];
     const reversed = [...allItems].reverse();
 

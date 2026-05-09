@@ -1,8 +1,4 @@
 (function () {
-  function apiUrl(path) {
-    return typeof window.pliceResolveApiUrl === "function" ? window.pliceResolveApiUrl(path) : path;
-  }
-
   function esc(s) {
     const d = document.createElement("div");
     d.textContent = s == null ? "" : String(s);
@@ -10,10 +6,7 @@
   }
 
   async function callApi(path) {
-    const res = await fetch(apiUrl(path), { headers: { "Content-Type": "application/json" } });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || res.statusText || "request failed");
-    return data;
+    return window.callApi(path);
   }
 
   function statusTag(status) {

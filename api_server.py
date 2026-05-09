@@ -240,6 +240,12 @@ def root_styles():
     return send_from_directory("web", "styles.css", mimetype="text/css; charset=utf-8")
 
 
+@app.get("/styles/<path:filename>")
+def styles_sub_files(filename):
+    """Serve files from web/styles/ sub-directory (CSS modules)."""
+    return send_from_directory("web/styles", filename, mimetype="text/css; charset=utf-8")
+
+
 @app.get("/app.js")
 def root_app_js():
     return send_from_directory("web", "app.js", mimetype="application/javascript; charset=utf-8")
@@ -255,24 +261,29 @@ def root_plice_env_js():
     return send_from_directory("web", "plice-env.js", mimetype="application/javascript; charset=utf-8")
 
 
-@app.get("/performance")
-def performance_page():
-    return send_from_directory("web", "performance.html")
+@app.get("/api.js")
+def root_api_js():
+    return send_from_directory("web", "api.js", mimetype="application/javascript; charset=utf-8")
+
+
+@app.get("/utils.js")
+def root_utils_js():
+    return send_from_directory("web", "utils.js", mimetype="application/javascript; charset=utf-8")
+
+
+@app.get("/sidebar.js")
+def root_sidebar_js():
+    return send_from_directory("web", "sidebar.js", mimetype="application/javascript; charset=utf-8")
+
+
+@app.get("/officer-brief-map.js")
+def root_officer_brief_map_js():
+    return send_from_directory("web", "officer-brief-map.js", mimetype="application/javascript; charset=utf-8")
 
 
 @app.get("/command-situation")
 def command_situation_page():
     return send_from_directory("web", "command-situation.html")
-
-
-@app.get("/command-analysis")
-def command_analysis_page():
-    return send_from_directory("web", "command-analysis.html")
-
-
-@app.get("/command-analysis.js")
-def command_analysis_js():
-    return send_from_directory("web", "command-analysis.js", mimetype="application/javascript; charset=utf-8")
 
 
 @app.get("/command-map")
@@ -302,39 +313,9 @@ def command_map_asset(asset_path: str):
     return send_from_directory(str(_MAP_APP_DIST), asset_path)
 
 
-@app.get("/performance.js")
-def performance_js():
-    return send_from_directory("web", "performance.js", mimetype="application/javascript; charset=utf-8")
-
-
-@app.get("/workbench/core-metrics")
-def workbench_core_metrics_redirect():
-    return redirect("/performance", code=302)
-
-
-@app.get("/workbench/core-metrics.js")
-def workbench_core_metrics_js_redirect():
-    return redirect("/performance.js", code=302)
-
-
-@app.get("/workbench/review-dimensions")
-def workbench_review_dimensions_redirect():
-    return redirect("/performance", code=302)
-
-
-@app.get("/workbench/review-dimensions.js")
-def workbench_review_dimensions_js_redirect():
-    return redirect("/performance.js", code=302)
-
-
 @app.get("/docs-theme.js")
 def root_docs_theme_js():
     return send_from_directory("web", "docs-theme.js", mimetype="application/javascript; charset=utf-8")
-
-
-@app.get("/site-chrome.js")
-def root_site_chrome_js():
-    return send_from_directory("web", "site-chrome.js", mimetype="application/javascript; charset=utf-8")
 
 
 @app.get("/command-situation.js")
@@ -371,20 +352,6 @@ def tech_route_page():
     return send_from_directory("web", "tech-route.html")
 
 
-@app.get("/analysis-result")
-def analysis_result_page():
-    return send_from_directory("web", "analysis-result.html")
-
-
-@app.get("/analysis-result.js")
-def analysis_result_js():
-    return send_from_directory(
-        "web",
-        "analysis-result.js",
-        mimetype="application/javascript; charset=utf-8",
-    )
-
-
 # --- 与 Cloudflare 静态托管一致：带 .html 的直链（侧栏与外链统一用此形式）---
 @app.get("/index.html")
 def index_html_file():
@@ -396,21 +363,11 @@ def command_situation_html_file():
     return send_from_directory("web", "command-situation.html")
 
 
-@app.get("/command-analysis.html")
-def command_analysis_html_file():
-    return send_from_directory("web", "command-analysis.html")
-
-
 @app.get("/command-map.html")
 def command_map_html_file():
     if _MAP_APP_DIST.is_dir():
         return send_from_directory(str(_MAP_APP_DIST), "index.html")
     return send_from_directory("web", "command-map.html")
-
-
-@app.get("/performance.html")
-def performance_html_file():
-    return send_from_directory("web", "performance.html")
 
 
 @app.get("/judgments.html")
@@ -421,11 +378,6 @@ def judgments_html_file():
 @app.get("/tech-route.html")
 def tech_route_html_file():
     return send_from_directory("web", "tech-route.html")
-
-
-@app.get("/analysis-result.html")
-def analysis_result_html_file():
-    return send_from_directory("web", "analysis-result.html")
 
 
 @app.get("/docs-md/<path:relative>")

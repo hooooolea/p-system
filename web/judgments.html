@@ -11,13 +11,13 @@
     <div class="site">
       <header class="site-header command-shell-header page-wide">
         <div class="command-shell-header__inner">
-          <div class="command-shell-header__brand" aria-label="智警引擎">
+          <div class="command-shell-header__brand">
             <span class="command-shell-header__brand-mark"></span>
             <span class="command-shell-header__brand-text">智警引擎</span>
             <span class="command-shell-header__brand-ver">智慧警务</span>
           </div>
           <div class="command-shell-header__right">
-            <span id="commandShellClock" class="command-shell-header__clock" aria-live="polite"></span>
+            <span id="commandShellClock" class="command-shell-header__clock"></span>
           </div>
         </div>
       </header>
@@ -103,7 +103,7 @@
                     <section class="ar-panel ar-panel--ai">
                       <h2 class="ar-panel__title">AI 研判</h2>
                       <div class="ar-gauge-block">
-                        <div class="ar-gauge-ring" id="jdArGaugeRing" style="--ar-p: 0">
+                        <div id="jdArGaugeRing" class="ar-gauge-ring">
                           <div class="ar-gauge-inner">
                             <span class="ar-gauge-num" id="jdArGaugeNum">0</span>
                             <span class="ar-gauge-cap">风险评分</span>
@@ -132,6 +132,7 @@
     </div>
     <script src="docs-theme.js"></script>
     <script src="plice-env.js"></script>
+    <script src="api.js"></script>
     <script src="utils.js"></script>
     <script src="sidebar.js"></script>
     <script src="ar-presentation-render.js"></script>
