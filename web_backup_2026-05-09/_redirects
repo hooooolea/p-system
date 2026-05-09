@@ -1,0 +1,5 @@
+# 仅保留历史兼容跳转，避免与 Pages 的 pretty URL / trailing slash 规则冲突导致循环重定向。
+/workbench/core-metrics /performance 302
+/workbench/review-dimensions /performance 302
+/workbench/core-metrics.js /performance.js 302
+/workbench/review-dimensions.js /performance.js 302
