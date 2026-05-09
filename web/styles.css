@@ -318,7 +318,7 @@ body {
 
 .workbench-command-layout {
   display: grid;
-  grid-template-columns: minmax(240px, 17.5rem) minmax(0, 1fr);
+  grid-template-columns: minmax(300px, 22rem) minmax(0, 1fr);
   gap: var(--space-5);
   align-items: start;
   margin-top: var(--space-2);
@@ -5095,6 +5095,27 @@ body.docs-shell--command-workbench .doc-aside {
   background: transparent;
 }
 
+/* 浅色模式：主工作台 警情录入卡片 */
+.docs-shell[data-theme="light"] .section-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+.docs-shell[data-theme="light"] .section-card__title {
+  color: #0f172a;
+}
+.docs-shell[data-theme="light"] .ingest-layout .alarm-block {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+.docs-shell[data-theme="light"] .ingest-left .upload-chip {
+  color: #0085d0;
+  border-color: #b3d9f2;
+  background: #e6f4fc;
+}
+.docs-shell[data-theme="light"] .ingest-left .upload-chip:hover {
+  background: #d0e8f8;
+}
+
 .judgments-col--detail {
   display: flex;
   flex-direction: column;
@@ -7360,7 +7381,7 @@ body.docs-shell--command-workbench[data-theme="light"] .command-app-nav__link--a
 /* 警情录入布局 */
 .ingest-layout {
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 320px 1fr;
   gap: var(--space-4);
   align-items: start;
 }

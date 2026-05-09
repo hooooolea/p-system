@@ -742,23 +742,22 @@ function applyTheme(theme) {
   const themeText = document.getElementById("themeToggleText");
   const themeIcon = document.getElementById("themeToggleIcon");
   const themeBtn = document.getElementById("themeToggleBtn");
-  const nextTheme = theme === "light" ? "light" : "dark";
+  const nextTheme = "light";
   body.dataset.theme = nextTheme;
-  if (themeText) themeText.textContent = nextTheme === "dark" ? "浅色" : "深色";
-  if (themeIcon) themeIcon.textContent = nextTheme === "dark" ? "◐" : "◑";
+  if (themeText) themeText.textContent = "浅色";
+  if (themeIcon) themeIcon.textContent = "◑";
   if (themeBtn) {
-    themeBtn.setAttribute("aria-pressed", String(nextTheme === "light"));
-    themeBtn.setAttribute("title", nextTheme === "dark" ? "切换到浅色主题" : "切换到深色主题");
+    themeBtn.setAttribute("aria-pressed", "true");
+    themeBtn.setAttribute("title", "当前浅色主题");
   }
 }
 
 function initThemeToggle() {
   const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-  applyTheme(savedTheme || document.body.dataset.theme || "dark");
+  applyTheme(savedTheme || "light");
   document.getElementById("themeToggleBtn")?.addEventListener("click", () => {
-    const nextTheme = document.body.dataset.theme === "dark" ? "light" : "dark";
-    applyTheme(nextTheme);
-    localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    // 始终浅色，切换无意义
+    applyTheme("light");
   });
 }
 
