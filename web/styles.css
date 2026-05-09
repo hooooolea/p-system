@@ -663,6 +663,8 @@ body.docs-shell--command-workbench .site-main.command-shell-main {
   align-items: stretch;
   gap: 0;
   min-height: calc(100vh - var(--command-header-height));
+  height: 100vh;
+  overflow: hidden;
 }
 
 .command-app-sidebar {
