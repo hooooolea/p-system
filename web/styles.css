@@ -6484,9 +6484,10 @@ body.docs-shell--command-workbench[data-theme="light"] .cmd-status-pill--warn .c
   cursor: pointer;
 }
 
-.command-shell-main {
+/* 所有 command-workbench 页面：.command-shell-main 顶部留出 header 高度，防止内容被 sticky header 遮挡 */
+body.docs-shell--command-workbench .site-main.command-shell-main {
   flex: 1;
-  padding-top: 0;
+  padding-top: var(--command-header-height, 53px);
   padding-bottom: var(--space-5);
 }
 
