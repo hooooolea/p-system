@@ -17,4 +17,4 @@ run_worker_first = true
 # 地图接口：与控制台 Variables 保持一致；仅改控制台不更新本文件时，deploy 会提示差异。
 # cloudflared 每次新开的 trycloudflare 地址变了，请同时改这里并重新 deploy（或删掉下行改回只在控制台配）。
 [vars]
-PLICE_BACKEND_URL = "https://oldest-river-swing-measure.trycloudflare.com"
+PLICE_BACKEND_URL = "https://involving-checkout-guardian-pet.trycloudflare.com"
