@@ -70,6 +70,47 @@
       .ref-history__empty p { margin: 8px 0 0; }
       .ref-history__item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
       .ref-history__item:last-child { border-bottom: none; }
+      /* 更多类型案例抽屉 */
+      .example-drawer {
+        position: fixed;
+        right: -360px;
+        top: 0;
+        width: 340px;
+        height: 100vh;
+        background: #fff;
+        box-shadow: -2px 0 16px rgba(0,0,0,0.12);
+        z-index: 200;
+        transition: right 0.25s ease;
+        display: flex;
+        flex-direction: column;
+        border-left: 1px solid #e5e7eb;
+      }
+      .example-drawer.drawer-open { right: 0; }
+      .example-drawer__head {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 16px;
+        border-bottom: 1px solid #e5e7eb;
+        background: #f9fafb;
+      }
+      .example-drawer__title { font-size: 0.9375rem; font-weight: 600; color: #111827; }
+      .example-drawer__close {
+        background: none; border: none; cursor: pointer; padding: 4px; color: #6b7280;
+        border-radius: 4px; display: flex; align-items: center;
+      }
+      .example-drawer__close:hover { background: #f3f4f6; color: #374151; }
+      .example-drawer__body { flex: 1; overflow-y: auto; padding: 12px 16px; }
+      .example-drawer__item {
+        border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px;
+        margin-bottom: 10px; cursor: pointer; transition: border-color 0.15s, background 0.15s;
+      }
+      .example-drawer__item:hover { border-color: #2563eb; background: #f0f9ff; }
+      .example-drawer__item-type { font-size: 0.75rem; font-weight: 600; color: #2563eb; margin-bottom: 4px; }
+      .example-drawer__item-text { font-size: 0.8125rem; color: #374151; line-height: 1.5; }
+      .example-drawer__overlay {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.25); z-index: 199;
+        opacity: 0; pointer-events: none; transition: opacity 0.25s;
+      }
+      .example-drawer__overlay.drawer-open { opacity: 1; pointer-events: auto; }
     </style>
   </head>
   <body class="docs-shell docs-shell--command-workbench command-page--standalone" data-theme="light" data-page="workbench">
@@ -379,6 +420,77 @@
       updateSidebarClock();
       setInterval(updateSidebarClock, 1000);
 
+      /* 更多类型抽屉 */
+      function openExampleDrawer() {
+        document.getElementById('exampleDrawer')?.classList.add('drawer-open');
+        document.getElementById('exampleOverlay')?.classList.add('drawer-open');
+      }
+      function closeExampleDrawer() {
+        document.getElementById('exampleDrawer')?.classList.remove('drawer-open');
+        document.getElementById('exampleOverlay')?.classList.remove('drawer-open');
+      }
+
+    </script>
+
+    <!-- 更多类型案例抽屉 -->
+    <div id="exampleOverlay" class="example-drawer__overlay" onclick="closeExampleDrawer()"></div>
+    <div id="exampleDrawer" class="example-drawer" role="dialog" aria-label="真实案例列表">
+      <div class="example-drawer__head">
+        <span class="example-drawer__title">真实案例参考</span>
+        <button class="example-drawer__close" onclick="closeExampleDrawer()" aria-label="关闭">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="example-drawer__body">
+        <div class="example-drawer__item" onclick="fillAlarmExample('有人在三里屯酒吧街打架斗殴，多人受伤倒地，附近有群众在围观。')">
+          <div class="example-drawer__item-type">打架斗殴</div>
+          <div class="example-drawer__item-text">有人在三里屯酒吧街打架斗殴，多人受伤倒地，附近有群众在围观。</div>
+        </div>
+        <div class="example-drawer__item" onclick="fillAlarmExample('京通快速路出京方向发生多车追尾事故，占用右侧车道，有人员受轻伤，现场车辆通行缓慢。')">
+          <div class="example-drawer__item-type">交通事故</div>
+          <div class="example-drawer__item-text">京通快速路出京方向发生多车追尾事故，占用右侧车道，有人员受轻伤，现场车辆通行缓慢。</div>
+        </div>
+        <div class="example-drawer__item" onclick="fillAlarmExample('居民接到自称京东客服电话，称账号异常需转账到安全账户，被骗约5万元。')">
+          <div class="example-drawer__item-type">电信诈骗</div>
+          <div class="example-drawer__item-text">居民接到自称京东客服电话，称账号异常需转账到安全账户，被骗约5万元。</div>
+        </div>
+        <div class="example-drawer__item" onclick="fillAlarmExample('某小区3号楼地下室冒出浓烟，有居民拨打119，消防已到场，物业正在组织疏散。')">
+          <div class="example-drawer__item-type">火灾险情</div>
+          <div class="example-drawer__item-text">某小区3号楼地下室冒出浓烟，有居民拨打119，消防已到场，物业正在组织疏散。</div>
+        </div>
+        <div class="example-drawer__item" onclick="fillAlarmExample('老年人在公园突然晕倒，有路人正在进行心肺复苏，已拨打120。')">
+          <div class="example-drawer__item-type">紧急医疗</div>
+          <div class="example-drawer__item-text">老年人在公园突然晕倒，有路人正在进行心肺复苏，已拨打120。</div>
+        </div>
+        <div class="example-drawer__item" onclick="fillAlarmExample('长途汽车站候车厅发现可疑包裹，无人认领，现场已拉警戒线。')">
+          <div class="example-drawer__item-type">涉恐涉暴</div>
+          <div class="example-drawer__item-text">长途汽车站候车厅发现可疑包裹，无人认领，现场已拉警戒线。</div>
+        </div>
+        <div class="example-drawer__item" onclick="fillAlarmExample('地下通道内有无业人员纠缠过路学生强行乞讨，影响交通和治安。')">
+          <div class="example-drawer__item-type">扰乱秩序</div>
+          <div class="example-drawer__item-text">地下通道内有无业人员纠缠过路学生强行乞讨，影响交通和治安。</div>
+        </div>
+        <div class="example-drawer__item" onclick="fillAlarmExample('情侣在餐厅包间内因感情纠纷发生争执，女方情绪激动要跳楼，男方已报警。')">
+          <div class="example-drawer__item-type">情感纠纷</div>
+          <div class="example-drawer__item-text">情侣在餐厅包间内因感情纠纷发生争执，女方情绪激动要跳楼，男方已报警。</div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function fillAlarmExample(text) {
+        var ta = document.getElementById('alarmText');
+        if (ta) {
+          ta.value = text;
+          ta.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        closeExampleDrawer();
+      }
+      /* 更新按钮点击事件：改为打开抽屉 */
+      document.getElementById('moreExamplesBtn')?.addEventListener('click', openExampleDrawer);
+      /* 清除原有的 onclick 内联属性，避免重复执行 */
+      document.getElementById('moreExamplesBtn')?.removeAttribute('onclick');
     </script>
   </body>
 </html>

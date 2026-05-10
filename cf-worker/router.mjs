@@ -45,8 +45,23 @@ export default {
       const backend =
         typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim().replace(/\/$/, "") : "";
       if (backend) {
-        const upstream = `${backend}${url.pathname}${url.search}`;
-        return fetch(new Request(upstream, request), { redirect: "follow" });
+        try {
+          const upstream = `${backend}${url.pathname}${url.search}`;
+          const response = await fetch(new Request(upstream, request), { redirect: "follow" });
+          const contentType = response.headers.get("content-type") || "";
+          if (!contentType.includes("application/json")) {
+            return new Response("{}", {
+              status: 502,
+              headers: { "Content-Type": "application/json; charset=utf-8" },
+            });
+          }
+          return response;
+        } catch (e) {
+          return new Response("{}", {
+            status: 502,
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+          });
+        }
       }
       return new Response(JSON.stringify({ error: "backend not configured" }), {
         status: 503,
@@ -59,8 +74,24 @@ export default {
       const backend =
         typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim().replace(/\/$/, "") : "";
       if (backend) {
-        const upstream = `${backend}${url.pathname}${url.search}`;
-        return fetch(new Request(upstream, request), { redirect: "follow" });
+        try {
+          const upstream = `${backend}${url.pathname}${url.search}`;
+          const response = await fetch(new Request(upstream, request), { redirect: "follow" });
+          // 确保后端返回的是 JSON，防止返回 HTML 错误页导致前端 JSON.parse 失败
+          const contentType = response.headers.get("content-type") || "";
+          if (!contentType.includes("application/json")) {
+            return new Response(JSON.stringify({ history: [], _proxyError: "backend not json" }), {
+              status: 502,
+              headers: { "Content-Type": "application/json; charset=utf-8" },
+            });
+          }
+          return response;
+        } catch (e) {
+          return new Response(JSON.stringify({ history: [], _proxyError: String(e) }), {
+            status: 502,
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+          });
+        }
       }
       return new Response(JSON.stringify({ history: [] }), {
         status: 200,
@@ -73,8 +104,30 @@ export default {
       const backend =
         typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim().replace(/\/$/, "") : "";
       if (backend) {
-        const upstream = `${backend}${url.pathname}${url.search}`;
-        return fetch(upstream, { method: "GET", redirect: "follow" });
+        try {
+          const upstream = `${backend}${url.pathname}${url.search}`;
+          const response = await fetch(upstream, { method: "GET", redirect: "follow" });
+          const contentType = response.headers.get("content-type") || "";
+          if (!contentType.includes("application/json")) {
+            return new Response(JSON.stringify({ events: [], _proxyError: "not json" }), {
+              status: 200,
+              headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                "Cache-Control": "no-store",
+              },
+            });
+          }
+          return response;
+        } catch (e) {
+          return new Response(JSON.stringify({ events: [], _proxyError: String(e) }), {
+            status: 200,
+            headers: {
+              "Content-Type": "application/json; charset=utf-8",
+              "Cache-Control": "no-store",
+              "X-Plice-Map-Events": "stub-error",
+            },
+          });
+        }
       }
       return new Response(JSON.stringify({ events: [] }), {
         status: 200,
@@ -91,10 +144,25 @@ export default {
       const backend =
         typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim().replace(/\/$/, "") : "";
       if (backend) {
-        const upstream = `${backend}${url.pathname}${url.search}`;
-        return fetch(new Request(upstream, request), { redirect: "follow" });
+        try {
+          const upstream = `${backend}${url.pathname}${url.search}`;
+          const response = await fetch(new Request(upstream, request), { redirect: "follow" });
+          const contentType = response.headers.get("content-type") || "";
+          if (!contentType.includes("application/json")) {
+            return new Response('{"error": "backend error"}', {
+              status: 502,
+              headers: { "Content-Type": "application/json; charset=utf-8" },
+            });
+          }
+          return response;
+        } catch (e) {
+          return new Response('{"error": "backend unreachable"}', {
+            status: 502,
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+          });
+        }
       }
-      return new Response(JSON.stringify({ error: "backend not configured" }), {
+      return new Response('{"error": "backend not configured"}', {
         status: 503,
         headers: { "Content-Type": "application/json; charset=utf-8" },
       });
@@ -109,8 +177,26 @@ export default {
       const backend =
         typeof env.PLICE_BACKEND_URL === "string" ? env.PLICE_BACKEND_URL.trim().replace(/\/$/, "") : "";
       if (backend) {
-        const upstream = `${backend}${url.pathname}${url.search}`;
-        return fetch(new Request(upstream, request), { redirect: "follow" });
+        try {
+          const upstream = `${backend}${url.pathname}${url.search}`;
+          const response = await fetch(new Request(upstream, request), { redirect: "follow" });
+          const contentType = response.headers.get("content-type") || "";
+          if (!contentType.includes("application/json")) {
+            // 后端返回非 JSON 时返回空 JSON 而非 HTML，避免前端解析崩溃
+            const emptyBody = request.method === "GET" ? "{}" : '{"error": "backend error"}';
+            return new Response(emptyBody, {
+              status: 502,
+              headers: { "Content-Type": "application/json; charset=utf-8" },
+            });
+          }
+          return response;
+        } catch (e) {
+          const emptyBody = request.method === "GET" ? "{}" : '{"error": "backend unreachable"}';
+          return new Response(emptyBody, {
+            status: 502,
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+          });
+        }
       }
       // 后端未配置时，对只读接口返回空数据，对写接口返回错误
       if (request.method === "GET") {
